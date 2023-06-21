@@ -3,57 +3,21 @@
 <idea-plugin>
 
     <id>software.xdev.saveactions</id>
-    <name>Save Actions</name>
+    <name>Save Actions - XDEV Edition</name>
     <version>2.6.0</version>
-    <vendor email="dubreuil.alex@gmail.com" url="https://www.github.com/dubreuia">Alexandre DuBreuil</vendor>
+    <vendor url="https://www.github.com/xdev-software">XDEV Software</vendor>
 
     <description><![CDATA[
 <p>Supports configurable, Eclipse like, save actions, including "optimize imports", "reformat code", "rearrange code", "compile file" and some quick fixes for Java like "add / remove 'this' qualifier", etc. The plugin executes the configured actions when the file is synchronised (or saved) on disk.</p>
 
-<p><strong>Features</strong></p>
+<p>Fork of the popular but now deprecated <a href="https://plugins.jetbrains.com/plugin/7642-save-actions">Save Actions</> plugin</p>
 
-<ul>
-  <li>Optimize imports</li>
-  <li>Run on file save, shortcut, batch (or a combination)</li>
-  <li>Run on multiple files by choosing a scope</li>
-  <li>Reformat code (whole file or only changed text)</li>
-  <li>Rearrange code (reorder methods, fields, etc.)</li>
-  <li>Include / exclude files with regex support</li>
-  <li>Works on any file type (Java, Python, XML, etc.)</li>
-  <li>Uses a settings file per project you can commit</li>
-  <li>Available keymaps and actions for activation</li>
-  <li>Launch any editor action using "quick lists"</li>
-  <li>[Java IDE] Eclipse configuration file `.epf` support</li>
-  <li>[Java IDE] Automatically fix Java inspections</li>
-  <li>[Java IDE] Compile project after save</li>
-  <li>[Java IDE] Reload debugger after save</li>
-</ul>
-
-<p><strong>Compatibility</strong></p>
-
-<ul>
-  <li>Intellij IDEA</li>
-  <li>PyCharm</li>
-  <li>PHPStorm</li>
-  <li>AndroidStudio</li>
-  <li>WebStorm</li>
-  <li>RubyMine</li>
-  <li>CLion</li>
-</ul>
-
-<p><strong>Documentation</strong></p>
-
-<ul>
-  <li><a href="https://plugins.jetbrains.com/plugin/7642-save-actions">Jetbrains plugin page</a></li>
-  <li><a href="https://github.com/dubreuia/intellij-plugin-save-actions">Github README</a></li>
-  <li><a href="https://github.com/dubreuia/intellij-plugin-save-actions/issues">Github issues</a></li>
-  <li><a href="https://twitter.com/dubreuia">Twitter</a></li>
-</ul>
+<p>More information is available on <a href="https://github.com/xdev-software/intellij-plugin-save-actions">GitHub</a></p>
     ]]></description>
 
     <change-notes><![CDATA[
 <ul>
-  <li>Release notes: <a href="https://github.com/dubreuia/intellij-plugin-save-actions/releases">https://github.com/dubreuia/intellij-plugin-save-actions/releases/tag/v2.5.0</a></li>
+  <li>Release notes: <a href="https://github.com/xdev-software/intellij-plugin-save-actions/releases">https://github.com/xdev-software/intellij-plugin-save-actions/releases</a></li>
 </ul>
     ]]>
     </change-notes>
@@ -64,9 +28,11 @@
     <depends optional="true" config-file="plugin-java.xml">com.intellij.modules.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="software.xdev.saveactions.core.service.impl.SaveActionsDefaultService"/>
+        <applicationService
+                serviceImplementation="software.xdev.saveactions.core.service.impl.SaveActionsDefaultService"/>
 
-        <projectConfigurable id="settings.saveactions" instance="software.xdev.saveactions.ui.Configuration" dynamic="true"/>
+        <projectConfigurable id="settings.saveactions" instance="software.xdev.saveactions.ui.Configuration"
+                             dynamic="true"/>
     </extensions>
 
     <projectListeners>
@@ -89,7 +55,7 @@
 
             <action id="software.xdev.saveactions.core.action.ShortcutAction"
                     class="software.xdev.saveactions.core.action.ShortcutAction"
-                    text="Execute Save Actions on shortcut"
+                    text="Execute Save Actions on Shortcut"
                     description="Executes Save Actions with a shortcut">
                 <keyboard-shortcut keymap="$default"
                                    first-keystroke="shift ctrl S"/>
@@ -97,7 +63,7 @@
 
             <action id="software.xdev.saveactions.core.action.BatchAction"
                     class="software.xdev.saveactions.core.action.BatchAction"
-                    text="Execute Save Actions on multiple files"
+                    text="Execute Save Actions on Multiple Files"
                     description="Executes save actions on multiple files">
             </action>
         </group>

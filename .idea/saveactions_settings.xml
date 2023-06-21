@@ -25,7 +25,7 @@
       <set>
         <option value="src/main/java/com/intellij/.*" />
         <option value="src/main/java/com/siyeh/.*" />
-        <option value="src/test/resources/com/dubreuia/integration/.*" />
+        <option value="src/test/resources/software/xdev/saveactions/integration/.*" />
       </set>
     </option>
   </component>
