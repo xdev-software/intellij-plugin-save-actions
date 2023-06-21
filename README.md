@@ -214,19 +214,5 @@ Some things to note when using other plugins with the Save Actions plugin:
 - **idea.log**: The log file the save actions plugin writes in. It contains debug information, prefixed with `software.xdev.saveactions.SaveActionManager`. If you are using default locations, it would be in `~/.IntelliJIdeaVERSION/system/log/idea.log`.
 - **saveactions_settings.xml**: The settings file is saved by project in the `.idea` folder. That file can be committed in git thus shared in your development team. If you are using the default locations, it would be in `~/IdeaProjects/PROJECT_NAME/.idea/saveactions_settings.xml`
 
-## Contributions
-
-### Contributing
-
-See [CONTRIBUTING](CONTRIBUTING.md).
-
-### Releasing
-
-See [RELEASING](RELEASING.md).
-
-## Links
-
-### JetBrains plugin page
-
-The plugin is in the [JetBrains plugin repository](https://plugins.jetbrains.com/plugin/7642-save-actions), please take the time to [rate it](https://plugins.jetbrains.com/plugin/7642-save-actions)! 
-
+## Contributing
+See the [contributing guide](./CONTRIBUTING.md) for detailed instructions on how to get started with our project.
