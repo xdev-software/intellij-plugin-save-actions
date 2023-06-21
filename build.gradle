@@ -11,7 +11,7 @@ apply plugin: 'java'
 
 // Add plugin group and version
 group "software.xdev.saveactions"
-version "2.6.0"
+version "1.0.0-SNAPSHOT"
 
 // Add build script repository to maven central
 repositories {
