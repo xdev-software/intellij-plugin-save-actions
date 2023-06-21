@@ -4,9 +4,6 @@
 *.ipr
 *.iws
 
-# Save actions
-!.idea/saveactions_settings.xml
-
 # Generated java classes
 out
 classes
@@ -20,3 +17,20 @@ classes
 # Gradle
 .gradle/
 build/
+
+
+# Some files are user/installation independent and are used for configuring the IDE
+# See also https://stackoverflow.com/a/35279076
+
+.idea/*
+!.idea/saveactions_settings.xml
+!.idea/checkstyle-idea.xml
+
+!.idea/inspectionProfiles/
+.idea/inspectionProfiles/*
+!.idea/inspectionProfiles/Project_Default.xml
+
+!.idea/codeStyles/
+.idea/codeStyles/*
+!.idea/codeStyles/codeStyleConfig.xml
+!.idea/codeStyles/Project.xml

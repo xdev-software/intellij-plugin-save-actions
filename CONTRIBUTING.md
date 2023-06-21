@@ -18,7 +18,3 @@ Intellij should refresh and the project is now configured as a gradle project. Y
 ./gradlew runIde
 ```
 
-## Code style
-
-The code style is located in `config/code-style.xml`, you can import it by doing "File > Settings > Editor > Code Style > Scheme > (wheel) > Import scheme > Intellij IDEA code style XML".  General style should resemble existing code.
-
