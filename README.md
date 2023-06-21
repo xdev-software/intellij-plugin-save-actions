@@ -1,4 +1,4 @@
-# <img alt="Save Actions Plugin icon light" title="Save Actions Plugin icon light" src="./docs/icon-save-actions.svg" height="24"> Save Actions Plugin - XDEV Edition
+# <img alt="Save Actions Plugin icon light" src="./docs/icon-save-actions.svg" height="30"> Save Actions Plugin - XDEV Edition
 
 > **ℹ️About**
 >
