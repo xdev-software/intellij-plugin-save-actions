@@ -1,24 +1,21 @@
-> **⚠️ This project has been archived and is looking for a maintainer ⚠️**
+# <img alt="Save Actions Plugin icon light" title="Save Actions Plugin icon light" src="./docs/icon-save-actions.svg" height="24"> Save Actions Plugin - XDEV Edition
 
-# Save Actions Plugin
+This plugin is a fork of [dubreuia/intellij-plugin-save-actions](https://github.com/dubreuia/intellij-plugin-save-actions) and [fishermans/intellij-plugin-save-actions](https://github.com/fishermans/intellij-plugin-save-actions) and is kept in maintenance mode:
+* Keep the plugin up-to-date with the latest IDEA versions
+* Distribute the plugin on the IDEA marketplace
+* Fix serious bugs
+* Keep the repo in sync with XDEV's standards
+* Hardly used features may be removed to speed up development
 
-[![JetBrains Plugin](./docs/badge-jetbrains-website.svg)](https://plugins.jetbrains.com/plugin/7642-save-actions)
-[![JetBrains Supported](./docs/badge-jetbrains-supported.svg)](https://www.jetbrains.com/?from=intellij-save-actions-plugin)
-[![Travis CI Build Status](https://travis-ci.org/dubreuia/intellij-plugin-save-actions.svg?branch=main)](https://travis-ci.org/dubreuia/intellij-plugin-save-actions)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/dubreuia/intellij-plugin-save-actions?branch=main&svg=true)](https://ci.appveyor.com/project/dubreuia/intellij-plugin-save-actions)
-[![Codecov Code Coverage](https://codecov.io/gh/dubreuia/intellij-plugin-save-actions/branch/main/graph/badge.svg)](https://codecov.io/gh/dubreuia/intellij-plugin-save-actions)
+There is no guarantee that work outside of this scope will be done.
 
-Supports configurable, Eclipse like, save actions, including "optimize imports", "reformat code", "rearrange code", "compile file" and some quick fixes like "add / remove 'this' qualifier", etc. The plugin executes the configured actions when the file is synchronised (or saved) on disk.
+---
+
+Supports configurable, Eclipse like, save actions, including "optimize imports", "reformat code", "rearrange code", "compile file" and some quick fixes like "add / remove 'this' qualifier", etc. The plugin executes the configured actions when the file is synchronized (or saved) on disk.
 
 Using the save actions plugin makes your code cleaner and more uniform across your code base by enforcing your code style and code rules every time you save. The settings file (see [files location](#files-location)) can be shared in your development team so that every developer has the same configuration.
 
 The code style applied by the save actions plugin is the one configured your settings at "File > Settings > Editor > Code Style". For some languages, custom formatter (Dartfmt, Prettier, etc.) may also be triggered by the save actions plugin. See the [Editor Actions](#editor-actions) configuration for more information.
-
-Thank you to JetBrains for supporting the Save Actions plugin: they provide an open-source license, which is necessary to build, test and deploy this plugin. Check out their products at [https://www.jetbrains.com](https://www.jetbrains.com/?from=intellij-save-actions-plugin).
-
-<p align="center">
-  <img alt="Save Actions Plugin icon light" title="Save Actions Plugin icon light" src="./docs/icon-save-actions.svg" width="200" height="200">
-</p>
 
 ## Content
 
@@ -30,7 +27,7 @@ Thank you to JetBrains for supporting the Save Actions plugin: they provide an o
 - [Files location](#files-location)
 - [Contributions](#contributions)
 - [Links](#links)
-- [Licence](#licence)
+- [Licence](#license)
 
 ## Features
 
@@ -47,7 +44,7 @@ Thank you to JetBrains for supporting the Save Actions plugin: they provide an o
 - Uses a settings file per project you can commit (see [Files location](#files-location))
 - Available keymaps and actions for activation (see [Keymap and actions](#keymap-and-actions))
 
-![Save actions plugin settings page](https://github.com/dubreuia/intellij-plugin-save-actions/blob/main/docs/intellij-save-actions-plugin-settings-page.png)
+![Save actions plugin settings page](./docs/intellij-save-actions-plugin-settings-page.png)
 
 ### Java IDE products
 
@@ -58,7 +55,7 @@ Works in JetBrains IDE with Java support, like Intellij IDEA and AndroidStudio.
 - Eclipse configuration file `.epf` support (see [Eclipse support](#eclipse-support))
 - Automatically fix Java inspections (see [Java quick fixes](#java-fixes))
 
-![Save actions plugin settings page for Java](https://github.com/dubreuia/intellij-plugin-save-actions/blob/main/docs/intellij-save-actions-plugin-settings-page-java.png)
+![Save actions plugin settings page for Java](./docs/intellij-save-actions-plugin-settings-page-java.png)
 
 ## Installation
 
@@ -135,7 +132,7 @@ You can quickly toggle the plugin activation by using the "Enable Save Action" a
 Some languages requires specific actions, such as Dartfmt or Prettier:
 
 - For Dart developers, enable "Use the dartfmt tool when formatting the whole file" option in "File > Settings > Editor > Code Style > Dart > Dartfmt".
-- For Prettier (https://prettier.io/) users, read below.
+- For [Prettier](https://prettier.io/) users, read below.
 
 Using the "Execute action" configuration, the plugin can launch arbitrary editor actions. While not all actions will work, it can be used to launch external tools, specific runs, etc. This feature is experimental, you can post your feedback on issue [#118](https://github.com/dubreuia/intellij-plugin-save-actions/issues/118).
 
@@ -177,22 +174,9 @@ If a quick fix adds something that is removed by another quick fix, the removal 
 
 ## Compatibility
 
-Built for SDK version 2016.3, 2018.3, 2019.3, using JDK 8, those are the currently supported products, and is not expected to work in other products:
+The plugin will be kept compatible with the latest IDEA version.
 
-- <img src="./docs/icon-intellij-idea.svg" width="30"> Intellij IDEA (ultimate and community)
-- <img src="./docs/icon-pycharm.svg" width="30"> PyCharm (professional and community)
-- <img src="./docs/icon-phpstorm.svg" width="30"> PHPStorm
-- <img src="./docs/icon-android-studio.svg" width="30"> AndroidStudio
-- <img src="./docs/icon-webstorm.svg" width="30"> WebStorm
-- <img src="./docs/icon-rubymine.svg" width="30"> RubyMine
-- <img src="./docs/icon-clion.svg" width="30"> CLion
-
-See issue [#18](https://github.com/dubreuia/intellij-plugin-save-actions/issues/18) for a beta packaging that you can try in other products.
-
-### Backward compatibility
-
-- For SDK 2016.3, the latest version is [Release 1.6.0+2016.3](https://github.com/dubreuia/intellij-plugin-save-actions/releases/tag/v1.6.0%2B2016.3) (not maintained anymore).
-- For SDK 2018.3, 2019.3 and EAP (not released on plugin repository) the latest version is in the [releases](https://github.com/dubreuia/intellij-plugin-save-actions/releases).
+Support for other Intellij products should also be automatically available but not guaranteed.
 
 ### Eclipse configuration support
 
@@ -229,15 +213,6 @@ Some things to note when using other plugins with the Save Actions plugin:
 
 ## Contributions
 
-### Project management
-
-There are 2 boards to track the issues (bug or features):
-
-- **[Agile Board - Save Actions - Ideas](https://github.com/dubreuia/intellij-plugin-save-actions/projects/2)** - Tracks your and our ideas for new features and the discussions around them. All the issues here are "closed"
-- **[Agile Board - Save Actions - Boards](https://github.com/dubreuia/intellij-plugin-save-actions/projects/3)** - Tracks the issues that are urgent enough and specified enough to be implemented. All the issues here are "open" except those that got implemented and will be release in next version, those are "closed" (and stay closed if they work once released).
-
-When you submit an issue, it will be triaged into either board.
-
 ### Contributors
 
 Big thanks to all the contributors submitting issues, testing, and especially submitting pull requests. See [contributors graph](https://github.com/dubreuia/intellij-plugin-save-actions/graphs/contributors) :hearts:
@@ -255,12 +230,4 @@ See [RELEASING](RELEASING.md).
 ### JetBrains plugin page
 
 The plugin is in the [JetBrains plugin repository](https://plugins.jetbrains.com/plugin/7642-save-actions), please take the time to [rate it](https://plugins.jetbrains.com/plugin/7642-save-actions)! 
-
-### Issues
-
-The plugin does not work? You want more features? You can [ask me on twitter](https://twitter.com/dubreuia) or [create an issue on github](https://github.com/dubreuia/intellij-plugin-save-actions/issues).
-
-## Licence
-
-[MIT License](LICENSE.txt)
 
