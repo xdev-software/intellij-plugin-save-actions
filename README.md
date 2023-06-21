@@ -179,7 +179,7 @@ If a quick fix adds something that is removed by another quick fix, the removal 
 
 The plugin will be kept compatible with the latest IDEA version.
 
-Support for other Intellij products should also be automatically available but not guaranteed.
+Support for other JetBrains products should also be automatically available but is not guaranteed.
 
 ### Eclipse configuration support
 
@@ -215,10 +215,6 @@ Some things to note when using other plugins with the Save Actions plugin:
 - **saveactions_settings.xml**: The settings file is saved by project in the `.idea` folder. That file can be committed in git thus shared in your development team. If you are using the default locations, it would be in `~/IdeaProjects/PROJECT_NAME/.idea/saveactions_settings.xml`
 
 ## Contributions
-
-### Contributors
-
-Big thanks to all the contributors submitting issues, testing, and especially submitting pull requests. See [contributors graph](https://github.com/dubreuia/intellij-plugin-save-actions/graphs/contributors) :hearts:
 
 ### Contributing
 
