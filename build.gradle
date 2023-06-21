@@ -6,8 +6,6 @@ plugins {
     id 'org.sonarqube' version '4.2.1.3168'
 }
 
-// Add coverage plugin
-apply plugin: "jacoco"
 apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'java'
 
@@ -68,12 +66,4 @@ test {
 // Add resources directory because intellij test framework checks there for test resources (instead of build/resources)
 sourceSets {
     test.output.resourcesDir = "build/classes/java/resources"
-}
-
-// Add jacoco test report for codecov
-jacocoTestReport {
-    reports {
-        xml.required = true
-        html.required = false
-    }
 }
