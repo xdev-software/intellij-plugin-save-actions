@@ -3,7 +3,7 @@
 <idea-plugin>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.dubreuia.core.service.impl.SaveActionsJavaService"/>
+        <applicationService serviceImplementation="software.xdev.saveactions.core.service.impl.SaveActionsJavaService"/>
     </extensions>
 
 </idea-plugin>

@@ -2,7 +2,7 @@
 
 <idea-plugin>
 
-    <id>com.dubreuia</id>
+    <id>software.xdev.saveactions</id>
     <name>Save Actions</name>
     <version>2.6.0</version>
     <vendor email="dubreuil.alex@gmail.com" url="https://www.github.com/dubreuia">Alexandre DuBreuil</vendor>
@@ -64,39 +64,39 @@
     <depends optional="true" config-file="plugin-java.xml">com.intellij.modules.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.dubreuia.core.service.impl.SaveActionsDefaultService"/>
+        <applicationService serviceImplementation="software.xdev.saveactions.core.service.impl.SaveActionsDefaultService"/>
 
-        <projectConfigurable id="settings.saveactions" instance="com.dubreuia.ui.Configuration" dynamic="true"/>
+        <projectConfigurable id="settings.saveactions" instance="software.xdev.saveactions.ui.Configuration" dynamic="true"/>
     </extensions>
 
     <projectListeners>
-        <listener class="com.dubreuia.core.listener.SaveActionsDocumentManagerListener"
+        <listener class="software.xdev.saveactions.core.listener.SaveActionsDocumentManagerListener"
                   topic="com.intellij.openapi.fileEditor.FileDocumentManagerListener"/>
     </projectListeners>
 
     <actions>
-        <group id="com.dubreuia.core.action.SaveActionsGroup"
+        <group id="software.xdev.saveactions.core.action.SaveActionsGroup"
                text="Save Actions"
                popup="true">
             <add-to-group group-id="CodeFormatGroup"
                           anchor="after"
                           relative-to-action="RearrangeCode"/>
 
-            <action id="com.dubreuia.core.action.ToggleAction"
-                    class="com.dubreuia.core.action.ToggleAnAction"
+            <action id="software.xdev.saveactions.core.action.ToggleAction"
+                    class="software.xdev.saveactions.core.action.ToggleAnAction"
                     text="Enable Save Actions"
                     description="Toggle the activation of Save Actions"/>
 
-            <action id="com.dubreuia.core.action.ShortcutAction"
-                    class="com.dubreuia.core.action.ShortcutAction"
+            <action id="software.xdev.saveactions.core.action.ShortcutAction"
+                    class="software.xdev.saveactions.core.action.ShortcutAction"
                     text="Execute Save Actions on shortcut"
                     description="Executes Save Actions with a shortcut">
                 <keyboard-shortcut keymap="$default"
                                    first-keystroke="shift ctrl S"/>
             </action>
 
-            <action id="com.dubreuia.core.action.BatchAction"
-                    class="com.dubreuia.core.action.BatchAction"
+            <action id="software.xdev.saveactions.core.action.BatchAction"
+                    class="software.xdev.saveactions.core.action.BatchAction"
                     text="Execute Save Actions on multiple files"
                     description="Executes save actions on multiple files">
             </action>
