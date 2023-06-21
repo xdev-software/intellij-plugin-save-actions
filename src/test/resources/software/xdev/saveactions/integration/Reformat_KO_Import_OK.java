@@ -1,12 +1,12 @@
 package software.xdev.saveactions.integration;
 
-import software.xdev.saveactions.model.Storage;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.psi.impl.source.PsiFileImpl;
 import com.intellij.testFramework.fixtures.CodeInsightTestFixture;
 import com.intellij.testFramework.fixtures.IdeaProjectTestFixture;
 import com.intellij.testFramework.fixtures.IdeaTestFixtureFactory;
 import org.junit.jupiter.api.BeforeEach;
+import software.xdev.saveactions.model.Storage;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
