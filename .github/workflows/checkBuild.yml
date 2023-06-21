@@ -28,7 +28,7 @@ jobs:
       with:
         distribution: ${{ matrix.distribution }}
         java-version: ${{ matrix.java }}
-        cache: 'maven'
+        cache: 'gradle'
       
     - name: Build
       run: ./gradlew build buildPlugin
