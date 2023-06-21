@@ -1,4 +1,4 @@
-# <img alt="Save Actions Plugin icon light" src="./docs/icon-save-actions.svg" height="30"> Save Actions Plugin - XDEV Edition
+# <img alt="Save Actions Plugin icon light" src="./assets/icon-save-actions.svg" height="30"> Save Actions Plugin - XDEV Edition
 
 > **ℹ️About**
 >
@@ -44,7 +44,7 @@ The code style applied by the save actions plugin is the one configured your set
 - Uses a settings file per project you can commit (see [Files location](#files-location))
 - Available keymaps and actions for activation (see [Keymap and actions](#keymap-and-actions))
 
-![Save actions plugin settings page](./docs/intellij-save-actions-plugin-settings-page.png)
+![Save actions plugin settings page](./assets/intellij-save-actions-plugin-settings-page.png)
 
 ### Java IDE products
 
@@ -55,7 +55,7 @@ Works in JetBrains IDE with Java support, like Intellij IDEA and AndroidStudio.
 - Eclipse configuration file `.epf` support (see [Eclipse support](#eclipse-support))
 - Automatically fix Java inspections (see [Java quick fixes](#java-fixes))
 
-![Save actions plugin settings page for Java](./docs/intellij-save-actions-plugin-settings-page-java.png)
+![Save actions plugin settings page for Java](./assets/intellij-save-actions-plugin-settings-page-java.png)
 
 ## Installation
 
@@ -92,7 +92,7 @@ The plugin actions are grouped under the menu "Code > Save Actions". You can ass
 - **Execute Save Actions on multiple files (default: not binded)** will show a popup to select the files (or a scope) on which to trigger the plugin (needs to be activated with "Activate save actions on batch" in [activation](#activation)).
 
 <p align="center">
-  <img alt="Save Actions Plugin Action menu" title="Save Actions Plugin Action menu" src="./docs/intellij-save-actions-plugin-action-menu.png" width="371" height="77">
+  <img alt="Save Actions Plugin Action menu" title="Save Actions Plugin Action menu" src="./assets/intellij-save-actions-plugin-action-menu.png" width="371" height="77">
 </p>
 
 ## Configuration
