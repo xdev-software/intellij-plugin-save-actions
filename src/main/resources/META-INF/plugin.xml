@@ -5,7 +5,7 @@
     <id>software.xdev.saveactions</id>
     <name>Save Actions - XDEV Edition</name>
     <version>1.0.0-SNAPSHOT</version>
-    <vendor url="https://www.github.com/xdev-software">XDEV Software</vendor>
+    <vendor url="https://www.github.com/xdev-software">xdev-software</vendor>
 
     <description><![CDATA[
 <p>Supports configurable, Eclipse like, save actions, including "optimize imports", "reformat code", "rearrange code", "compile file" and some quick fixes for Java like "add / remove 'this' qualifier", etc. The plugin executes the configured actions when the file is synchronised (or saved) on disk.</p>
