@@ -21,7 +21,7 @@ repositories {
 
 // Add dependencies to test, junit5 api (annotations) and engine (runtime)
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.9.0'),
+    testImplementation platform('org.junit:junit-bom:5.9.3'),
             'org.junit.jupiter:junit-jupiter',
             'org.junit.jupiter:junit-jupiter-engine',
             'org.assertj:assertj-core:3.23.1'
