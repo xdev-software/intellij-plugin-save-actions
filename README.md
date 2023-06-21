@@ -1,15 +1,15 @@
 # <img alt="Save Actions Plugin icon light" title="Save Actions Plugin icon light" src="./docs/icon-save-actions.svg" height="24"> Save Actions Plugin - XDEV Edition
 
-This plugin is a fork of [dubreuia/intellij-plugin-save-actions](https://github.com/dubreuia/intellij-plugin-save-actions) and [fishermans/intellij-plugin-save-actions](https://github.com/fishermans/intellij-plugin-save-actions) and is kept in maintenance mode:
-* Keep the plugin up-to-date with the latest IDEA versions
-* Distribute the plugin on the IDEA marketplace
-* Fix serious bugs
-* Keep the repo in sync with XDEV's standards
-* Hardly used features may be removed to speed up development
-
-There is no guarantee that work outside of this scope will be done.
-
----
+> **ℹ️About**
+>
+> This plugin is a fork of [dubreuia/intellij-plugin-save-actions](https://github.com/dubreuia/intellij-plugin-save-actions) and [fishermans/intellij-plugin-save-actions](https://github.com/fishermans/intellij-plugin-save-actions) and is kept in maintenance mode:
+> * Keep the plugin up-to-date with the latest IDEA versions
+> * Distribute the plugin on the IDEA marketplace
+> * Fix serious bugs
+> * Keep the repo in sync with XDEV's standards
+> * Hardly used features may be removed to speed up development
+>
+> There is no guarantee that work outside of this scope will be done.
 
 Supports configurable, Eclipse like, save actions, including "optimize imports", "reformat code", "rearrange code", "compile file" and some quick fixes like "add / remove 'this' qualifier", etc. The plugin executes the configured actions when the file is synchronized (or saved) on disk.
 
