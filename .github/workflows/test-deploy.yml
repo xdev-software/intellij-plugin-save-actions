@@ -1,0 +1,28 @@
+name: Test Deployment
+
+on:
+  workflow_dispatch:
+
+env:
+  PRIMARY_MAVEN_MODULE: ${{ github.event.repository.name }}
+
+jobs:
+  publish_central: # Publish the code to central
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Update/Generify version
+      run: |
+        originalVersion=$(grep -Po 'pluginVersion=\K.*' gradle.properties)
+        newVersion="$(echo $originalVersion | cut -d '-' -f1).$( date -u '+%Y%m%d%H%M%S')-SNAPSHOT"
+        echo "New version: $newVersion"
+        sed -i "s/pluginVersion=$originalVersion/pluginVersion=$newVersion/" gradle.properties
+    
+    - name: Publish Plugin
+      env:
+        PUBLISH_TOKEN: ${{ secrets.JETBRAINS_MARKETPLACE_PUBLISH_TOKEN }}
+        CERTIFICATE_CHAIN: ${{ secrets.JETBRAINS_MARKETPLACE_CERTIFICATE_CHAIN }}
+        PRIVATE_KEY: ${{ secrets.JETBRAINS_MARKETPLACE_PRIVATE_KEY }}
+        PRIVATE_KEY_PASSWORD: ${{ secrets.JETBRAINS_MARKETPLACE_PRIVATE_KEY_PASSWORD }}
+      run: ./gradlew publishPlugin
