@@ -56,6 +56,7 @@ jobs:
         git config --global user.name "GitHub Actions"
       
     - name: UN-Snap version and output
+      id: version
       run: |
         originalVersion=$(grep -Po 'pluginVersion=\K.*' gradle.properties)
         newVersion="$(echo $originalVersion | cut -d '-' -f1)"
