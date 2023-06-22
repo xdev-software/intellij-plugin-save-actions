@@ -1,3 +1,4 @@
+[![Latest version](https://img.shields.io/jetbrains/plugin/v/22113?logo=jetbrains)](https://plugins.jetbrains.com/plugin/22113-save-actions--xdev-edition)
 [![Build](https://img.shields.io/github/actions/workflow/status/xdev-software/intellij-plugin-save-actions/checkBuild.yml?branch=develop)](https://github.com/xdev-software/intellij-plugin-save-actions/actions/workflows/checkBuild.yml?query=branch%3Adevelop)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=xdev-software_intellij-plugin-save-actions&metric=alert_status)](https://sonarcloud.io/dashboard?id=xdev-software_intellij-plugin-save-actions)
 
