@@ -62,6 +62,7 @@ jobs:
         echo "New version: $newVersion"
         sed -i "s/pluginVersion=$originalVersion/pluginVersion=$newVersion/" gradle.properties
         
+        version=newVersion
         echo "release=$version" >> $GITHUB_OUTPUT
         echo "releasenumber=${version//[!0-9]/}" >> $GITHUB_OUTPUT
 
@@ -127,7 +128,6 @@ jobs:
       with:
         name: plugin-files-java-${{ matrix.java }}
         path: build/distributions/*
-        if-no-files-found: error
 
   after_release:
     runs-on: ubuntu-latest
