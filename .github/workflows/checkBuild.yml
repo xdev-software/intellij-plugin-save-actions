@@ -31,7 +31,7 @@ jobs:
         cache: 'gradle'
       
     - name: Build
-      run: ./gradlew build buildPlugin
+      run: ./gradlew build buildPlugin --info
       
     - name: Check for uncommited changes
       run: |
