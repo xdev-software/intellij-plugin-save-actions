@@ -11,6 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          cache: 'gradle'
       
       - name: Update/Generify version
         run: |
@@ -18,6 +25,9 @@ jobs:
           newVersion="$(echo $originalVersion | cut -d '-' -f1).$( date -u '+%Y%m%d%H%M%S')-SNAPSHOT"
           echo "New version: $newVersion"
           sed -i "s/pluginVersion=$originalVersion/pluginVersion=$newVersion/" gradle.properties
+
+          echo "Contents of gradle.properties"
+          cat gradle.properties
       
       - name: Publish Plugin
         env:
