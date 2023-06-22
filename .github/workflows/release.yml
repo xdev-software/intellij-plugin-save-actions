@@ -94,7 +94,6 @@ jobs:
           Open the plugin Marketplace in your IDE (``File > Settings > Plugins > Marketplace``), search for the plugin and hit the install button.
           
           Alternatively you can also download the jar from the marketplace website.
-          ```
 
   publish:
     runs-on: ubuntu-latest
