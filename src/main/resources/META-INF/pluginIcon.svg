@@ -30,11 +30,11 @@
       <stop
          id="stop818"
          offset="0"
-         style="stop-color:#8b1241;stop-opacity:1;" />
+         style="stop-color:#c02222;stop-opacity:1;" />
       <stop
          id="stop820"
          offset="1"
-         style="stop-color:#d91330;stop-opacity:1;" />
+         style="stop-color:#d71e23;stop-opacity:1;" />
     </linearGradient>
     <radialGradient
        gradientUnits="userSpaceOnUse"
