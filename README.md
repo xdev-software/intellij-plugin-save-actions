@@ -29,9 +29,7 @@ The code style applied by the save actions plugin is the one configured your set
 - [Configuration](#configuration)
 - [Compatibility](#compatibility)
 - [Files location](#files-location)
-- [Contributions](#contributions)
-- [Links](#links)
-- [Licence](#license)
+- [Contributing](#contributing)
 
 ## Features
 
@@ -62,18 +60,7 @@ Works in JetBrains IDE with Java support, like Intellij IDEA and AndroidStudio.
 ![Save actions plugin settings page for Java](./assets/intellij-save-actions-plugin-settings-page-java.png)
 
 ## Installation
-
-### IDE (recommended)
-
-Install it from your IDE (Intellij IDEA, PyCharm, etc.):
-
-- "File > Settings > Plugins > Browse repositories... > Search 'Save Actions' > Category 'Code tools'"
-
-### JetBrains plugin repository
-
-All versions of the plugin are available from the [JetBrains plugin repository](https://plugins.jetbrains.com/plugin/7642). You can download the jar and add it to your IDE (you won't get updates thought):
-
-- "File > Settings > Plugins > Install plugin from disk..."
+[Installation guide for the latest release](https://github.com/xdev-software/intellij-plugin-save-actions/releases/latest#Installation)
 
 ## Usage
 
