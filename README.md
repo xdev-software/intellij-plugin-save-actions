@@ -1,6 +1,7 @@
-[![Latest version](https://img.shields.io/jetbrains/plugin/v/22113?logo=jetbrains)](https://plugins.jetbrains.com/plugin/22113-save-actions--xdev-edition)
+[![Latest version](https://img.shields.io/jetbrains/plugin/v/22113?logo=jetbrains)](https://plugins.jetbrains.com/plugin/22113)
 [![Build](https://img.shields.io/github/actions/workflow/status/xdev-software/intellij-plugin-save-actions/checkBuild.yml?branch=develop)](https://github.com/xdev-software/intellij-plugin-save-actions/actions/workflows/checkBuild.yml?query=branch%3Adevelop)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=xdev-software_intellij-plugin-save-actions&metric=alert_status)](https://sonarcloud.io/dashboard?id=xdev-software_intellij-plugin-save-actions)
+[![Feel free to leave a rating](https://img.shields.io/jetbrains/plugin/r/rating/22113?style=social&logo=jetbrains&label=Feel%20free%20to%20leave%20a%20rating)](https://plugins.jetbrains.com/plugin/22113/reviews)
 
 # <img alt="Save Actions Plugin icon light" src="./src/main/resources/META-INF/pluginIcon.svg" height="30"> Save Actions Plugin - XDEV Edition
 
