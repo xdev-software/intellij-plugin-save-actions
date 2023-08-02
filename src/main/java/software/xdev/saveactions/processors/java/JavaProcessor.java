@@ -8,7 +8,7 @@ import software.xdev.saveactions.processors.java.inspection.CustomLocalCanBeFina
 import software.xdev.saveactions.processors.java.inspection.SerializableHasSerialVersionUIDFieldInspectionWrapper;
 import com.intellij.codeInspection.ExplicitTypeCanBeDiamondInspection;
 import com.intellij.codeInspection.LocalInspectionTool;
-import com.intellij.codeInspection.visibility.CustomAccessCanBeTightenedInspection;
+import software.xdev.saveactions.processors.java.inspection.CustomAccessCanBeTightenedInspection;
 import com.intellij.codeInspection.visibility.VisibilityInspection;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
@@ -17,7 +17,7 @@ import com.siyeh.ig.inheritance.MissingOverrideAnnotationInspection;
 import com.siyeh.ig.maturity.SuppressionAnnotationInspection;
 import com.siyeh.ig.performance.MethodMayBeStaticInspection;
 import com.siyeh.ig.style.ControlFlowStatementWithoutBracesInspection;
-import com.siyeh.ig.style.CustomUnqualifiedStaticUsageInspection;
+import software.xdev.saveactions.processors.java.inspection.CustomUnqualifiedStaticUsageInspection;
 import com.siyeh.ig.style.FieldMayBeFinalInspection;
 import com.siyeh.ig.style.SingleStatementInBlockInspection;
 import com.siyeh.ig.style.UnnecessaryFinalOnLocalVariableOrParameterInspection;
