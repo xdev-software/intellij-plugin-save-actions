@@ -94,7 +94,7 @@ public enum Action {
     finalPrivateMethod("Remove final from private method",
             java, false),
 
-    unnecessaryFinalOnLocalVariableOrParameter("Remove unnecessary final to local variable or parameter",
+    unnecessaryFinalOnLocalVariableOrParameter("Remove unnecessary final for local variable or parameter",
             java, false),
 
     explicitTypeCanBeDiamond("Remove explicit generic type for diamond",
