@@ -1,3 +1,6 @@
+## 1.0.2
+* Fixed missing display name which causes an error when multiple configureable plugins are installed #20
+
 ## 1.0.1
 * Updated to ``IntelliJ Platform`` ``232`` (2023.2) for compatibility reasons
 * Fixed ``Change visibility of field or method to lower access`` not working #14
