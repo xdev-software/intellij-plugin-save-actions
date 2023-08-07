@@ -28,7 +28,9 @@
         <applicationService
                 serviceImplementation="software.xdev.saveactions.core.service.impl.SaveActionsDefaultService"/>
 
-        <projectConfigurable id="settings.saveactions" instance="software.xdev.saveactions.ui.Configuration"
+        <projectConfigurable id="settings.saveactions"
+                             instance="software.xdev.saveactions.ui.Configuration"
+                             displayName="Save Actions"
                              dynamic="true"/>
     </extensions>
 
