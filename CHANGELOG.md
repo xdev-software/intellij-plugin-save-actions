@@ -1,3 +1,6 @@
+## 1.0.3
+* Fixed problem in combination with Qodana plugin #25
+
 ## 1.0.2
 * Fixed missing display name which causes an error when multiple configureable plugins are installed #20
 
