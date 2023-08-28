@@ -61,6 +61,7 @@ import com.siyeh.ig.psiutils.MethodUtils;
 import com.siyeh.ig.visibility.ClassEscapesItsScopeInspection;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -101,6 +102,12 @@ public class CustomAccessCanBeTightenedInspection extends AbstractBaseJavaLocalI
     @NotNull
     public String getGroupDisplayName() {
         return InspectionsBundle.message("group.names.visibility.issues");
+    }
+
+    // Required for qodana plugin (in most IDEs built-in); see also #25
+    @Override
+    public @Nls(capitalization = Nls.Capitalization.Sentence) @NotNull String getDisplayName() {
+        return getClass().getSimpleName();
     }
 
     @Override
