@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 import static java.util.stream.Collectors.toList;
@@ -46,8 +45,7 @@ class EpfKeyTest {
     }
 
     private List<String> getPropertiesKeyNames(Properties properties) {
-        return properties.entrySet().stream()
-                .map(Map.Entry::getKey)
+        return properties.keySet().stream()
                 .map(Object::toString)
                 .filter(key -> EpfKey.getPrefixes().stream().anyMatch(key::startsWith))
                 .map(key -> key.substring(key.lastIndexOf(".") == -1 ? 0 : key.lastIndexOf(".") + 1))

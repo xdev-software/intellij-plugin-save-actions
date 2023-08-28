@@ -1,8 +1,5 @@
 package software.xdev.saveactions.processors;
 
-import software.xdev.saveactions.core.ExecutionMode;
-import software.xdev.saveactions.core.service.SaveActionsServiceManager;
-import software.xdev.saveactions.model.Action;
 import com.intellij.debugger.DebuggerManagerEx;
 import com.intellij.debugger.impl.DebuggerSession;
 import com.intellij.debugger.ui.HotSwapUI;
@@ -15,6 +12,9 @@ import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
+import software.xdev.saveactions.core.ExecutionMode;
+import software.xdev.saveactions.core.service.SaveActionsServiceManager;
+import software.xdev.saveactions.model.Action;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -24,11 +24,10 @@ import java.util.Set;
 import java.util.function.BiFunction;
 import java.util.stream.Stream;
 
-import static software.xdev.saveactions.utils.Helper.toVirtualFiles;
 import static com.intellij.openapi.actionSystem.ActionPlaces.UNKNOWN;
 import static com.intellij.openapi.actionSystem.CommonDataKeys.EDITOR;
 import static com.intellij.openapi.actionSystem.CommonDataKeys.PROJECT;
-import static java.util.stream.Collectors.toList;
+import static software.xdev.saveactions.utils.Helper.toVirtualFiles;
 
 /**
  * Available processors for build.
@@ -61,7 +60,7 @@ public enum BuildProcessor implements Processor {
 
                 List<String> actionIds = SaveActionsServiceManager.getService().getQuickLists(project).stream()
                         .flatMap(quickList -> Arrays.stream(quickList.getActionIds()))
-                        .collect(toList());
+                        .toList();
 
                 for (String actionId : actionIds) {
                     AnAction anAction = actionManager.getAction(actionId);

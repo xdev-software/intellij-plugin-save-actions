@@ -8,8 +8,5 @@ public enum ActionType {
 
     build,
 
-    java,
-
-    ;
-
+    java
 }

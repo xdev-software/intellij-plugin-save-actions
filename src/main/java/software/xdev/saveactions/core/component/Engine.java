@@ -1,13 +1,5 @@
 package software.xdev.saveactions.core.component;
 
-import software.xdev.saveactions.core.ExecutionMode;
-import software.xdev.saveactions.core.service.SaveActionsService;
-import software.xdev.saveactions.model.Action;
-import software.xdev.saveactions.model.Storage;
-import software.xdev.saveactions.processors.Processor;
-import software.xdev.saveactions.processors.Result;
-import software.xdev.saveactions.processors.ResultCode;
-import software.xdev.saveactions.processors.SaveCommand;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
@@ -17,6 +9,14 @@ import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.PsiErrorElementUtil;
 import org.jetbrains.annotations.NotNull;
+import software.xdev.saveactions.core.ExecutionMode;
+import software.xdev.saveactions.core.service.SaveActionsService;
+import software.xdev.saveactions.model.Action;
+import software.xdev.saveactions.model.Storage;
+import software.xdev.saveactions.processors.Processor;
+import software.xdev.saveactions.processors.Result;
+import software.xdev.saveactions.processors.ResultCode;
+import software.xdev.saveactions.processors.SaveCommand;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
@@ -26,7 +26,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 /**
@@ -83,7 +82,7 @@ public class Engine {
                 .map(processor -> processor.getSaveCommand(project, psiFiles))
                 .filter(command -> storage.isEnabled(command.getAction()))
                 .filter(command -> command.getModes().contains(mode))
-                .collect(toList());
+                .toList();
         LOGGER.info(String.format("Filtered processors %s", processorsEligible));
         if (!processorsEligible.isEmpty()) {
             PsiDocumentManager psiDocumentManager = PsiDocumentManager.getInstance(project);
@@ -93,10 +92,10 @@ public class Engine {
                 .filter(Objects::nonNull)
                 .peek(command -> LOGGER.info(String.format("Execute command %s on %d files", command, psiFiles.size())))
                 .map(command -> new SimpleEntry<>(command.getAction(), command.execute()))
-                .collect(toList());
+                .toList();
         LOGGER.info(String.format("Exit engine with results %s", results.stream()
                 .map(entry -> entry.getKey() + ":" + entry.getValue())
-                .collect(toList())));
+                .toList()));
     }
 
     private boolean isPsiFileEligible(Project project, PsiFile psiFile) {

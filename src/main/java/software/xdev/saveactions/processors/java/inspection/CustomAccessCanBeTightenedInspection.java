@@ -61,6 +61,7 @@ import com.siyeh.ig.psiutils.MethodUtils;
 import com.siyeh.ig.visibility.ClassEscapesItsScopeInspection;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -69,9 +70,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * A public version of {@link AccessCanBeTightenedInspection}.
+ * A public version of {@link com.intellij.codeInspection.visibility.AccessCanBeTightenedInspection}.
  *
- * @implNote This is a 1 to 1 copy of {@link AccessCanBeTightenedInspection}.
+ * @implNote This is a 1 to 1 copy of {@link com.intellij.codeInspection.visibility.AccessCanBeTightenedInspection}.
  * <p/>
  * Copy pasting is required because when extending the following error is thrown error:
  * <code>class com.intellij.codeInspection.visibility.CustomAccessCanBeTightenedInspection cannot access its superclass
@@ -101,6 +102,12 @@ public class CustomAccessCanBeTightenedInspection extends AbstractBaseJavaLocalI
     @NotNull
     public String getGroupDisplayName() {
         return InspectionsBundle.message("group.names.visibility.issues");
+    }
+
+    // Required for qodana plugin (in most IDEs built-in); see also #25
+    @Override
+    public @Nls(capitalization = Nls.Capitalization.Sentence) @NotNull String getDisplayName() {
+        return getClass().getSimpleName();
     }
 
     @Override
