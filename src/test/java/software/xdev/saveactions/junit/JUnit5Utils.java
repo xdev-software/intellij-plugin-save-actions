@@ -12,10 +12,8 @@ public class JUnit5Utils {
     }
 
     public static void rethrowAsJunit5Error(AssertionError error) {
-        if (error.getCause() instanceof InvocationTargetException) {
-            InvocationTargetException intellijInternal = (InvocationTargetException) error.getCause();
-            if (intellijInternal.getCause() instanceof FileComparisonFailure) {
-                FileComparisonFailure fileComparisonFailure = ((FileComparisonFailure) intellijInternal.getCause());
+        if (error.getCause() instanceof InvocationTargetException intellijInternal) {
+            if (intellijInternal.getCause() instanceof FileComparisonFailure fileComparisonFailure) {
                 String expected = fileComparisonFailure.getExpected();
                 String actual = fileComparisonFailure.getActual();
                 throw new AssertionFailedError("Expected file do not match actual file", expected, actual);

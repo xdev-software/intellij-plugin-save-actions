@@ -1,11 +1,5 @@
 package software.xdev.saveactions.integration;
 
-import software.xdev.saveactions.core.action.BatchActionConstants;
-import software.xdev.saveactions.core.action.ShortcutActionConstants;
-import software.xdev.saveactions.core.component.SaveActionManagerConstants;
-import software.xdev.saveactions.core.service.SaveActionsServiceManager;
-import software.xdev.saveactions.junit.JUnit5Utils;
-import software.xdev.saveactions.model.Storage;
 import com.intellij.testFramework.fixtures.CodeInsightTestFixture;
 import com.intellij.testFramework.fixtures.IdeaProjectTestFixture;
 import com.intellij.testFramework.fixtures.IdeaTestFixtureFactory;
@@ -13,11 +7,16 @@ import com.intellij.testFramework.fixtures.impl.LightTempDirTestFixtureImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
+import software.xdev.saveactions.core.action.BatchActionConstants;
+import software.xdev.saveactions.core.action.ShortcutActionConstants;
+import software.xdev.saveactions.core.component.SaveActionManagerConstants;
+import software.xdev.saveactions.core.service.SaveActionsServiceManager;
+import software.xdev.saveactions.junit.JUnit5Utils;
+import software.xdev.saveactions.model.Storage;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static software.xdev.saveactions.junit.JUnit5Utils.rethrowAsJunit5Error;
 import static com.intellij.testFramework.LightProjectDescriptor.EMPTY_PROJECT_DESCRIPTOR;
 
 public abstract class IntegrationTest {

@@ -70,9 +70,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * A public version of {@link AccessCanBeTightenedInspection}.
+ * A public version of {@link com.intellij.codeInspection.visibility.AccessCanBeTightenedInspection}.
  *
- * @implNote This is a 1 to 1 copy of {@link AccessCanBeTightenedInspection}.
+ * @implNote This is a 1 to 1 copy of {@link com.intellij.codeInspection.visibility.AccessCanBeTightenedInspection}.
  * <p/>
  * Copy pasting is required because when extending the following error is thrown error:
  * <code>class com.intellij.codeInspection.visibility.CustomAccessCanBeTightenedInspection cannot access its superclass

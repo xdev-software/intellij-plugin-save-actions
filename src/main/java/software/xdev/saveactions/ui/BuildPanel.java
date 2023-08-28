@@ -1,12 +1,12 @@
 package software.xdev.saveactions.ui;
 
-import software.xdev.saveactions.core.service.SaveActionsServiceManager;
-import software.xdev.saveactions.model.Action;
 import com.intellij.openapi.actionSystem.ex.QuickList;
 import com.intellij.openapi.actionSystem.ex.QuickListsManager;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.ui.IdeBorderFactory;
 import org.jdesktop.swingx.combobox.ListComboBoxModel;
+import software.xdev.saveactions.core.service.SaveActionsServiceManager;
+import software.xdev.saveactions.model.Action;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -23,12 +23,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static java.text.MessageFormat.format;
+import static java.util.Comparator.comparing;
 import static software.xdev.saveactions.model.Action.compile;
 import static software.xdev.saveactions.model.Action.executeAction;
 import static software.xdev.saveactions.model.Action.reload;
-import static java.text.MessageFormat.format;
-import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toList;
 
 class BuildPanel {
 
@@ -68,7 +67,7 @@ class BuildPanel {
                 .stream(QuickListsManager.getInstance().getAllQuickLists())
                 .map(QuickListWrapper::new)
                 .sorted(comparing(QuickListWrapper::toString))
-                .collect(toList());
+                .toList();
         quickListElements.clear();
         quickListElements.addAll(quickListWrappers);
         if (!quickLists.isEmpty()) {

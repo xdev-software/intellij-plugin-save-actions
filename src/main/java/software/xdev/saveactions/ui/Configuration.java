@@ -1,14 +1,14 @@
 package software.xdev.saveactions.ui;
 
+import com.intellij.openapi.options.Configurable;
+import com.intellij.openapi.project.Project;
+import org.jetbrains.annotations.Nls;
+import org.jetbrains.annotations.Nullable;
 import software.xdev.saveactions.model.Action;
 import software.xdev.saveactions.model.Storage;
 import software.xdev.saveactions.model.java.EpfStorage;
 import software.xdev.saveactions.ui.java.IdeSupportPanel;
 import software.xdev.saveactions.ui.java.InspectionPanel;
-import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.project.Project;
-import org.jetbrains.annotations.Nls;
-import org.jetbrains.annotations.Nullable;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -260,10 +260,9 @@ public class Configuration implements Configurable {
     }
 
     private void updateCheckboxGroupExclusive(ActionEvent event, Action checkbox1, Action checkbox2) {
-        if (event == null || !(event.getSource() instanceof JCheckBox)) {
+        if (event == null || !(event.getSource() instanceof JCheckBox thisCheckbox)) {
             return;
         }
-        JCheckBox thisCheckbox = (JCheckBox) event.getSource();
         if (thisCheckbox.isSelected()) {
             if (thisCheckbox == checkboxes.get(checkbox1)) {
                 checkboxes.get(checkbox2).setSelected(false);
