@@ -12,7 +12,7 @@ jobs:
   check_code: # Validates the code
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       
     - name: Set up JDK
       uses: actions/setup-java@v3
@@ -48,7 +48,7 @@ jobs:
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       
     - name: Configure Git
       run: |
@@ -100,7 +100,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [prepare_release]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     
     - name: Set up JDK
       uses: actions/setup-java@v3
@@ -133,7 +133,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [publish]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       
     - name: Init Git and pull
       run: |
