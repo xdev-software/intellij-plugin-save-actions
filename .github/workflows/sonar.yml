@@ -26,7 +26,7 @@ jobs:
     # Dependabot PRs have no access to secrets (SONAR_TOKEN) -> Ignore them
     if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'dependabot/') }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
