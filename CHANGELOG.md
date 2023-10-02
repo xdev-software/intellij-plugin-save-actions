@@ -1,3 +1,6 @@
+## 1.0.4
+* Fixed pluginIcon being not displayed #35
+
 ## 1.0.3
 * Fixed problem in combination with Qodana plugin #25
 * Improved compatibility and cleaned up code #27
