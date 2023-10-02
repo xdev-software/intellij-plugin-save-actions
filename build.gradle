@@ -54,7 +54,7 @@ intellij {
 
 
 listProductsReleases {
-    sinceBuild = "231.*"
+    sinceBuild = "223.*"
 }
 
 // JAVA compatibility
