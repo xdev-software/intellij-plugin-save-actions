@@ -1,14 +1,7 @@
 package software.xdev.saveactions.processors.java;
 
-import software.xdev.saveactions.core.ExecutionMode;
-import software.xdev.saveactions.model.Action;
-import software.xdev.saveactions.processors.Processor;
-import software.xdev.saveactions.processors.SaveWriteCommand;
-import software.xdev.saveactions.processors.java.inspection.CustomLocalCanBeFinal;
-import software.xdev.saveactions.processors.java.inspection.SerializableHasSerialVersionUIDFieldInspectionWrapper;
 import com.intellij.codeInspection.ExplicitTypeCanBeDiamondInspection;
 import com.intellij.codeInspection.LocalInspectionTool;
-import software.xdev.saveactions.processors.java.inspection.CustomAccessCanBeTightenedInspection;
 import com.intellij.codeInspection.visibility.VisibilityInspection;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
@@ -17,7 +10,6 @@ import com.siyeh.ig.inheritance.MissingOverrideAnnotationInspection;
 import com.siyeh.ig.maturity.SuppressionAnnotationInspection;
 import com.siyeh.ig.performance.MethodMayBeStaticInspection;
 import com.siyeh.ig.style.ControlFlowStatementWithoutBracesInspection;
-import software.xdev.saveactions.processors.java.inspection.CustomUnqualifiedStaticUsageInspection;
 import com.siyeh.ig.style.FieldMayBeFinalInspection;
 import com.siyeh.ig.style.SingleStatementInBlockInspection;
 import com.siyeh.ig.style.UnnecessaryFinalOnLocalVariableOrParameterInspection;
@@ -26,6 +18,14 @@ import com.siyeh.ig.style.UnnecessaryThisInspection;
 import com.siyeh.ig.style.UnqualifiedFieldAccessInspection;
 import com.siyeh.ig.style.UnqualifiedMethodAccessInspection;
 import com.siyeh.ig.style.UnqualifiedStaticUsageInspection;
+import software.xdev.saveactions.core.ExecutionMode;
+import software.xdev.saveactions.model.Action;
+import software.xdev.saveactions.processors.Processor;
+import software.xdev.saveactions.processors.SaveWriteCommand;
+import software.xdev.saveactions.processors.java.inspection.CustomAccessCanBeTightenedInspection;
+import software.xdev.saveactions.processors.java.inspection.CustomLocalCanBeFinal;
+import software.xdev.saveactions.processors.java.inspection.SerializableHasSerialVersionUIDFieldInspectionWrapper;
+import software.xdev.saveactions.processors.java.inspection.style.CustomUnqualifiedStaticUsageInspection;
 
 import java.util.Arrays;
 import java.util.EnumSet;

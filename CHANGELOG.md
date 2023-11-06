@@ -1,3 +1,6 @@
+## 1.0.5
+* Fixed ``Add class qualifier to static member access outside declaring class`` not working in combination with Qodana plugin #25
+
 ## 1.0.4
 * Fixed pluginIcon being not displayed #35
 * Improved support of Android Studio (until a 2023 version is released) #27
