@@ -19,10 +19,9 @@ import org.jetbrains.uast.UClass;
  */
 public class CustomSerializableHasSerialVersionUidFieldInspection extends USerializableInspectionBase {
 
-
     @SuppressWarnings("unchecked")
     public CustomSerializableHasSerialVersionUidFieldInspection() {
-        super(new Class[]{UClass.class});
+        super(UClass.class);
     }
 
     @Override

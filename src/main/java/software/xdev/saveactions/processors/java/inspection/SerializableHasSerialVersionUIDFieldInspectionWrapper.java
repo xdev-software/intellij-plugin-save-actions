@@ -1,8 +1,8 @@
 package software.xdev.saveactions.processors.java.inspection;
 
-import software.xdev.saveactions.core.service.SaveActionsService;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.openapi.diagnostic.Logger;
+import software.xdev.saveactions.core.service.SaveActionsService;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -31,11 +31,7 @@ public class SerializableHasSerialVersionUIDFieldInspectionWrapper {
 
     private enum SerializableClass {
         CLASS_NAME_INTELLIJ_2021_3("com.intellij.codeInspection.SerializableHasSerialVersionUidFieldInspection",
-                "software.xdev.saveactions.processors.java.inspection.CustomSerializableHasSerialVersionUidFieldInspection"),
-        CLASS_NAME_INTELLIJ_2018_3("com.siyeh.ig.serialization.SerializableHasSerialVersionUIDFieldInspection",
-                "com.siyeh.ig.serialization.SerializableHasSerialVersionUIDFieldInspection"),
-        CLASS_NAME_INTELLIJ_2016("com.siyeh.ig.serialization.SerializableHasSerialVersionUIDFieldInspectionBase",
-                "com.siyeh.ig.serialization.SerializableHasSerialVersionUIDFieldInspectionBase");
+                "software.xdev.saveactions.processors.java.inspection.CustomSerializableHasSerialVersionUidFieldInspection");
 
         /**
          * Field className: Inspection class provided by IDE
@@ -61,7 +57,8 @@ public class SerializableHasSerialVersionUIDFieldInspectionWrapper {
                         Class.forName(targetClass).asSubclass(LocalInspectionTool.class);
                 LOGGER.info(String.format("Found serial version uid class %s", targetInspectionClass.getName()));
                 return targetInspectionClass.cast(targetInspectionClass.getDeclaredConstructor().newInstance());
-            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException
+                     | InvocationTargetException e) {
                 return null;
             }
         }

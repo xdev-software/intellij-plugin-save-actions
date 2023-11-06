@@ -1,4 +1,4 @@
-package software.xdev.saveactions.processors.java.inspection;
+package software.xdev.saveactions.processors.java.inspection.style;
 
 import com.intellij.psi.JavaResolveResult;
 import com.intellij.psi.PsiClass;
@@ -23,6 +23,8 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Copy pasting because: cannot extend. Do not reformat (useful for diffs)
  *
+ * @implNote Class needs to be inside a special package otherwise name resolution fails as seen in
+ * {@link com.siyeh.ig.GroupDisplayNameUtil}
  * @see com.siyeh.ig.style.UnqualifiedStaticUsageInspection.UnqualifiedStaticCallVisitor
  */
 public class CustomUnqualifiedStaticUsageInspection extends UnqualifiedStaticUsageInspection {

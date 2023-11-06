@@ -81,12 +81,13 @@ jobs:
           echo "abort=0" >> $GITHUB_OUTPUT
           
       - name: pull-request
-        uses: repo-sync/pull-request@v2
         if: steps.main.outputs.abort == 0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          source_branch: ${{ env.UPDATE_BRANCH }}
-          destination_branch: ${{ steps.main.outputs.current_branch }}
-          pr_title: "Update from template"
-          pr_body: "An automated PR to sync changes from the template into this repo"
-          
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh_pr_up() { 
+            gh pr create -H "${{ env.UPDATE_BRANCH }}" "$@" ||  git checkout "${{ env.UPDATE_BRANCH }}" && gh pr edit "$@" 
+          }
+          gh_pr_up -B "${{ steps.main.outputs.current_branch }}" \
+            --title "Update from template" \
+            --body "An automated PR to sync changes from the template into this repo"
