@@ -52,7 +52,7 @@ jobs:
         fi
 
     - name: Upload plugin files
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: plugin-files-java-${{ matrix.java }}
         path: build/libs/intellij-plugin-save-actions-*.jar
