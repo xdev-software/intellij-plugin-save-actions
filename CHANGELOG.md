@@ -1,3 +1,6 @@
+## 1.0.6
+* Allow compilation with Java 21
+
 ## 1.0.5
 * Fixed ``Add class qualifier to static member access outside declaring class`` not working in combination with Qodana plugin #25
 
