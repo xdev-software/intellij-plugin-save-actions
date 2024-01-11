@@ -37,7 +37,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: failure()
       with:
-        name: test-reports
+        name: test-reports-${{ matrix.java }}
         path: build/reports/tests/test/**
       
     - name: Check for uncommited changes
