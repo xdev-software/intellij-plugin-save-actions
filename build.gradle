@@ -57,8 +57,10 @@ listProductsReleases {
     sinceBuild = "223.*"
 }
 
-// JAVA compatibility
-compileJava {
+// Configure compileJava AND compileTestJava
+// https://docs.gradle.org/current/dsl/org.gradle.api.tasks.compile.JavaCompile.html
+tasks.withType(JavaCompile).configureEach {
+    // JAVA compatibility
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }
