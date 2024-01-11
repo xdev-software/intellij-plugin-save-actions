@@ -37,8 +37,8 @@ jobs:
       uses: actions/upload-artifact@v4
       if: failure()
       with:
-        name: intellij-plugin-save-actions-test-reports
-        path: intellij-plugin-save-actions/build/reports/tests/test/**
+        name: test-reports
+        path: build/reports/tests/test/**
       
     - name: Check for uncommited changes
       run: |
