@@ -16,7 +16,7 @@
 	<module name="LineLength">
 		<property name="max" value="120"/>
 		<property name="fileExtensions" value="java"/>
-		<!-- Ignore default + links in comments -->
+		<!-- Ignore default + links -->
 		<property name="ignorePattern" value="(^(package|import))|(^\s*(\/\/|\*) .*https?.*$)"/>
 	</module>
 	<module name="NewlineAtEndOfFile"/>
