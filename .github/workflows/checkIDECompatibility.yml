@@ -33,7 +33,7 @@ jobs:
         sudo rm -rf "$AGENT_TOOLSDIRECTORY"
         sudo df -h
         sudo gdu -o diskinfo.json -n /
-        sudo chown 666 diskinfo.json
+        sudo chmod 666 diskinfo.json
 
     - name: Upload files
       uses: actions/upload-artifact@v4
