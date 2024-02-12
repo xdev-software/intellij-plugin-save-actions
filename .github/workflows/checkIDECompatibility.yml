@@ -21,7 +21,7 @@ jobs:
       run: |
         sudo df -h
         sudo docker system prune -af || true
-        sudo rm -rf /usr/share/dotnet \
+        sudo rm -vrf /usr/share/dotnet \
           /usr/local/.ghcup \
           /usr/local/swift \
           /usr/share/swift \
