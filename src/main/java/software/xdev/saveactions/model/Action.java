@@ -11,10 +11,10 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 
+@SuppressWarnings("java:S115")
 public enum Action
 {
 	// Activation
-	
 	activate("Activate save actions on save (before saving each file, performs the configured actions below)",
 		activation, true),
 	
@@ -28,7 +28,6 @@ public enum Action
 		activation, false),
 	
 	// Global
-	
 	organizeImports("Optimize imports",
 		global, true),
 	
@@ -43,7 +42,6 @@ public enum Action
 		global, false),
 	
 	// Build
-	
 	compile("[experimental] Compile files (using \"Build > Build Project\")",
 		build, false),
 	
@@ -55,7 +53,6 @@ public enum Action
 		build, false),
 	
 	// Java fixes
-	
 	fieldCanBeFinal("Add final modifier to field",
 		java, false),
 	

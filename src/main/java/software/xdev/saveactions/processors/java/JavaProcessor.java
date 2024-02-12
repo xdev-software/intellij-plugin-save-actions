@@ -39,6 +39,7 @@ import software.xdev.saveactions.processors.java.inspection.style.CustomUnqualif
 /**
  * Available processors for java.
  */
+@SuppressWarnings("java:S115")
 public enum JavaProcessor implements Processor
 {
 	fieldCanBeFinal(

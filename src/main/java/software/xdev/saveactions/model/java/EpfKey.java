@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 
+@SuppressWarnings("java:S115")
 public enum EpfKey
 {
 	add_default_serial_version_id,

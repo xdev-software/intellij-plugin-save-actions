@@ -34,6 +34,7 @@ import software.xdev.saveactions.model.Action;
 /**
  * Available processors for build.
  */
+@SuppressWarnings("java:S115")
 public enum BuildProcessor implements Processor
 {
 	compile(

@@ -15,37 +15,32 @@ import software.xdev.saveactions.core.service.impl.SaveActionsJavaService;
  */
 public final class SaveActionsServiceManager
 {
-	private SaveActionsServiceManager()
-	{
-	}
+	static SaveActionsService instance;
 	
 	public static SaveActionsService getService()
 	{
-		return ServiceHandler.INSTANCE.getService();
+		if(instance == null)
+		{
+			initService();
+		}
+		return instance;
 	}
 	
-	private enum ServiceHandler
+	private static synchronized void initService()
 	{
-		INSTANCE;
-		
-		private static SaveActionsService service;
-		
-		public SaveActionsService getService()
+		if(instance != null)
 		{
-			if(service == null)
-			{
-				this.newService();
-			}
-			return service;
+			return;
 		}
 		
-		private void newService()
+		instance = ApplicationManager.getApplication().getService(SaveActionsJavaService.class);
+		if(instance == null)
 		{
-			service = ApplicationManager.getApplication().getService(SaveActionsJavaService.class);
-			if(service == null)
-			{
-				service = ApplicationManager.getApplication().getService(SaveActionsDefaultService.class);
-			}
+			instance = ApplicationManager.getApplication().getService(SaveActionsDefaultService.class);
 		}
+	}
+	
+	private SaveActionsServiceManager()
+	{
 	}
 }

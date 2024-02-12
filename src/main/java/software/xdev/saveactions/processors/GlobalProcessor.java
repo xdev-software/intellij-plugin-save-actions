@@ -23,6 +23,7 @@ import software.xdev.saveactions.model.Action;
 /**
  * Available processors for global.
  */
+@SuppressWarnings("java:S115")
 public enum GlobalProcessor implements Processor
 {
 	organizeImports(Action.organizeImports, GlobalProcessor::optimizeImports),
