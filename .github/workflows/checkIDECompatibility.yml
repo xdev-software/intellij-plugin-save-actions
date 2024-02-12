@@ -19,7 +19,7 @@ jobs:
     steps:
     - name: Free up disk space
       run: |
-        apt-get update -y && apt-get install -y gdu
+        sudo apt-get update -y && sudo apt-get install -y gdu
         df -h
         sudo docker system prune -af
         sudo rm -rf /usr/share/dotnet
