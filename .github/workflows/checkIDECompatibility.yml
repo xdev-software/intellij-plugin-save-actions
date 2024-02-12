@@ -29,5 +29,5 @@ jobs:
         java-version: ${{ matrix.java }}
         cache: 'gradle'
       
-    - name: Build
+    - name: Check compatibility
       run: ./gradlew runPluginVerifier -PplatformVersion=LATEST-EAP-SNAPSHOT --info
