@@ -19,18 +19,22 @@ jobs:
     steps:
     - name: Free up disk space
       run: |
+        apt-get update -y && apt-get install -y gdu
         df -h
         sudo docker system prune -af
         sudo rm -rf /usr/share/dotnet
         sudo rm -rf /usr/local/.ghcup
         sudo rm -rf /usr/local/swift
+        sudo rm -rf /usr/share/swift
+        sudo rm -rf /usr/lib/jvm
+        sudo rm -rf /usr/local/lib/android
         sudo rm -rf /usr/lib/google-cloud-sdk
         sudo rm -rf /usr/local/share/boost
         sudo rm -rf "$AGENT_TOOLSDIRECTORY"
         df -h
-
-    - name: Diagnose memory problems
-      run: sudo du --max-depth=3 /usr/ | sort -r -k1,1n
+        gdu -n /usr/share
+        gdu -n /usr
+        gdu -n /
 
     - uses: actions/checkout@v4
       
