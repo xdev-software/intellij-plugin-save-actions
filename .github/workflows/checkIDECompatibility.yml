@@ -37,6 +37,9 @@ jobs:
         sudo rm -rf /usr/lib/heroku
         sudo rm -rf /usr/lib/firefox
         sudo rm -rf /usr/share/miniconda
+        sudo rm -rf /opt/microsoft
+        sudo rm -rf /opt/chrome
+        sudo rm -rf /opt/pipx
         sudo rm -rf "$AGENT_TOOLSDIRECTORY"
         sudo df -h
         sudo gdu -o diskinfo.json -n /
