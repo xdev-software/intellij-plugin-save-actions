@@ -1,44 +1,46 @@
 package software.xdev.saveactions.core.service;
 
-import software.xdev.saveactions.core.service.impl.SaveActionsDefaultService;
-import software.xdev.saveactions.core.service.impl.SaveActionsJavaService;
 import com.intellij.openapi.application.ApplicationManager;
 
+import software.xdev.saveactions.core.service.impl.SaveActionsDefaultService;
+import software.xdev.saveactions.core.service.impl.SaveActionsJavaService;
+
+
 /**
- * SaveActionsServiceManager is providing the concrete service implementation.
- * All actions are handled by the {@link SaveActionsService} implementation.
+ * SaveActionsServiceManager is providing the concrete service implementation. All actions are handled by the
+ * {@link SaveActionsService} implementation.
  *
  * @see SaveActionsDefaultService
  * @see SaveActionsJavaService
  */
-public class SaveActionsServiceManager {
-
-
-    private SaveActionsServiceManager() {
-    }
-
-    public static SaveActionsService getService() {
-        return ServiceHandler.INSTANCE.getService();
-    }
-
-    private enum ServiceHandler {
-
-        INSTANCE;
-
-        private static SaveActionsService service;
-
-        public SaveActionsService getService() {
-            if (service == null) {
-                newService();
-            }
-            return service;
-        }
-
-        private void newService() {
-            service = ApplicationManager.getApplication().getService(SaveActionsJavaService.class);
-            if (service == null) {
-                service = ApplicationManager.getApplication().getService(SaveActionsDefaultService.class);
-            }
-        }
-    }
+public final class SaveActionsServiceManager
+{
+	static SaveActionsService instance;
+	
+	public static SaveActionsService getService()
+	{
+		if(instance == null)
+		{
+			initService();
+		}
+		return instance;
+	}
+	
+	private static synchronized void initService()
+	{
+		if(instance != null)
+		{
+			return;
+		}
+		
+		instance = ApplicationManager.getApplication().getService(SaveActionsJavaService.class);
+		if(instance == null)
+		{
+			instance = ApplicationManager.getApplication().getService(SaveActionsDefaultService.class);
+		}
+	}
+	
+	private SaveActionsServiceManager()
+	{
+	}
 }

@@ -86,7 +86,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh_pr_up() { 
-            gh pr create -H "${{ env.UPDATE_BRANCH }}" "$@" ||  git checkout "${{ env.UPDATE_BRANCH }}" && gh pr edit "$@" 
+            gh pr create -H "${{ env.UPDATE_BRANCH }}" "$@" || (git checkout "${{ env.UPDATE_BRANCH }}" && gh pr edit "$@")
           }
           gh_pr_up -B "${{ steps.main.outputs.current_branch }}" \
             --title "Update from template" \

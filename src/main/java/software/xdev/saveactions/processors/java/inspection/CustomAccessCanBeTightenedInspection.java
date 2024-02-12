@@ -1,6 +1,14 @@
 package software.xdev.saveactions.processors.java.inspection;
 
 //@formatter:off
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.jetbrains.annotations.Nls;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import com.intellij.codeInsight.daemon.impl.UnusedSymbolUtil;
 import com.intellij.codeInspection.AbstractBaseJavaLocalInspectionTool;
 import com.intellij.codeInspection.InspectionsBundle;
@@ -59,15 +67,9 @@ import com.intellij.util.containers.ContainerUtil;
 import com.siyeh.ig.fixes.ChangeModifierFix;
 import com.siyeh.ig.psiutils.MethodUtils;
 import com.siyeh.ig.visibility.ClassEscapesItsScopeInspection;
+
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import org.jetbrains.annotations.Nls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * A public version of {@link com.intellij.codeInspection.visibility.AccessCanBeTightenedInspection}.

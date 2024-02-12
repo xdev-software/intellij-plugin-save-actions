@@ -1,8 +1,13 @@
 plugins {
     id 'java'
     id 'idea'
-    id 'org.jetbrains.intellij' version '1.16.0'
+    id 'checkstyle'
+    id 'org.jetbrains.intellij' version '1.17.1'
     id 'org.sonarqube' version '4.4.1.3373'
+}
+
+ext {
+    checkstyleVersion = '10.13.0'
 }
 
 def properties(String key) {
@@ -15,6 +20,7 @@ def environment(String key) {
 
 apply plugin: 'org.jetbrains.intellij'
 apply plugin: 'java'
+apply plugin: 'checkstyle'
 
 // Add plugin group and version
 group = properties("pluginGroup").get()
@@ -25,12 +31,20 @@ repositories {
     mavenCentral()
 }
 
+// https://github.com/gradle/gradle/issues/27035
+configurations.checkstyle {
+    resolutionStrategy.capabilitiesResolution.withCapability("com.google.collections:google-collections") {
+        select("com.google.guava:guava:0")
+    }
+}
+
 // Add dependencies to test, junit5 api (annotations) and engine (runtime)
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.1'),
+    checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
+    testImplementation platform('org.junit:junit-bom:5.10.2'),
             'org.junit.jupiter:junit-jupiter',
             'org.junit.jupiter:junit-jupiter-engine',
-            'org.assertj:assertj-core:3.24.2'
+            'org.assertj:assertj-core:3.25.3'
     testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
         because("Only needed to run tests in a version of IntelliJ IDEA that bundles older versions")
     }
@@ -57,8 +71,21 @@ listProductsReleases {
     sinceBuild = "223.*"
 }
 
-// JAVA compatibility
-compileJava {
+checkstyle {
+    configDirectory = file("$rootProject.projectDir/.config/checkstyle")
+    ignoreFailures false
+    showViolations true
+    toolVersion = checkstyleVersion
+}
+
+tasks.withType(Checkstyle).configureEach {
+    enabled = project.hasProperty("checkstyleEnabled");
+}
+
+// Configure compileJava AND compileTestJava
+// https://docs.gradle.org/current/dsl/org.gradle.api.tasks.compile.JavaCompile.html
+tasks.withType(JavaCompile).configureEach {
+    // JAVA compatibility
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
 }

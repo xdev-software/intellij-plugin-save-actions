@@ -1,3 +1,10 @@
+## 1.1.0
+* Removed "Remove unused suppress warning annotation"
+  * This option never worked #64
+  * Allows usage of the plugin with IntelliJ Idea 2024+ #63
+  * If you used this option you should remove the line ``<option value="suppressAnnotation" />`` inside ``saveactions_settings.xml``
+* Allow compilation with Java 21
+
 ## 1.0.5
 * Fixed ``Add class qualifier to static member access outside declaring class`` not working in combination with Qodana plugin #25
 

@@ -4,18 +4,14 @@
     <option name="actions">
       <set>
         <option value="activate" />
-        <option value="activateOnShortcut" />
-        <option value="activateOnBatch" />
-        <option value="noActionIfCompileErrors" />
         <option value="organizeImports" />
-        <option value="reformat" />
         <option value="reformatChangedCode" />
         <option value="fieldCanBeFinal" />
+        <option value="localCanBeFinal" />
+        <option value="localCanBeFinalExceptImplicit" />
+        <option value="unqualifiedFieldAccess" />
+        <option value="unqualifiedMethodAccess" />
         <option value="missingOverrideAnnotation" />
-        <option value="useBlocks" />
-        <option value="unnecessaryThis" />
-        <option value="finalPrivateMethod" />
-        <option value="unnecessaryFinalOnLocalVariableOrParameter" />
         <option value="explicitTypeCanBeDiamond" />
         <option value="unnecessarySemicolon" />
       </set>
@@ -23,7 +19,7 @@
     <option name="configurationPath" value="" />
     <option name="exclusions">
       <set>
-        <option value="src/test/resources/software/xdev/saveactions/integration/.*" />
+        <option value="src/test/resources" />
       </set>
     </option>
   </component>

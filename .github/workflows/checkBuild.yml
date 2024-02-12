@@ -6,10 +6,16 @@ on:
     branches: [ develop ]
     paths-ignore: 
       - '**.md'
+      - '.config/**'
+      - '.idea/**'
+      - 'assets/**'
   pull_request:
     branches: [ develop ]
     paths-ignore: 
       - '**.md'
+      - '.config/**'
+      - '.idea/**'
+      - 'assets/**'
 
 jobs:
   build:
@@ -17,14 +23,14 @@ jobs:
 
     strategy:
       matrix:
-        java: [17]
+        java: [17, 21]
         distribution: [temurin]
 
     steps:
     - uses: actions/checkout@v4
       
     - name: Set up JDK
-      uses: actions/setup-java@v3
+      uses: actions/setup-java@v4
       with:
         distribution: ${{ matrix.distribution }}
         java-version: ${{ matrix.java }}
@@ -32,6 +38,13 @@ jobs:
       
     - name: Build
       run: ./gradlew build buildPlugin --info
+
+    - name: Try upload test reports when failure occurs
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: test-reports-${{ matrix.java }}
+        path: build/reports/tests/test/**
       
     - name: Check for uncommited changes
       run: |
@@ -52,8 +65,29 @@ jobs:
         fi
 
     - name: Upload plugin files
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: plugin-files-java-${{ matrix.java }}
         path: build/libs/intellij-plugin-save-actions-*.jar
         if-no-files-found: error
+
+  code-style:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java: [17]
+        distribution: [temurin]
+
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: ${{ matrix.distribution }}
+        java-version: ${{ matrix.java }}
+        cache: 'gradle'
+
+    - name: Run Checkstyle
+      run: ./gradlew checkstyleMain checkstyleTest -PcheckstyleEnabled=true
