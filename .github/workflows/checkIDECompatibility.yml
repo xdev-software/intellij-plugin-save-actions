@@ -17,11 +17,17 @@ jobs:
         platformVersion: [LATEST-EAP-SNAPSHOT]
 
     steps:
-    - name: Check disk space
-      run: df -h
+    - name: Free up disk space
+      run: |
+        df -h
+        docker system prune -af
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf "/usr/local/share/boost"
+        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+        df -h
 
     - name: Diagnose memory problems
-      run: sudo du --max-depth=2 / | sort -r -k1,1n
+      run: sudo du --max-depth=2 /usr/ | sort -r -k1,1n
 
     - uses: actions/checkout@v4
       
