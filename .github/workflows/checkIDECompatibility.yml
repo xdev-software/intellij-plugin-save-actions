@@ -20,14 +20,17 @@ jobs:
     - name: Free up disk space
       run: |
         df -h
-        docker system prune -af
+        sudo docker system prune -af
         sudo rm -rf /usr/share/dotnet
-        sudo rm -rf "/usr/local/share/boost"
+        sudo rm -rf /usr/local/.ghcup
+        sudo rm -rf /usr/local/swift
+        sudo rm -rf /usr/lib/google-cloud-sdk
+        sudo rm -rf /usr/local/share/boost
         sudo rm -rf "$AGENT_TOOLSDIRECTORY"
         df -h
 
     - name: Diagnose memory problems
-      run: sudo du --max-depth=2 /usr/ | sort -r -k1,1n
+      run: sudo du --max-depth=3 /usr/ | sort -r -k1,1n
 
     - uses: actions/checkout@v4
       
