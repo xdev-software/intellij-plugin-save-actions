@@ -5,8 +5,7 @@
 
 # <img alt="Save Actions Plugin icon light" src="./src/main/resources/META-INF/pluginIcon.svg" height="30"> Save Actions Plugin - XDEV Edition
 
-> **ℹ️About**
->
+> [!NOTE]  
 > This plugin is a fork of [dubreuia/intellij-plugin-save-actions](https://github.com/dubreuia/intellij-plugin-save-actions) and [fishermans/intellij-plugin-save-actions](https://github.com/fishermans/intellij-plugin-save-actions) and is kept in maintenance mode:
 > * Keep the plugin up-to-date with the latest IDEA versions
 > * Distribute the plugin on the IDEA marketplace
@@ -63,8 +62,9 @@ Works in JetBrains IDE with Java support, like Intellij IDEA and AndroidStudio.
 ## Installation
 [Installation guide for the latest release](https://github.com/xdev-software/intellij-plugin-save-actions/releases/latest#Installation)
 
-[Development versions](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html#specifying-a-release-channel) can be installed by [adding the ``snapshot`` release channel as a plugin repository](https://www.jetbrains.com/help/idea/managing-plugins.html#repos):<br/>
-``https://plugins.jetbrains.com/plugins/snapshot/list``
+> [!TIP]  
+> [Development versions](https://plugins.jetbrains.com/plugin/22113-save-actions--xdev-edition/versions/snapshot) can be installed by [adding the ``snapshot`` release channel as a plugin repository](https://www.jetbrains.com/help/idea/managing-plugins.html#repos):<br/>
+> ``https://plugins.jetbrains.com/plugins/snapshot/list``
 
 ## Usage
 
