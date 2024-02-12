@@ -20,7 +20,7 @@ jobs:
     - name: Free up disk space
       run: |
         sudo apt-get update -y && sudo apt-get install -y gdu
-        df -h
+        sudo df -h
         sudo docker system prune -af
         sudo rm -rf /usr/share/dotnet
         sudo rm -rf /usr/local/.ghcup
@@ -31,10 +31,10 @@ jobs:
         sudo rm -rf /usr/lib/google-cloud-sdk
         sudo rm -rf /usr/local/share/boost
         sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-        df -h
-        gdu -n /usr/share
-        gdu -n /usr
-        gdu -n /
+        sudo df -h
+        sudo gdu -n /usr/share
+        sudo gdu -n /usr
+        sudo gdu -n /
 
     - uses: actions/checkout@v4
       
