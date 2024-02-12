@@ -1,0 +1,30 @@
+name: Check IDE Compatibility
+
+on:
+  schedule:
+    - cron: '55 2 * * 1'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java: [17, 21]
+        distribution: [temurin]
+        platformType: [IU, IC]
+        platformVersion: [LATEST-EAP-SNAPSHOT]
+
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: ${{ matrix.distribution }}
+        java-version: ${{ matrix.java }}
+        cache: 'gradle'
+      
+    - name: Build
+      run: ./gradlew runPluginVerifier -PplatformVersion=LATEST-EAP-SNAPSHOT
