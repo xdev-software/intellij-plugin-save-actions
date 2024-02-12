@@ -64,3 +64,24 @@ jobs:
         name: plugin-files-java-${{ matrix.java }}
         path: build/libs/intellij-plugin-save-actions-*.jar
         if-no-files-found: error
+
+  code-style:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java: [17]
+        distribution: [temurin]
+
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: ${{ matrix.distribution }}
+        java-version: ${{ matrix.java }}
+        cache: 'gradle'
+
+    - name: Run Checkstyle
+      run: ./gradlew checkstyleMain checkstyleTest -PcheckstyleEnabled=true
