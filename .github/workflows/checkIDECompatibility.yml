@@ -17,6 +17,9 @@ jobs:
         platformVersion: [LATEST-EAP-SNAPSHOT]
 
     steps:
+    - name: Diagnose memory problems
+      run: du --max-depth=4 / | sort -r -k1,1n
+
     - uses: actions/checkout@v4
       
     - name: Set up JDK
@@ -27,4 +30,4 @@ jobs:
         cache: 'gradle'
       
     - name: Build
-      run: ./gradlew runPluginVerifier -PplatformVersion=LATEST-EAP-SNAPSHOT --debug
+      run: ./gradlew runPluginVerifier -PplatformVersion=LATEST-EAP-SNAPSHOT --info
