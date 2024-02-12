@@ -1,27 +1,30 @@
 package software.xdev.saveactions.model;
 
-import software.xdev.saveactions.model.java.EpfStorage;
-import com.intellij.openapi.project.Project;
-
 import java.util.function.Function;
 
-public enum StorageFactory {
+import com.intellij.openapi.project.Project;
 
-    DEFAULT(project -> project.getService(Storage.class)),
+import software.xdev.saveactions.model.java.EpfStorage;
 
-    JAVA(project -> {
-        Storage defaultStorage = DEFAULT.getStorage(project);
-        return EpfStorage.INSTANCE.getStorageOrDefault(defaultStorage.getConfigurationPath(), defaultStorage);
-    });
 
-    private final Function<Project, Storage> provider;
-
-    StorageFactory(Function<Project, Storage> provider) {
-        this.provider = provider;
-    }
-
-    public Storage getStorage(Project project) {
-        return provider.apply(project);
-    }
-
+public enum StorageFactory
+{
+	DEFAULT(project -> project.getService(Storage.class)),
+	
+	JAVA(project -> {
+		Storage defaultStorage = DEFAULT.getStorage(project);
+		return EpfStorage.INSTANCE.getStorageOrDefault(defaultStorage.getConfigurationPath(), defaultStorage);
+	});
+	
+	private final Function<Project, Storage> provider;
+	
+	StorageFactory(final Function<Project, Storage> provider)
+	{
+		this.provider = provider;
+	}
+	
+	public Storage getStorage(final Project project)
+	{
+		return this.provider.apply(project);
+	}
 }

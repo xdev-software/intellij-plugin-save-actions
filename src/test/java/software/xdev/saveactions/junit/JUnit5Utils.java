@@ -1,33 +1,41 @@
 package software.xdev.saveactions.junit;
 
-import com.intellij.rt.execution.junit.FileComparisonFailure;
-import org.opentest4j.AssertionFailedError;
-
 import java.lang.reflect.InvocationTargetException;
 
-public class JUnit5Utils {
+import org.opentest4j.AssertionFailedError;
 
-    private JUnit5Utils() {
-        // static
-    }
+import com.intellij.rt.execution.junit.FileComparisonFailure;
 
-    public static void rethrowAsJunit5Error(AssertionError error) {
-        if (error.getCause() instanceof InvocationTargetException intellijInternal) {
-            if (intellijInternal.getCause() instanceof FileComparisonFailure fileComparisonFailure) {
-                String expected = fileComparisonFailure.getExpected();
-                String actual = fileComparisonFailure.getActual();
-                throw new AssertionFailedError("Expected file do not match actual file", expected, actual);
-            }
-        }
-        throw error;
-    }
 
-    public static void rethrowAsJunit5Error(Runnable runnable) {
-        try {
-            runnable.run();
-        } catch (AssertionError error) {
-            rethrowAsJunit5Error(error);
-        }
-    }
-
+public final class JUnit5Utils
+{
+	private JUnit5Utils()
+	{
+	}
+	
+	public static void rethrowAsJunit5Error(final AssertionError error)
+	{
+		if(error.getCause() instanceof final InvocationTargetException intellijInternal)
+		{
+			if(intellijInternal.getCause() instanceof final FileComparisonFailure fileComparisonFailure)
+			{
+				final String expected = fileComparisonFailure.getExpected();
+				final String actual = fileComparisonFailure.getActual();
+				throw new AssertionFailedError("Expected file do not match actual file", expected, actual);
+			}
+		}
+		throw error;
+	}
+	
+	public static void rethrowAsJunit5Error(final Runnable runnable)
+	{
+		try
+		{
+			runnable.run();
+		}
+		catch(final AssertionError error)
+		{
+			rethrowAsJunit5Error(error);
+		}
+	}
 }
