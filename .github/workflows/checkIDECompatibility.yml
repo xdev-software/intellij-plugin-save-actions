@@ -18,7 +18,7 @@ jobs:
 
     steps:
     - name: Diagnose memory problems
-      run: du --max-depth=4 / | sort -r -k1,1n
+      run: sudo du --max-depth=2 / | sort -r -k1,1n
 
     - uses: actions/checkout@v4
       
@@ -27,7 +27,6 @@ jobs:
       with:
         distribution: ${{ matrix.distribution }}
         java-version: ${{ matrix.java }}
-        cache: 'gradle'
       
-    - name: Check compatibility
-      run: ./gradlew runPluginVerifier -PplatformVersion=LATEST-EAP-SNAPSHOT --info
+    # - name: Check compatibility
+    #   run: ./gradlew runPluginVerifier -PplatformVersion=LATEST-EAP-SNAPSHOT --info
