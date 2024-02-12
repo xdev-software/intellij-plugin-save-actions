@@ -6,14 +6,16 @@ on:
     branches: [ develop ]
     paths-ignore: 
       - '**.md'
+      - '.config/**'
+      - '.idea/**'
       - 'assets/**'
-      - 'config/**'
   pull_request:
     types: [opened, synchronize, reopened]
     paths-ignore: 
       - '**.md'
+      - '.config/**'
+      - '.idea/**'
       - 'assets/**'
-      - 'config/**'
 
 env:
   SONARCLOUD_ORG: ${{ github.event.organization.login }}
