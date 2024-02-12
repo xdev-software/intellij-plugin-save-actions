@@ -32,9 +32,13 @@ jobs:
         sudo rm -rf /usr/local/share/boost
         sudo rm -rf "$AGENT_TOOLSDIRECTORY"
         sudo df -h
-        sudo gdu -n /usr/share
-        sudo gdu -n /usr
-        sudo gdu -n /
+        sudo gdu -o diskinfo.json -n /
+
+    - name: Upload files
+      uses: actions/upload-artifact@v4
+      with:
+        name: diskinfo
+        path: diskinfo.json
 
     - uses: actions/checkout@v4
       
