@@ -17,7 +17,6 @@ import static software.xdev.saveactions.model.Action.localCanBeFinalExceptImplic
 import static software.xdev.saveactions.model.Action.methodMayBeStatic;
 import static software.xdev.saveactions.model.Action.missingOverrideAnnotation;
 import static software.xdev.saveactions.model.Action.singleStatementInBlock;
-import static software.xdev.saveactions.model.Action.suppressAnnotation;
 import static software.xdev.saveactions.model.Action.unnecessaryFinalOnLocalVariableOrParameter;
 import static software.xdev.saveactions.model.Action.unnecessarySemicolon;
 import static software.xdev.saveactions.model.Action.unnecessaryThis;
@@ -148,13 +147,6 @@ class JavaIntegrationTest extends IntegrationTest {
         storage.setEnabled(activate, true);
         storage.setEnabled(explicitTypeCanBeDiamond, true);
         assertSaveAction(ActionTestFile.ExplicitTypeCanBeDiamond_KO, ActionTestFile.ExplicitTypeCanBeDiamond_OK);
-    }
-
-    @Test
-    void should_suppressAnnotation_remove_unnecessary_suppress_warning_annotation() {
-        storage.setEnabled(activate, true);
-        storage.setEnabled(suppressAnnotation, true);
-        assertSaveAction(ActionTestFile.SuppressAnnotation_KO, ActionTestFile.SuppressAnnotation_OK);
     }
 
     @Test

@@ -4,11 +4,11 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toSet;
 import static software.xdev.saveactions.model.ActionType.activation;
 import static software.xdev.saveactions.model.ActionType.build;
 import static software.xdev.saveactions.model.ActionType.global;
 import static software.xdev.saveactions.model.ActionType.java;
-import static java.util.stream.Collectors.toSet;
 
 public enum Action {
 
@@ -98,9 +98,6 @@ public enum Action {
             java, false),
 
     explicitTypeCanBeDiamond("Remove explicit generic type for diamond",
-            java, false),
-
-    suppressAnnotation("Remove unused suppress warning annotation",
             java, false),
 
     unnecessarySemicolon("Remove unnecessary semicolon",

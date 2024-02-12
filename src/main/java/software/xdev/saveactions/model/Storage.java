@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @State(name = "SaveActionSettings", storages = {@com.intellij.openapi.components.Storage("saveactions_settings.xml")})
@@ -52,6 +53,12 @@ public final class Storage implements PersistentStateComponent<Storage> {
     public void loadState(@NotNull Storage state) {
         firstLaunch = false;
         XmlSerializerUtil.copyBean(state, this);
+
+        // Remove null values that might have been caused by non-parsable values
+        actions.removeIf(Objects::isNull);
+        exclusions.removeIf(Objects::isNull);
+        inclusions.removeIf(Objects::isNull);
+        quickLists.removeIf(Objects::isNull);
     }
 
     public Set<Action> getActions() {
