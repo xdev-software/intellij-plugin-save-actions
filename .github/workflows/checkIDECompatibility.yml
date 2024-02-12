@@ -13,7 +13,7 @@ jobs:
       matrix:
         java: [17]
         distribution: [temurin]
-        platformType: [IU, IC]
+        platformType: [IC]
         platformVersion: [LATEST-EAP-SNAPSHOT]
 
     steps:
@@ -27,4 +27,4 @@ jobs:
         cache: 'gradle'
       
     - name: Build
-      run: ./gradlew runPluginVerifier -PplatformVersion=LATEST-EAP-SNAPSHOT
+      run: ./gradlew runPluginVerifier -PplatformVersion=LATEST-EAP-SNAPSHOT --debug
