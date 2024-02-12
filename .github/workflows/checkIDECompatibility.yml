@@ -17,6 +17,9 @@ jobs:
         platformVersion: [LATEST-EAP-SNAPSHOT]
 
     steps:
+    - name: Check disk space
+      run: df -h
+
     - name: Diagnose memory problems
       run: sudo du --max-depth=2 / | sort -r -k1,1n
 
