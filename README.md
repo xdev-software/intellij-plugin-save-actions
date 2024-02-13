@@ -36,7 +36,7 @@ The code style applied by the save actions plugin is the one configured your set
 - Uses a settings file per project you can commit (see [Files location](#files-location))
 - Available keymaps and actions for activation (see [Keymap and actions](#keymap-and-actions))
 
-![Save actions plugin settings page](./assets/intellij-save-actions-plugin-settings-page.png)
+<img src="./assets/intellij-save-actions-plugin-settings-page.png" alt="Save actions plugin settings page" height=500 />
 
 ### Java IDE products
 
@@ -47,7 +47,7 @@ Works in JetBrains IDE with Java support, like Intellij IDEA and AndroidStudio.
 - Eclipse configuration file `.epf` support (see [Eclipse support](#eclipse-support))
 - Automatically fix Java inspections (see [Java quick fixes](#java-fixes))
 
-![Save actions plugin settings page for Java](./assets/intellij-save-actions-plugin-settings-page-java.png)
+<img src="./assets/intellij-save-actions-plugin-settings-page-java.png" alt="Save actions plugin settings page for Java" height=600 />
 
 ## Installation
 [Installation guide for the latest release](https://github.com/xdev-software/intellij-plugin-save-actions/releases/latest#Installation)

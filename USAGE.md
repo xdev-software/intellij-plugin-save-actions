@@ -18,10 +18,6 @@ The plugin actions are grouped under the menu "Code > Save Actions". You can ass
 - **Execute Save Actions on shortcut (default: "CTRL + SHIFT + S")** will trigger the plugin manually (needs to be activated with "Activate save actions on shortcut" in [activation](#activation)).
 - **Execute Save Actions on multiple files (default: not binded)** will show a popup to select the files (or a scope) on which to trigger the plugin (needs to be activated with "Activate save actions on batch" in [activation](#activation)).
 
-<p align="center">
-  <img alt="Save Actions Plugin Action menu" title="Save Actions Plugin Action menu" src="./assets/intellij-save-actions-plugin-action-menu.png" width="371" height="77">
-</p>
-
 ## Configuration
 
 The configurations are located in "File > Settings > Other Settings > Save Actions".
