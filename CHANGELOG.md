@@ -1,5 +1,5 @@
 ## 1.1.1
-* Shortened plugin name - nem name: "Save Actions X"
+* Shortened plugin name - new name: "Save Actions X"
 
 ## 1.1.0
 * Removed "Remove unused suppress warning annotation"
