@@ -3,7 +3,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=xdev-software_intellij-plugin-save-actions&metric=alert_status)](https://sonarcloud.io/dashboard?id=xdev-software_intellij-plugin-save-actions)
 [![Feel free to leave a rating](https://img.shields.io/jetbrains/plugin/r/rating/22113?style=social&logo=jetbrains&label=Feel%20free%20to%20leave%20a%20rating)](https://plugins.jetbrains.com/plugin/22113/reviews)
 
-# <img alt="Save Actions Plugin icon light" src="./src/main/resources/META-INF/pluginIcon.svg" height="30"> Save Actions Plugin - XDEV Edition
+# <img alt="Save Actions Plugin icon light" src="./src/main/resources/META-INF/pluginIcon.svg" height="30"> Save Actions Plugin X
 
 > [!NOTE]  
 > This plugin is a fork of [dubreuia/intellij-plugin-save-actions](https://github.com/dubreuia/intellij-plugin-save-actions) and [fishermans/intellij-plugin-save-actions](https://github.com/fishermans/intellij-plugin-save-actions) and is kept in maintenance mode:
@@ -53,7 +53,7 @@ Works in JetBrains IDE with Java support, like Intellij IDEA and AndroidStudio.
 [Installation guide for the latest release](https://github.com/xdev-software/intellij-plugin-save-actions/releases/latest#Installation)
 
 > [!TIP]  
-> [Development versions](https://plugins.jetbrains.com/plugin/22113-save-actions--xdev-edition/versions/snapshot) can be installed by [adding the ``snapshot`` release channel as a plugin repository](https://www.jetbrains.com/help/idea/managing-plugins.html#repos):<br/>
+> [Development versions](https://plugins.jetbrains.com/plugin/22113/versions/snapshot) can be installed by [adding the ``snapshot`` release channel as a plugin repository](https://www.jetbrains.com/help/idea/managing-plugins.html#repos):<br/>
 > ``https://plugins.jetbrains.com/plugins/snapshot/list``
 
 ## Usage
