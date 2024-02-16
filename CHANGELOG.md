@@ -1,5 +1,6 @@
 ## 1.1.1
 * Shortened plugin name - new name: "Save Actions X"
+* Updated assets
 
 ## 1.1.0
 * Removed "Remove unused suppress warning annotation"
