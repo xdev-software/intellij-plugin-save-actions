@@ -6,7 +6,7 @@
     <vendor url="https://www.github.com/xdev-software">xdev-software</vendor>
 
     <description><![CDATA[
-<p>Fork of the popular but now deprecated <a href="https://plugins.jetbrains.com/plugin/7642-save-actions">Save Actions</a> plugin.</p>
+<p>Fork of the popular but now deprecated <a href="https://plugins.jetbrains.com/plugin/7642-save-actions">Save Actions</a> plugin by <a href="https://xdev.software/">XDEV Software</a>.</p>
 <br/>
 <p>Supports configurable, Eclipse like, save actions, including "optimize imports", "reformat code", "rearrange code", "compile file" and some quick fixes for Java like "add / remove 'this' qualifier", etc. The plugin executes the configured actions when the file is synchronised (or saved) on disk.</p>
 <br/>
