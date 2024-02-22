@@ -14,6 +14,7 @@ You should have the following things installed:
     * [Save Actions](https://plugins.jetbrains.com/plugin/22113) - Provides save actions, like running the formatter or adding ``final`` to fields
     * [SonarLint](https://plugins.jetbrains.com/plugin/7973-sonarlint) - CodeStyle/CodeAnalysis
     * [Checkstyle-IDEA](https://plugins.jetbrains.com/plugin/1065-checkstyle-idea) - CodeStyle/CodeAnalysis
+    * [Plugin DevKit](https://plugins.jetbrains.com/plugin/22851) - Intellij Plugin development
   * Import the project
   * Ensure that everything is encoded in ``UTF-8``
   * Ensure that the JDK/Java-Version is correct
