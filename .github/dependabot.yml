@@ -13,7 +13,7 @@ updates:
     update-types: 
     - "version-update:semver-minor"
     - "version-update:semver-patch"
-- package-ecosystem: maven
+- package-ecosystem: gradle
   directory: "/"
   schedule:
     interval: daily
