@@ -1,3 +1,6 @@
+## 1.1.2
+* Dropped support for IntelliJ versions < 2023
+
 ## 1.1.1
 * Shortened plugin name - new name: "Save Actions X"
 * Updated assets
