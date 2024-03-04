@@ -3,9 +3,6 @@ name: Test Deployment
 on:
   workflow_dispatch:
 
-env:
-  PRIMARY_MAVEN_MODULE: ${{ github.event.repository.name }}
-
 jobs:
   publish:
     runs-on: ubuntu-latest
