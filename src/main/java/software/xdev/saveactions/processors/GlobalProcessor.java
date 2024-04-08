@@ -87,7 +87,7 @@ public enum GlobalProcessor implements Processor
 	@Override
 	public int getOrder()
 	{
-		return 0;
+		return 3;
 	}
 	
 	@Override
