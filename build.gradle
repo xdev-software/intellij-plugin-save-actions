@@ -2,12 +2,12 @@ plugins {
     id 'java'
     id 'idea'
     id 'checkstyle'
-    id 'org.jetbrains.intellij' version '1.17.2'
+    id 'org.jetbrains.intellij' version '1.17.3'
     id 'org.sonarqube' version '5.0.0.4638'
 }
 
 ext {
-    checkstyleVersion = '10.14.2'
+    checkstyleVersion = '10.15.0'
 }
 
 def properties(String key) {
