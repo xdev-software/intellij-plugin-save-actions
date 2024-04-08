@@ -1,3 +1,7 @@
+## 1.2.0
+* Run GlobalProcessors (e.g. Reformat) last so that code is formatted correctly #90
+* Dropped support for IntelliJ versions < 2023
+
 ## 1.1.1
 * Shortened plugin name - new name: "Save Actions X"
 * Updated assets
