@@ -1,5 +1,6 @@
 ## 1.2.1
 * Fixed ``ToggleAnAction must override getActionUpdateThread`` warning inside IntelliJ 2024+
+* Dropped support for IntelliJ versions < 2023.2
 
 ## 1.2.0
 * Run GlobalProcessors (e.g. Reformat) last so that code is formatted correctly #90
