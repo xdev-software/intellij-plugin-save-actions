@@ -158,8 +158,12 @@ jobs:
         git push origin
     
     - name: pull-request
-      uses: repo-sync/pull-request@v2
-      with:
-        destination_branch: "develop"
-        pr_title: "Sync back"
-        pr_body: "An automated PR to sync changes back"
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        gh_pr_up() { 
+          gh pr create "$@" || gh pr edit "$@" 
+        }
+        gh_pr_up -B "develop" \
+          --title "Sync back" \
+          --body "An automated PR to sync changes back"
