@@ -2,6 +2,9 @@ package software.xdev.saveactions.core.action;
 
 import static software.xdev.saveactions.model.Action.activate;
 
+import org.jetbrains.annotations.NotNull;
+
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.ToggleAction;
 import com.intellij.openapi.project.DumbAware;
@@ -36,5 +39,11 @@ public class ToggleAnAction extends ToggleAction implements DumbAware
 			final Storage storage = project.getService(Storage.class);
 			storage.setEnabled(activate, state);
 		}
+	}
+	
+	@Override
+	public @NotNull ActionUpdateThread getActionUpdateThread()
+	{
+		return ActionUpdateThread.BGT;
 	}
 }
