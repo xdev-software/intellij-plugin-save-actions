@@ -46,17 +46,17 @@ Start idea and import the `build.gradle` file with "File > Open". Then in the "I
 ./gradlew cleanIdea idea
 ```
 
-IntelliJ should refresh and the project is now configured as a gradle project. You can find IntelliJ gradle tasks in "Gradle > Gradle projects > intellij-plugin-template > Tasks > intellij". To run the plugin, use the `runIde` task:
+IntelliJ should refresh and the project is now configured as a gradle project. You can find IntelliJ gradle tasks in "Gradle > Gradle projects > template-placeholder > Tasks > intellij". To run the plugin, use the `runIde` task:
 
 ```bash
 # Run the plugin (starts new idea)
 ./gradlew runIde
 ```
 
-## Releasing [![Build](https://img.shields.io/github/actions/workflow/status/xdev-software/intellij-plugin-template/release.yml?branch=master)](https://github.com/xdev-software/intellij-plugin-template/actions/workflows/release.yml)
+## Releasing [![Build](https://img.shields.io/github/actions/workflow/status/xdev-software/template-placeholder/release.yml?branch=master)](https://github.com/xdev-software/template-placeholder/actions/workflows/release.yml)
 
 Before releasing:
-* Consider doing a [test-deployment](https://github.com/xdev-software/intellij-plugin-template/actions/workflows/test-deploy.yml?query=branch%3Adevelop) before actually releasing.
+* Consider doing a [test-deployment](https://github.com/xdev-software/template-placeholder/actions/workflows/test-deploy.yml?query=branch%3Adevelop) before actually releasing.
 * Check the [changelog](CHANGELOG.md)
 
 If the ``develop`` is ready for release, create a pull request to the ``master``-Branch and merge the changes
