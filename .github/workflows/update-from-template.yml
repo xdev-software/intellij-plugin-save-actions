@@ -14,7 +14,7 @@ on:
 
 env:
   UPDATE_BRANCH: update-from-template
-  REMOTE_URL: https://github.com/xdev-software/base-template.git
+  REMOTE_URL: https://github.com/xdev-software/java-template.git
   REMOTE_BRANCH: master
 
 permissions:
