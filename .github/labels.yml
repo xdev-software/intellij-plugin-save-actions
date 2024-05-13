@@ -24,7 +24,7 @@
   color: '#e4e669'
 # Custom
 - name: automated
-  description: Created by a 🤖
+  description: Created by an automation
   color: '#000000'
 - name: "can't reproduce"
   color: '#e95f2c'
