@@ -23,10 +23,13 @@
   description: "This doesn't seem right"
   color: '#e4e669'
 # Custom
+- name: automated
+  description: Created by a 🤖
+  color: '#000000'
 - name: "can't reproduce"
   color: '#e95f2c'
 - name: customer-requested
-  description: was requested by a customer of us
+  description: Was requested by a customer of us
   color: '#068374'
 - name: stale
   color: '#ededed'
