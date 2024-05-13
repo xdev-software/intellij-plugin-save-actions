@@ -106,7 +106,7 @@ The save-actions plugin supports Eclipse configuration `.epf` files by the [Work
 
 The plugin will stay in sync with your Eclipse configuration file. Not every features are present on either side, but the ones that are in common are supported.
 
-You can find an example of [an Eclipse configuration `.epf` file](src/test/resources/com/dubreuia/model) in the test resources.
+You can find an example of [an Eclipse configuration `.epf` file](src/test/resources/software/xdev/saveactions/model) in the test resources.
 
 ```properties
 # @title Save Actions
