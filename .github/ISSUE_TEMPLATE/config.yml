@@ -1,0 +1,7 @@
+contact_links:
+  - name: 💬 Contact support
+    url: https://xdev.software/en/services/support
+    about: "If you need support as soon as possible or/and you can't wait for any pull request"
+  - name: 🐱‍💻 Security vulnerability
+    url: https://github.com/xdev-software/template-placeholder/security/advisories/new
+    about: "If you found a security vulnerability report it here"
