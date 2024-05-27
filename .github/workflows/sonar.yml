@@ -24,10 +24,22 @@ env:
   SONARCLOUD_HOST: https://sonarcloud.io
 
 jobs:
+  token-check:
+    runs-on: ubuntu-latest
+    outputs:
+      hasToken: ${{ steps.check-token.outputs.has }}
+    steps:
+      - id: check-token
+        run: |
+          [ -z $SONAR_TOKEN ] && echo "has=false" || echo "has=true" >> "$GITHUB_OUTPUT"
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
   sonar:
     name: SonarCloud Scan
     runs-on: ubuntu-latest
-    if: ${{ !(github.event_name == 'pull_request' && startsWith(github.head_ref, 'renovate/')) && secrets.SONAR_TOKEN != '' }}
+    needs: token-check
+    if: ${{ !(github.event_name == 'pull_request' && startsWith(github.head_ref, 'renovate/')) && needs.token-check.outputs.hasToken }}
     steps:
       - uses: actions/checkout@v4
         with:
