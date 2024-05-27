@@ -27,8 +27,7 @@ jobs:
   sonar:
     name: SonarCloud Scan
     runs-on: ubuntu-latest
-    # Dependabot PRs have no access to secrets (SONAR_TOKEN) -> Ignore them
-    if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'dependabot/') }}
+    if: ${{ !(github.event_name == 'pull_request' && startsWith(github.head_ref, 'renovate/')) && secrets.SONAR_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -55,7 +54,11 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
 
       - name: Build
-        run: ./gradlew build sonarqube --info -Dsonar.projectKey=${{ env.SONARCLOUD_ORG }}_${{ github.event.repository.name }} -Dsonar.organization=${{ env.SONARCLOUD_ORG }} -Dsonar.host.url=${{ env.SONARCLOUD_HOST }}
+        run: |
+          ./gradlew build sonarqube --info \
+            -Dsonar.projectKey=${{ env.SONARCLOUD_ORG }}_${{ github.event.repository.name }} \
+            -Dsonar.organization=${{ env.SONARCLOUD_ORG }} \
+            -Dsonar.host.url=${{ env.SONARCLOUD_HOST }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
