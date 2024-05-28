@@ -26,6 +26,7 @@ env:
 jobs:
   token-check:
     runs-on: ubuntu-latest
+    if: ${{ !(github.event_name == 'pull_request' && startsWith(github.head_ref, 'renovate/')) }}
     outputs:
       hasToken: ${{ steps.check-token.outputs.has }}
     steps:
@@ -35,11 +36,10 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  sonar:
-    name: SonarCloud Scan
+  sonar-scan:
     runs-on: ubuntu-latest
     needs: token-check
-    if: ${{ !(github.event_name == 'pull_request' && startsWith(github.head_ref, 'renovate/')) && needs.token-check.outputs.hasToken }}
+    if: ${{ needs.token-check.outputs.hasToken }}
     steps:
       - uses: actions/checkout@v4
         with:
