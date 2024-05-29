@@ -7,7 +7,7 @@ plugins {
 }
 
 ext {
-    checkstyleVersion = '10.16.0'
+    checkstyleVersion = '10.17.0'
 }
 
 def properties(String key) {
@@ -44,7 +44,7 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.2'),
             'org.junit.jupiter:junit-jupiter',
             'org.junit.jupiter:junit-jupiter-engine',
-            'org.assertj:assertj-core:3.25.3'
+            'org.assertj:assertj-core:3.26.0'
     testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
         because("Only needed to run tests in a version of IntelliJ IDEA that bundles older versions")
     }
