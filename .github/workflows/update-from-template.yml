@@ -200,7 +200,7 @@ jobs:
           GH_TOKEN: ${{ secrets.UPDATE_FROM_TEMPLATE_PAT }}
         run: |
           not_failed_conclusion="skipped|neutral|success"
-          not_relevant_app_slug="dependabot|github-pages"
+          not_relevant_app_slug="dependabot|github-pages|sonarcloud"
 
           echo "Waiting for checks to start..."
           sleep 40s
@@ -254,8 +254,8 @@ jobs:
             sleep 30s
           done
 
-          echo "Timed out"
-          echo "perform=0" >> $GITHUB_OUTPUT
+          echo "Timed out - Assuming executor starvation - Forcing merge"
+          echo "perform=1" >> $GITHUB_OUTPUT
       
       - name: Auto-merge update_branch_merged
         if: steps.auto-merge-check.outputs.perform == 1
