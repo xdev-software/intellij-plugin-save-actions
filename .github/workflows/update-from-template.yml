@@ -167,7 +167,7 @@ jobs:
           GH_TOKEN: ${{ secrets.UPDATE_FROM_TEMPLATE_PAT }}
         run: |
           not_failed_conclusion="skipped|neutral|success"
-          not_relevant_app_slug="dependabot"
+          not_relevant_app_slug="dependabot|github-pages"
 
           echo "Waiting for workflows to start..."
           sleep 60s
