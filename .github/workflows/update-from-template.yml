@@ -31,7 +31,9 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
-
+    outputs:
+      update_branch_merged_commit: ${{ steps.manage-branches.outputs.update_branch_merged_commit }}
+      create_update_branch_merged_pr: ${{ steps.manage-branches.outputs.create_update_branch_merged_pr }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -169,20 +171,41 @@ jobs:
           gh_pr_up -B "${{ steps.manage-branches.outputs.base_branch }}" \
             --title "Update from template (auto-merged)" \
             --body "An automated PR to sync changes from the template into this repo"
+          
+          # Wait a moment so that checks of PR have higher prio than following job
+          sleep 3
+
+  # Split into two jobs to help with executor starvation
+  auto-merge:
+    needs: [update]
+    if: needs.update.outputs.create_update_branch_merged_pr == 1
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Required because otherwise there are always changes detected when executing diff/rev-list
+          fetch-depth: 0
+          # If no PAT is used the following error occurs on a push:
+          # refusing to allow a GitHub App to create or update workflow `.github/workflows/xxx.yml` without `workflows` permission
+          token: ${{ secrets.UPDATE_FROM_TEMPLATE_PAT }}
+      
+      - name: Init Git
+        run: |
+          git config --global user.email "111048771+xdev-gh-bot@users.noreply.github.com"
+          git config --global user.name "XDEV Bot"
 
       - name: Checking if auto-merge for PR update_branch_merged can be done
         id: auto-merge-check
-        if: steps.manage-branches.outputs.create_update_branch_merged_pr == 1
         env:
           GH_TOKEN: ${{ secrets.UPDATE_FROM_TEMPLATE_PAT }}
         run: |
           not_failed_conclusion="skipped|neutral|success"
           not_relevant_app_slug="dependabot|github-pages"
 
-          echo "Waiting for workflows to start..."
-          sleep 60s
+          echo "Waiting for checks to start..."
+          sleep 40s
 
-          for i in {1..15}; do
+          for i in {1..20}; do
             echo "Checking if PR can be auto-merged. Try: $i"
 
             echo "Fetching checks"
@@ -193,7 +216,7 @@ jobs:
               -H "Accept: application/vnd.github+json" \
               -H "Authorization: Bearer $GH_TOKEN" \
               -H "X-GitHub-Api-Version: 2022-11-28" \
-              https://api.github.com/repos/${{ github.repository }}/commits/${{ steps.manage-branches.outputs.update_branch_merged_commit }}/check-suites)
+              https://api.github.com/repos/${{ github.repository }}/commits/${{ needs.update.outputs.update_branch_merged_commit }}/check-suites)
             
             cs_data=$(echo $cs_response | jq '.check_suites[] | { conclusion: .conclusion, slug: .app.slug, check_runs_url: .check_runs_url }')
             echo $cs_data
@@ -228,7 +251,7 @@ jobs:
             fi
 
             echo "Waiting before next run..."
-            sleep 60s
+            sleep 30s
           done
 
           echo "Timed out"
@@ -237,14 +260,14 @@ jobs:
       - name: Auto-merge update_branch_merged
         if: steps.auto-merge-check.outputs.perform == 1
         run: |
-          base_branch="${{ steps.manage-branches.outputs.base_branch }}"
-          echo "Restoring base branch $base_branch"
-          git checkout $base_branch
+          echo "Getting base branch"
+          base_branch=$(git branch --show-current)
+          echo "Base branch is $base_branch"
 
           echo "Fetching..."
           git fetch
 
-          expected_commit="${{ steps.manage-branches.outputs.update_branch_merged_commit }}"
+          expected_commit="${{ needs.update.outputs.update_branch_merged_commit }}"
           actual_commit=$(git rev-parse origin/${{ env.UPDATE_BRANCH_MERGED }})
           if [[ "$expected_commit" != "$actual_commit" ]]; then
             echo "Branch ${{ env.UPDATE_BRANCH_MERGED }} contains unexpected commit $actual_commit"
@@ -256,8 +279,8 @@ jobs:
           echo "Ensuring that current branch $base_branch is up-to-date"
           git pull
 
-          echo "Merging ${{ env.UPDATE_BRANCH_MERGED }} into $base_branch"
-          git merge ${{ env.UPDATE_BRANCH_MERGED }} && merge_exit_code=$? || merge_exit_code=$?
+          echo "Merging origin/${{ env.UPDATE_BRANCH_MERGED }} into $base_branch"
+          git merge origin/${{ env.UPDATE_BRANCH_MERGED }} && merge_exit_code=$? || merge_exit_code=$?
           if [ $merge_exit_code -ne 0 ]; then
             echo "Unexpected merge failure $merge_exit_code - Requires manual resolution"
 
