@@ -1,9 +1,10 @@
 name: Update from Template
 
 # This workflow keeps the repo up to date with changes from the template repo (REMOTE_URL)
-# It duplicates the REMOTE_BRANCH (into UPDATE_BRANCH) and tries to merge it into the 
+# It duplicates the REMOTE_BRANCH (into UPDATE_BRANCH) and tries to merge it into 
 # this repos default branch (which is checked out here)
 # Note that this requires a PAT (Personal Access Token) - at best from a servicing account
+# PAT permissions: read:discussion, read:org, repo, workflow
 # Also note that you should have at least once merged the template repo into the current repo manually
 # otherwise a "refusing to merge unrelated histories" error might occur.
 
@@ -135,8 +136,9 @@ jobs:
 
           echo "create_update_branch_pr=0" >> $GITHUB_OUTPUT
           echo "create_update_branch_merged_pr=1" >> $GITHUB_OUTPUT
+          echo "try_close_update_branch_pr=1" >> $GITHUB_OUTPUT
           
-      - name: PR update_branch
+      - name: Create/Update PR update_branch
         if: steps.manage-branches.outputs.create_update_branch_pr == 1
         env:
           GH_TOKEN: ${{ secrets.UPDATE_FROM_TEMPLATE_PAT }}
@@ -147,8 +149,16 @@ jobs:
           gh_pr_up -B "${{ steps.manage-branches.outputs.base_branch }}" \
             --title "Update from template" \
             --body "An automated PR to sync changes from the template into this repo"
+      
+      # Ensure that only a single PR is open (otherwise confusion and spam)
+      - name: Close PR update_branch
+        if: steps.manage-branches.outputs.try_close_update_branch_pr == 1
+        env:
+          GH_TOKEN: ${{ secrets.UPDATE_FROM_TEMPLATE_PAT }}
+        run: |
+          gh pr close "${{ env.UPDATE_BRANCH }}" || true
 
-      - name: PR update_branch_merged
+      - name: Create/Update PR update_branch_merged
         if: steps.manage-branches.outputs.create_update_branch_merged_pr == 1
         env:
           GH_TOKEN: ${{ secrets.UPDATE_FROM_TEMPLATE_PAT }}
