@@ -1,0 +1,42 @@
+name: Test Deployment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          cache: 'gradle'
+      
+      - name: Update/Generify version
+        run: |
+          originalVersion=$(grep -Po 'pluginVersion=\K.*' gradle.properties)
+          newVersion="$(echo $originalVersion | cut -d '-' -f1).$( date -u '+%Y%m%d%H%M%S')-SNAPSHOT"
+          echo "New version: $newVersion"
+          sed -i "s/pluginVersion=$originalVersion/pluginVersion=$newVersion/" gradle.properties
+
+          echo "Contents of gradle.properties"
+          cat gradle.properties
+      
+      - name: Publish Plugin
+        env:
+          PUBLISH_TOKEN: ${{ secrets.JETBRAINS_MARKETPLACE_PUBLISH_TOKEN }}
+          CERTIFICATE_CHAIN: ${{ secrets.JETBRAINS_MARKETPLACE_CERTIFICATE_CHAIN }}
+          PRIVATE_KEY: ${{ secrets.JETBRAINS_MARKETPLACE_PRIVATE_KEY }}
+          PRIVATE_KEY_PASSWORD: ${{ secrets.JETBRAINS_MARKETPLACE_PRIVATE_KEY_PASSWORD }}
+        run: ./gradlew publishPlugin --info --stacktrace
+
+      - name: Upload plugin files
+        uses: actions/upload-artifact@v4
+        with:
+          name: plugin-files-java-${{ matrix.java }}
+          path: build/distributions/*
+          if-no-files-found: error
