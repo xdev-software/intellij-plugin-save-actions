@@ -208,6 +208,13 @@ jobs:
           for i in {1..20}; do
             echo "Checking if PR can be auto-merged. Try: $i"
 
+            echo "Checking if update-branch-merged exists"
+            git fetch
+            if [[ $(git rev-parse origin/${{ env.UPDATE_BRANCH_MERGED }}) ]]; then
+              echo "Branch origin/${{ env.UPDATE_BRANCH_MERGED }} is missing"
+              exit 0
+            fi
+
             echo "Fetching checks"
             cs_response=$(curl -sL \
               --fail-with-body \
@@ -266,6 +273,10 @@ jobs:
 
           echo "Fetching..."
           git fetch
+          if [[ $(git rev-parse origin/${{ env.UPDATE_BRANCH_MERGED }}) ]]; then
+            echo "Branch origin/${{ env.UPDATE_BRANCH_MERGED }} is missing"
+            exit 0
+          fi
 
           expected_commit="${{ needs.update.outputs.update_branch_merged_commit }}"
           actual_commit=$(git rev-parse origin/${{ env.UPDATE_BRANCH_MERGED }})
