@@ -1,3 +1,6 @@
+## 1.2.2
+* Workaround scaling problem on "New UI" [#26](https://github.com/xdev-software/intellij-plugin-template/issues/26)
+
 ## 1.2.1
 * Fixed ``ToggleAnAction must override getActionUpdateThread`` warning inside IntelliJ 2024+
 * Dropped support for IntelliJ versions < 2023.2
