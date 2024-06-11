@@ -211,6 +211,8 @@ jobs:
             echo "Checking if update-branch-merged exists"
             git fetch
             if [[ $(git rev-parse origin/${{ env.UPDATE_BRANCH_MERGED }}) ]]; then
+              echo "Branch still exists; Continuing..."
+            else
               echo "Branch origin/${{ env.UPDATE_BRANCH_MERGED }} is missing"
               exit 0
             fi
@@ -274,6 +276,8 @@ jobs:
           echo "Fetching..."
           git fetch
           if [[ $(git rev-parse origin/${{ env.UPDATE_BRANCH_MERGED }}) ]]; then
+            echo "Branch still exists; Continuing..."
+          else
             echo "Branch origin/${{ env.UPDATE_BRANCH_MERGED }} is missing"
             exit 0
           fi
