@@ -183,6 +183,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          # Required because otherwise there are always changes detected when executing diff/rev-list
+          fetch-depth: 0
           # If no PAT is used the following error occurs on a push:
           # refusing to allow a GitHub App to create or update workflow `.github/workflows/xxx.yml` without `workflows` permission
           token: ${{ secrets.UPDATE_FROM_TEMPLATE_PAT }}
@@ -208,7 +210,7 @@ jobs:
 
             echo "Checking if update-branch-merged exists"
             git fetch
-            if [[ $(git rev-parse origin/${{ env.UPDATE_BRANCH_MERGED }}) ]]; then
+            if [[ $(git ls-remote --exit-code --heads origin ${{ env.UPDATE_BRANCH_MERGED }}) ]]; then
               echo "Branch origin/${{ env.UPDATE_BRANCH_MERGED }} is missing"
               exit 0
             fi
@@ -269,8 +271,11 @@ jobs:
           base_branch=$(git branch --show-current)
           echo "Base branch is $base_branch"
 
-          echo "Fetching..."
-          git fetch
+          echo "Fully fetching..."
+          git fetch --unshallow || true
+          git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+          git fetch origin
+
           if [[ $(git rev-parse origin/${{ env.UPDATE_BRANCH_MERGED }}) ]]; then
             echo "Branch origin/${{ env.UPDATE_BRANCH_MERGED }} is missing"
             exit 0
