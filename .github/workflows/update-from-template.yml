@@ -183,6 +183,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          # Required because otherwise there are always changes detected when executing diff/rev-list
+          fetch-depth: 0
           # If no PAT is used the following error occurs on a push:
           # refusing to allow a GitHub App to create or update workflow `.github/workflows/xxx.yml` without `workflows` permission
           token: ${{ secrets.UPDATE_FROM_TEMPLATE_PAT }}
