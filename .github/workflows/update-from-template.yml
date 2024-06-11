@@ -209,8 +209,9 @@ jobs:
             echo "Checking if PR can be auto-merged. Try: $i"
 
             echo "Checking if update-branch-merged exists"
-            git fetch
-            if [[ $(git ls-remote --exit-code --heads origin ${{ env.UPDATE_BRANCH_MERGED }}) ]]; then
+            git fetch --unshallow && git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*" || true
+            git fetch origin
+            if [[ $(git rev-parse origin/${{ env.UPDATE_BRANCH_MERGED }}) ]]; then
               echo "Branch origin/${{ env.UPDATE_BRANCH_MERGED }} is missing"
               exit 0
             fi
@@ -272,8 +273,7 @@ jobs:
           echo "Base branch is $base_branch"
 
           echo "Fully fetching..."
-          git fetch --unshallow || true
-          git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+          git fetch --unshallow && git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*" || true
           git fetch origin
 
           if [[ $(git rev-parse origin/${{ env.UPDATE_BRANCH_MERGED }}) ]]; then
