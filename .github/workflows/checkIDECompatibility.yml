@@ -1,0 +1,54 @@
+name: Check IDE Compatibility
+
+on:
+  schedule:
+    - cron: '55 2 * * 1'
+  workflow_dispatch:
+
+jobs:
+  check-ide-compatibility:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java: [17]
+        distribution: [temurin]
+        platformType: [IC]
+        platformVersion: [LATEST-EAP-SNAPSHOT]
+
+    steps:
+    - name: Free up disk space
+      run: |
+        sudo df -h
+        sudo docker system prune -af || true
+        sudo rm -rf /usr/share/dotnet \
+          /usr/local/.ghcup \
+          /usr/local/swift \
+          /usr/share/swift \
+          /usr/lib/jvm \
+          /usr/local/lib/android \
+          /usr/lib/google-cloud-sdk \
+          /usr/local/share/boost \
+          /usr/local/share/powershell \
+          /usr/local/share/chromium \
+          /usr/local/lib/node_modules \
+          /usr/lib/mono \
+          /usr/lib/heroku \
+          /usr/lib/firefox \
+          /usr/share/miniconda \
+          /opt/microsoft \
+          /opt/chrome \
+          /opt/pipx \
+          "$AGENT_TOOLSDIRECTORY" || true
+        sudo df -h
+
+    - uses: actions/checkout@v4
+      
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: ${{ matrix.distribution }}
+        java-version: ${{ matrix.java }}
+      
+    - name: Check compatibility
+      run: ./gradlew runPluginVerifier -PplatformVersion=LATEST-EAP-SNAPSHOT --info
