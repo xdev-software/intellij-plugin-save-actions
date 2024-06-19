@@ -123,7 +123,7 @@ class BuildPanel
 		
 		private String getId()
 		{
-			return this.quickList.hashCode() + "";
+			return String.valueOf(this.quickList.hashCode());
 		}
 		
 		@Override

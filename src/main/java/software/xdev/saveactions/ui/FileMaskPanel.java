@@ -116,7 +116,7 @@ abstract class FileMaskPanel extends JPanel
 			@Override
 			public boolean checkInput(final String string)
 			{
-				if(string == null || string.trim().isEmpty())
+				if(string == null || string.isBlank())
 				{
 					// do not allow null or blank entries
 					return false;
