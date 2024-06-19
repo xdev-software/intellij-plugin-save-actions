@@ -135,6 +135,9 @@
 	</rule>
 
 	<rule ref="category/java/performance.xml">
+		<!-- This was fixed in Java 10 -->
+		<exclude name="AvoidFileStream"/>
+
 		<!-- Used everywhere and has neglectable performance impact -->
 		<exclude name="AvoidInstantiatingObjectsInLoops"/>
 
