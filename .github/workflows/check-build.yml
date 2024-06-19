@@ -73,8 +73,9 @@ jobs:
         path: build/libs/template-placeholder-*.jar
         if-no-files-found: error
 
-  code-style:
+  checkstyle:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'renovate/') }}
 
     strategy:
       matrix:
@@ -93,3 +94,34 @@ jobs:
 
     - name: Run Checkstyle
       run: ./gradlew checkstyleMain checkstyleTest -PcheckstyleEnabled=true
+
+  pmd:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'renovate/') }}
+
+    strategy:
+      matrix:
+        java: [17]
+        distribution: [temurin]
+
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: ${{ matrix.distribution }}
+        java-version: ${{ matrix.java }}
+        cache: 'gradle'
+
+    - name: Run PMD
+      run: ./gradlew pmdMain pmdTest
+
+    - name: Upload report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: pmd-report
+        if-no-files-found: ignore
+        path: |
+          build/reports/pmd/*.html
