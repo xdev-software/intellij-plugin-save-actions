@@ -86,7 +86,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
  *
  * @see com.intellij.codeInspection.visibility.AccessCanBeTightenedInspection
  */
-@SuppressWarnings({"java:S6201", "java:S3776", "java:S125", "java:S3398", "java:S2637", "java:S120", "java:S6541", "java:S135"})
+@SuppressWarnings({"java:S6201", "java:S3776", "java:S125", "java:S3398", "java:S2637", "java:S120", "java:S6541", "java:S135", "PMD"})
 public class CustomAccessCanBeTightenedInspection extends AbstractBaseJavaLocalInspectionTool {
     private static final Logger LOG = Logger.getInstance(CustomAccessCanBeTightenedInspection.class);
     private final VisibilityInspection myVisibilityInspection;
