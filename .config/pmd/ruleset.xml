@@ -59,6 +59,9 @@
 		<!-- Prohibits singleton pattern -->
 		<exclude name="MutableStaticState"/>
 
+		<!-- Checks LoC, already handled by Checkstyle -->
+		<exclude name="NcssCount"/>
+
 		<!-- Some override methods or Junit require this -->
 		<exclude name="SignatureDeclareThrowsException"/>
 
