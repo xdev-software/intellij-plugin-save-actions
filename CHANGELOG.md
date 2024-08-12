@@ -1,3 +1,6 @@
+## 1.2.3
+* Fix "run on multiple files" not working when the file is not a text file #129
+
 ## 1.2.2
 * Workaround scaling problem on "New UI" [#26](https://github.com/xdev-software/intellij-plugin-template/issues/26)
 

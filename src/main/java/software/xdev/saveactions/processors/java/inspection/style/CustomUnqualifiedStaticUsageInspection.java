@@ -85,6 +85,7 @@ public class CustomUnqualifiedStaticUsageInspection extends UnqualifiedStaticUsa
 			this.registerError(expression, expression);
 		}
 		
+		@SuppressWarnings("PMD.NPathComplexity")
 		private boolean isUnqualifiedStaticAccess(final PsiReferenceExpression expression)
 		{
 			if(CustomUnqualifiedStaticUsageInspection.this.m_ignoreStaticAccessFromStaticContext)

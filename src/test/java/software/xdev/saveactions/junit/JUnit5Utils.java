@@ -15,15 +15,14 @@ public final class JUnit5Utils
 	
 	public static void rethrowAsJunit5Error(final AssertionError error)
 	{
-		if(error.getCause() instanceof final InvocationTargetException intellijInternal)
+		if(error.getCause() instanceof final InvocationTargetException intellijInternal
+			&& intellijInternal.getCause() instanceof final FileComparisonFailure fileComparisonFailure)
 		{
-			if(intellijInternal.getCause() instanceof final FileComparisonFailure fileComparisonFailure)
-			{
-				final String expected = fileComparisonFailure.getExpected();
-				final String actual = fileComparisonFailure.getActual();
-				throw new AssertionFailedError("Expected file do not match actual file", expected, actual);
-			}
+			final String expected = fileComparisonFailure.getExpected();
+			final String actual = fileComparisonFailure.getActual();
+			throw new AssertionFailedError("Expected file do not match actual file", expected, actual);
 		}
+		
 		throw error;
 	}
 	
