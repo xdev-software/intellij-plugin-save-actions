@@ -114,6 +114,7 @@ public class Engine
 		return psiFile != null
 			&& this.isProjectValid(project)
 			&& this.isPsiFileValid(psiFile)
+			&& this.hasPsiFileText(psiFile)
 			&& this.isPsiFileFresh(psiFile)
 			&& this.isPsiFileInProject(project, psiFile)
 			&& this.isPsiFileNoError(project, psiFile)
@@ -185,6 +186,16 @@ public class Engine
 		if(!valid)
 		{
 			LOGGER.info(String.format("File %s is not valid.", psiFile));
+		}
+		return valid;
+	}
+	
+	private boolean hasPsiFileText(final PsiFile psiFile)
+	{
+		final boolean valid = psiFile.getTextRange() != null;
+		if(!valid)
+		{
+			LOGGER.info(String.format("File %s has no text.", psiFile));
 		}
 		return valid;
 	}
