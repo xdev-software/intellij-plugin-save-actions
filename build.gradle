@@ -69,7 +69,7 @@ intellij {
 
 
 listProductsReleases {
-    sinceBuild = "223.*"
+    sinceBuild = "241.*"
 }
 
 checkstyle {
