@@ -42,7 +42,7 @@ configurations.checkstyle {
 // Add dependencies to test, junit5 api (annotations) and engine (runtime)
 dependencies {
     checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
-    testImplementation platform('org.junit:junit-bom:5.10.3'),
+    testImplementation platform('org.junit:junit-bom:5.11.0'),
             'org.junit.jupiter:junit-jupiter',
             'org.junit.jupiter:junit-jupiter-engine',
             'org.assertj:assertj-core:3.26.3'
