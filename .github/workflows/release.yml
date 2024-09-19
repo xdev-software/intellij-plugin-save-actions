@@ -17,7 +17,7 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v4
       with:
-        java-version: '17'
+        java-version: '21'
         distribution: 'temurin'
         cache: 'gradle'
       
@@ -106,7 +106,7 @@ jobs:
       uses: actions/setup-java@v4
       with:
         distribution: 'temurin'
-        java-version: 17
+        java-version: 21
         cache: 'gradle'
     
     - name: Init Git and pull
