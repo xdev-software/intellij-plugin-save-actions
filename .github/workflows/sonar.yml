@@ -11,7 +11,7 @@ on:
       - '.idea/**'
       - 'assets/**'
   pull_request:
-    types: [opened, synchronize, reopened]
+    branches: [ develop ]
     paths-ignore: 
       - '**.md'
       - '.config/**'
