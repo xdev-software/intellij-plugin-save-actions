@@ -281,7 +281,7 @@ public class CustomAccessCanBeTightenedInspection extends AbstractBaseJavaLocalI
             int minLevel = Math.max(PsiUtil.ACCESS_LEVEL_PRIVATE, level);
             AtomicInteger maxLevel = new AtomicInteger(minLevel);
             AtomicBoolean foundUsage = new AtomicBoolean();
-            boolean proceed = UnusedSymbolUtil.processUsages(project, memberFile, member, new EmptyProgressIndicator(), null, info -> {
+            boolean proceed = UnusedSymbolUtil.processUsages(project, memberFile, member, null, info -> {
                 PsiElement element = info.getElement();
                 if (element == null) {
                     return true;
