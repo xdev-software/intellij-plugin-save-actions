@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <idea-plugin>
-    <id>software.xdev.saveactions</id>
-    <name>Save Actions X</name>
     <vendor url="https://www.github.com/xdev-software">xdev-software</vendor>
 
     <description><![CDATA[
@@ -17,9 +15,6 @@
 <a href="https://github.com/xdev-software/intellij-plugin-save-actions/releases">https://github.com/xdev-software/intellij-plugin-save-actions/releases</a>
     ]]>
     </change-notes>
-
-    <!-- https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html -->
-    <idea-version since-build="241"/>
 
     <!-- Other product support activated in plugin page during upload at https://plugins.jetbrains.com -->
     <depends optional="true" config-file="plugin-java.xml">com.intellij.modules.java</depends>
