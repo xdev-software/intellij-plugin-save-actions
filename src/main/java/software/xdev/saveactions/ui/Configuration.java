@@ -56,10 +56,7 @@ public class Configuration implements Configurable
 	private final Map<Action, JCheckBox> checkboxes = new EnumMap<>(Action.class);
 	private final ActionListener checkboxActionListener = this::updateCheckboxEnabled;
 	
-	private GeneralPanel generalPanel;
-	private FormattingPanel formattingPanel;
 	private BuildPanel buildPanel;
-	private InspectionPanel inspectionPanel;
 	private FileMaskPanel fileMasksExclusionPanel;
 	private FileMaskPanel fileMasksInclusionPanel;
 	private IdeSupportPanel ideSupport;
@@ -159,10 +156,7 @@ public class Configuration implements Configurable
 		this.exclusions.clear();
 		this.inclusions.clear();
 		this.quickLists.clear();
-		this.generalPanel = null;
-		this.formattingPanel = null;
 		this.buildPanel = null;
-		this.inspectionPanel = null;
 		this.fileMasksInclusionPanel = null;
 		this.fileMasksExclusionPanel = null;
 		this.ideSupport = null;
@@ -188,18 +182,18 @@ public class Configuration implements Configurable
 		{
 			this.checkboxes.put(action, new JCheckBox(action.getText()));
 		}
-		this.generalPanel = new GeneralPanel(this.checkboxes);
-		this.formattingPanel = new FormattingPanel(this.checkboxes);
+		final GeneralPanel generalPanel = new GeneralPanel(this.checkboxes);
+		final FormattingPanel formattingPanel = new FormattingPanel(this.checkboxes);
 		this.buildPanel = new BuildPanel(this.checkboxes, this.quickLists);
-		this.inspectionPanel = new InspectionPanel(this.checkboxes);
+		final InspectionPanel inspectionPanel = new InspectionPanel(this.checkboxes);
 		this.fileMasksInclusionPanel = new FileMaskInclusionPanel(this.inclusions);
 		this.fileMasksExclusionPanel = new FileMaskExclusionPanel(this.exclusions);
 		this.ideSupport = new IdeSupportPanel();
 		return this.initRootPanel(
-			this.generalPanel.getPanel(),
-			this.formattingPanel.getPanel(),
+			generalPanel.getPanel(),
+			formattingPanel.getPanel(),
 			this.buildPanel.getPanel(),
-			this.inspectionPanel.getPanel(),
+			inspectionPanel.getPanel(),
 			this.fileMasksInclusionPanel.getPanel(),
 			this.fileMasksExclusionPanel.getPanel(),
 			this.ideSupport.getPanel(this.storage.getConfigurationPath())
@@ -208,8 +202,12 @@ public class Configuration implements Configurable
 	
 	@SuppressWarnings("checkstyle:MagicNumber")
 	private JPanel initRootPanel(
-		final JPanel general, final JPanel actions, final JPanel build, final JPanel inspections,
-		final JPanel fileMasksInclusions, final JPanel fileMasksExclusions,
+		final JPanel general,
+		final JPanel actions,
+		final JPanel build,
+		final JPanel inspections,
+		final JPanel fileMasksInclusions,
+		final JPanel fileMasksExclusions,
 		final JPanel ideSupport)
 	{
 		final JPanel panel = new JPanel();

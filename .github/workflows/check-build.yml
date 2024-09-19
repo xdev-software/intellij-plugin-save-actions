@@ -25,7 +25,7 @@ jobs:
 
     strategy:
       matrix:
-        java: [17, 21]
+        java: [21]
         distribution: [temurin]
 
     steps:
@@ -79,7 +79,7 @@ jobs:
 
     strategy:
       matrix:
-        java: [17]
+        java: [21]
         distribution: [temurin]
 
     steps:
@@ -93,7 +93,7 @@ jobs:
         cache: 'gradle'
 
     - name: Run Checkstyle
-      run: ./gradlew checkstyleMain checkstyleTest -PcheckstyleEnabled=true
+      run: ./gradlew checkstyleMain checkstyleTest -PcheckstyleEnabled
 
   pmd:
     runs-on: ubuntu-latest
@@ -101,7 +101,7 @@ jobs:
 
     strategy:
       matrix:
-        java: [17]
+        java: [21]
         distribution: [temurin]
 
     steps:
@@ -115,7 +115,7 @@ jobs:
         cache: 'gradle'
 
     - name: Run PMD
-      run: ./gradlew pmdMain pmdTest
+      run: ./gradlew pmdMain pmdTest -PpmdEnabled
 
     - name: Upload report
       if: always()

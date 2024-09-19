@@ -3,12 +3,13 @@ plugins {
     id 'idea'
     id 'checkstyle'
     id 'pmd'
-    id 'org.jetbrains.intellij' version '1.17.4'
+    id 'org.jetbrains.intellij.platform' version '2.0.1'
     id 'org.sonarqube' version '5.1.0.4882'
 }
 
 ext {
-    checkstyleVersion = '10.17.0'
+    checkstyleVersion = '10.18.1'
+    pmdVersion = '7.5.0'
 }
 
 def properties(String key) {
@@ -19,7 +20,7 @@ def environment(String key) {
     return providers.environmentVariable(key)
 }
 
-apply plugin: 'org.jetbrains.intellij'
+apply plugin: 'org.jetbrains.intellij.platform'
 apply plugin: 'java'
 apply plugin: 'checkstyle'
 
@@ -30,6 +31,10 @@ version = properties("pluginVersion").get()
 // Add build script repository to maven central
 repositories {
     mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+        jetbrainsRuntime()
+    }
 }
 
 // https://github.com/gradle/gradle/issues/27035
@@ -39,10 +44,21 @@ configurations.checkstyle {
     }
 }
 
-// Add dependencies to test, junit5 api (annotations) and engine (runtime)
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 dependencies {
+    intellijPlatform {
+        create(properties("platformType"), properties("platformVersion"))
+        bundledPlugins(properties("platformBundledPlugins").map { it.split(",").collect { it.trim() }.findAll { !it.empty } })
+        plugins(properties("platformPlugins").map { it.split(",").collect { it.trim() }.findAll { !it.empty } })
+        pluginVerifier()
+        zipSigner()
+        instrumentationTools()
+        testFramework TestFrameworkType.Platform.INSTANCE
+    }
     checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
-    testImplementation platform('org.junit:junit-bom:5.10.3'),
+    pmd "net.sourceforge.pmd:pmd-ant:${pmdVersion}",
+            "net.sourceforge.pmd:pmd-java:${pmdVersion}"
+    testImplementation platform('org.junit:junit-bom:5.11.0'),
             'org.junit.jupiter:junit-jupiter',
             'org.junit.jupiter:junit-jupiter-engine',
             'org.assertj:assertj-core:3.26.3'
@@ -55,21 +71,36 @@ dependencies {
 // This needs to fit the tag <idea-version since-build="xxx"> in plugin.xml
 // See https://www.jetbrains.com/intellij-repository/snapshots
 // See https://www.jetbrains.com/intellij-repository/releases
-intellij {
-    pluginName = properties("pluginName")
-
-    version = properties("platformVersion")
-    type = properties("platformType")
-
-    // Plugin Dependencies. Uses `platformPlugins` property from the gradle.properties file.
-    plugins = properties("platformPlugins").map { it.split(",").collect { it.trim() }.findAll { !it.empty } }
-
-    updateSinceUntilBuild = false
-}
-
-
-listProductsReleases {
-    sinceBuild = "223.*"
+intellijPlatform {
+    pluginConfiguration {
+        name = properties("pluginName")
+        version = properties("pluginVersion")
+    }
+    patchPluginXml {
+        pluginId = properties("pluginGroup")
+        pluginName = properties("pluginName")
+        pluginVersion = properties("pluginVersion")
+        sinceBuild = properties("platformSinceBuild")
+        untilBuild = provider { null }
+    }
+    pluginVerification {
+        ides {
+            recommended()
+        }
+    }
+    signPlugin {
+        certificateChain = environment("CERTIFICATE_CHAIN")
+        privateKey = environment("PRIVATE_KEY")
+        password = environment("PRIVATE_KEY_PASSWORD")
+    }
+    publishPlugin {
+        token = environment("PUBLISH_TOKEN")
+        // The pluginVersion is based on the SemVer (https://semver.org) and supports pre-release labels, like 2.1.7-alpha.3
+        // Specify pre-release label to publish the plugin in a custom Release Channel automatically. Read more:
+        // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
+        channels = properties("pluginVersion")
+                .map { [((it.split('-') as List)[1] ?: "default").split('\\.').find { true }.toLowerCase()] }
+    }
 }
 
 checkstyle {
@@ -82,18 +113,23 @@ checkstyle {
 pmd {
     consoleOutput = true
     ruleSetFiles = files(".config/pmd/ruleset.xml")
+    toolVersion = pmdVersion
 }
 
 tasks.withType(Checkstyle).configureEach {
     enabled = project.hasProperty("checkstyleEnabled");
 }
 
+tasks.withType(Pmd).configureEach {
+    enabled = project.hasProperty("pmdEnabled")
+}
+
 // Configure compileJava AND compileTestJava
 // https://docs.gradle.org/current/dsl/org.gradle.api.tasks.compile.JavaCompile.html
 tasks.withType(JavaCompile).configureEach {
     // JAVA compatibility
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 compileJava.options.encoding = 'UTF-8'
@@ -105,6 +141,16 @@ test {
     useJUnitPlatform()
 }
 
+sonar {
+    properties {
+        // Ignore sonar warnings globally
+        property 'sonar.issue.ignore.multicriteria', 'S1948'
+        // Ignore serialization waring as it's only relevant for RMI which is not used
+        property 'sonar.issue.ignore.multicriteria.S1948.ruleKey', 'java:S1948'
+        property 'sonar.issue.ignore.multicriteria.S1948.resourceKey', '**/*.java'
+    }
+}
+
 // Add resources directory because intellij test framework checks there for test resources (instead of build/resources)
 sourceSets {
     test.output.resourcesDir = "build/classes/java/resources"
@@ -113,24 +159,5 @@ sourceSets {
 tasks {
     wrapper {
         gradleVersion = properties("gradleVersion").get()
-    }
-
-    patchPluginXml {
-        version = properties("pluginVersion")
-    }
-
-    signPlugin {
-        certificateChain = environment("CERTIFICATE_CHAIN")
-        privateKey = environment("PRIVATE_KEY")
-        password = environment("PRIVATE_KEY_PASSWORD")
-    }
-
-    publishPlugin {
-        token = environment("PUBLISH_TOKEN")
-        // The pluginVersion is based on the SemVer (https://semver.org) and supports pre-release labels, like 2.1.7-alpha.3
-        // Specify pre-release label to publish the plugin in a custom Release Channel automatically. Read more:
-        // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
-        channels = properties("pluginVersion")
-                .map { [((it.split('-') as List)[1] ?: "default").split('\\.').find { true }.toLowerCase()] }
     }
 }
