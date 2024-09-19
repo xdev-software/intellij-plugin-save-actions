@@ -1,5 +1,6 @@
 ## 1.2.4
-* Dropped support for IntelliJ versions < 2024
+* Dropped support for IntelliJ versions < 2024.2
+* Removed deprecated code that was only required for older IDE versions
 
 ## 1.2.3
 * Fix "run on multiple files" not working when the file is not a text file #129
