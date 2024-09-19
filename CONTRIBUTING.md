@@ -19,7 +19,7 @@ We also encourage you to read the [contribution instructions by GitHub](https://
 ### Software Requirements
 You should have the following things installed:
 * Git
-* Java 17 - should be as unmodified as possible (Recommended: [Eclipse Adoptium](https://adoptium.net/temurin/releases/))
+* Java 21 - should be as unmodified as possible (Recommended: [Eclipse Adoptium](https://adoptium.net/temurin/releases/))
 * Gradle (shipped inside the repo as Gradle Wrapper - also available inside IntelliJ)
 
 ### Recommended setup
