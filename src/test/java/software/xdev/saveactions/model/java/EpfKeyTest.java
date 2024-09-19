@@ -55,7 +55,7 @@ class EpfKeyTest
 		return properties.keySet().stream()
 			.map(Object::toString)
 			.filter(key -> EpfKey.getPrefixes().stream().anyMatch(key::startsWith))
-			.map(key -> key.substring(key.lastIndexOf(".") == -1 ? 0 : key.lastIndexOf(".") + 1))
+			.map(key -> key.substring(key.lastIndexOf('.') == -1 ? 0 : key.lastIndexOf('.') + 1))
 			.collect(toList());
 	}
 	
