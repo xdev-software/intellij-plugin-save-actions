@@ -2,8 +2,8 @@
 * Make it possible to run processors asynchronously #130
   * This way the UI should be more responsive when processing a lot of files
   * May break processors that interact with the UI e.g. when showing dialogs
-* Don't run during startup #145
-  * This should cause less race conditions due to partial initialization
+* Don't process files during project load #145
+  * This should cause less race conditions due to partial project initialization
   * Only active on IntelliJ < 2024.3 as [the underlying problem was fixed in IntelliJ 2024.3](https://github.com/JetBrains/intellij-community/commit/765caa71175d0a67a54836cf840fae829da590d9)
 
 ## 1.2.4
