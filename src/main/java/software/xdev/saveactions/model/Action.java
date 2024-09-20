@@ -27,6 +27,10 @@ public enum Action
 	noActionIfCompileErrors("No action if compile errors (applied per file)",
 		activation, false),
 	
+	processAsync("Process files asynchronously "
+		+ "(will result in less UI hangs but may break if a processor needs the UI)",
+		activation, false),
+	
 	// Global
 	organizeImports("Optimize imports",
 		global, true),

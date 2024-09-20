@@ -18,7 +18,6 @@ import software.xdev.saveactions.model.Action;
  */
 public interface SaveActionsService
 {
-	
 	void guardedProcessPsiFiles(Project project, Set<PsiFile> psiFiles, Action activation, ExecutionMode mode);
 	
 	boolean isJavaAvailable();
