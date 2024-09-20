@@ -107,7 +107,7 @@ public final class SaveActionsDocumentManagerListener implements FileDocumentMan
 	@SuppressWarnings("checkstyle:MagicNumber")
 	static boolean isInvokedFromProjectLoadBefore243()
 	{
-		// The invoking method is ProjectSettingsTracker$submitSettingsFilesRefresh is usually at index 17 and 18
+		// The invoking method ProjectSettingsTracker$submitSettingsFilesRefresh is usually at index 17 and 18
 		return Stream.of(Thread.currentThread().getStackTrace())
 			.map(StackTraceElement::getClassName)
 			.skip(16)
