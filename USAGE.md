@@ -32,6 +32,7 @@ You can quickly toggle the plugin activation by using the "Enable Save Action" a
 | Activate save actions on shortcut  | Enable / disable the plugin on shortcut, by default "CTRL + SHIFT + S" (configured in "File > Keymaps > Main menu > Code > Save Actions")
 | Activate save actions on batch     | Enable / disable the plugin on batch, by using "Code > Save Actions > Execute on multiple files"
 | No action if compile errors        | Enable / disable no action if there are compile errors. Applied to each file individually
+| Process files asynchronously       | Enable / disable if files should be processed asynchronously. Enabling it will result in less UI hangs but may break if a processor needs the UI.
 
 ### Global
 
