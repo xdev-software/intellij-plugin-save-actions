@@ -32,6 +32,7 @@ You can quickly toggle the plugin activation by using the "Enable Save Action" a
 | Activate save actions on shortcut  | Enable / disable the plugin on shortcut, by default "CTRL + SHIFT + S" (configured in "File > Keymaps > Main menu > Code > Save Actions")
 | Activate save actions on batch     | Enable / disable the plugin on batch, by using "Code > Save Actions > Execute on multiple files"
 | No action if compile errors        | Enable / disable no action if there are compile errors. Applied to each file individually
+| Process files asynchronously       | Enable / disable if files should be processed asynchronously. Enabling it will result in less UI hangs but may break if a processor needs the UI.
 
 ### Global
 
@@ -132,3 +133,21 @@ Some things to note when using other plugins with the Save Actions plugin:
 
 - **idea.log**: The log file the save actions plugin writes in. It contains debug information, prefixed with `software.xdev.saveactions.SaveActionManager`. If you are using default locations, it would be in `~/.IntelliJIdeaVERSION/system/log/idea.log`.
 - **saveactions_settings.xml**: The settings file is saved by project in the `.idea` folder. That file can be committed in git thus shared in your development team. If you are using the default locations, it would be in `~/IdeaProjects/PROJECT_NAME/.idea/saveactions_settings.xml`
+
+## Troubleshooting of common problems
+
+### "Conflicting component name 'SaveActionSettings': class ``com.dubreuia.model.Storage`` and class ``software.xdev.saveactions.model.Storage``"
+
+The problem only happens when the [old/deprecated/forked plugin](https://github.com/dubreuia/intellij-plugin-save-actions) plugin is also installed.
+
+You can fix this by uninstalling the deprecated plugin.
+
+### "AWT events are not allowed inside write action" occurs when applying Save Actions
+
+This usually indicates that some action causes a UI dialog to show up.<br/>However as the actions are run in the background the dialog can't be shown and the crash occurs.
+
+You can work around this problem by finding out what causes the dialog (e.g. by trying to temporarily disabling Save Actions and saving the files normally) and stop it from being displayed.
+
+### "Execute Save Actions on multiple files" is not working
+
+Make sure that you enabled "Activate save actions on batch" in the settings.

@@ -4,6 +4,7 @@ import static software.xdev.saveactions.model.Action.activate;
 import static software.xdev.saveactions.model.Action.activateOnBatch;
 import static software.xdev.saveactions.model.Action.activateOnShortcut;
 import static software.xdev.saveactions.model.Action.noActionIfCompileErrors;
+import static software.xdev.saveactions.model.Action.processAsync;
 
 import java.awt.Dimension;
 import java.util.Map;
@@ -38,6 +39,7 @@ class GeneralPanel
 		panel.add(this.checkboxes.get(activateOnShortcut));
 		panel.add(this.checkboxes.get(activateOnBatch));
 		panel.add(this.checkboxes.get(noActionIfCompileErrors));
+		panel.add(this.checkboxes.get(processAsync));
 		panel.add(Box.createHorizontalGlue());
 		panel.setMinimumSize(new Dimension(Short.MAX_VALUE, 0));
 		return panel;

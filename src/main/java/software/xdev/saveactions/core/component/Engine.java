@@ -6,20 +6,27 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import org.jetbrains.annotations.NotNull;
 
+import com.intellij.openapi.application.ReadAction;
+import com.intellij.openapi.application.WriteAction;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.util.ThrowableComputable;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
+import com.intellij.util.ApplicationKt;
 import com.intellij.util.PsiErrorElementUtil;
+import com.intellij.util.ThrowableRunnable;
 
 import software.xdev.saveactions.core.ExecutionMode;
 import software.xdev.saveactions.core.service.SaveActionsService;
@@ -62,7 +69,9 @@ public class Engine
 		this.mode = mode;
 	}
 	
-	public void processPsiFilesIfNecessary()
+	public void processPsiFilesIfNecessary(
+		@NotNull final ProgressIndicator indicator,
+		final boolean async)
 	{
 		if(this.psiFiles == null)
 		{
@@ -73,36 +82,112 @@ public class Engine
 			LOGGER.info(String.format("Action \"%s\" not enabled on %s", this.activation.getText(), this.project));
 			return;
 		}
-		LOGGER.info(String.format("Processing %s files %s mode %s", this.project, this.psiFiles, this.mode));
-		final Set<PsiFile> psiFilesEligible = this.psiFiles.stream()
-			.filter(psiFile -> this.isPsiFileEligible(this.project, psiFile))
-			.collect(toSet());
-		LOGGER.info(String.format("Valid files %s", psiFilesEligible));
-		this.processPsiFiles(this.project, psiFilesEligible, this.mode);
-	}
-	
-	private void processPsiFiles(final Project project, final Set<PsiFile> psiFiles, final ExecutionMode mode)
-	{
-		if(psiFiles.isEmpty())
+		
+		indicator.setIndeterminate(true);
+		final Set<PsiFile> psiFilesEligible = this.getEligiblePsiFiles(indicator, async);
+		if(psiFilesEligible.isEmpty())
 		{
+			LOGGER.info("No files are eligible");
 			return;
 		}
+		
+		final List<SaveCommand> processorsEligible = this.getEligibleProcessors(indicator, psiFilesEligible);
+		if(processorsEligible.isEmpty())
+		{
+			LOGGER.info("No processors are eligible");
+			return;
+		}
+		
+		this.flushPsiFiles(indicator, async, psiFilesEligible);
+		
+		this.execute(indicator, processorsEligible, psiFilesEligible);
+	}
+	
+	private Set<PsiFile> getEligiblePsiFiles(final @NotNull ProgressIndicator indicator, final boolean async)
+	{
+		LOGGER.info(String.format("Processing %s files %s mode %s", this.project, this.psiFiles, this.mode));
+		indicator.checkCanceled();
+		indicator.setText2("Collecting files to process");
+		
+		final ThrowableComputable<Set<PsiFile>, RuntimeException> psiFilesEligibleFunc =
+			() -> this.psiFiles.stream()
+				.filter(psiFile -> this.isPsiFileEligible(this.project, psiFile))
+				.collect(toSet());
+		final Set<PsiFile> psiFilesEligible = async
+			? ReadAction.compute(psiFilesEligibleFunc)
+			: psiFilesEligibleFunc.compute();
+		LOGGER.info(String.format("Valid files %s", psiFilesEligible));
+		return psiFilesEligible;
+	}
+	
+	private @NotNull List<SaveCommand> getEligibleProcessors(
+		final @NotNull ProgressIndicator indicator,
+		final Set<PsiFile> psiFilesEligible)
+	{
 		LOGGER.info(String.format("Start processors (%d)", this.processors.size()));
+		indicator.checkCanceled();
+		indicator.setText2("Collecting processors");
+		
 		final List<SaveCommand> processorsEligible = this.processors.stream()
-			.map(processor -> processor.getSaveCommand(project, psiFiles))
+			.map(processor -> processor.getSaveCommand(this.project, psiFilesEligible))
 			.filter(command -> this.storage.isEnabled(command.getAction()))
-			.filter(command -> command.getModes().contains(mode))
+			.filter(command -> command.getModes().contains(this.mode))
 			.toList();
 		LOGGER.info(String.format("Filtered processors %s", processorsEligible));
-		if(!processorsEligible.isEmpty())
+		return processorsEligible;
+	}
+	
+	private void flushPsiFiles(
+		final @NotNull ProgressIndicator indicator,
+		final boolean async,
+		final Set<PsiFile> psiFilesEligible)
+	{
+		LOGGER.info(String.format("Flushing files (%d)", psiFilesEligible.size()));
+		indicator.checkCanceled();
+		indicator.setText2("Flushing files");
+		
+		final ThrowableRunnable<RuntimeException> flushFilesFunc = () -> {
+			final PsiDocumentManager psiDocumentManager = PsiDocumentManager.getInstance(this.project);
+			psiFilesEligible.forEach(psiFile -> this.commitDocumentAndSave(psiFile, psiDocumentManager));
+		};
+		if(async)
 		{
-			final PsiDocumentManager psiDocumentManager = PsiDocumentManager.getInstance(project);
-			psiFiles.forEach(psiFile -> this.commitDocumentAndSave(psiFile, psiDocumentManager));
+			ApplicationKt.getApplication().invokeAndWait(() -> WriteAction.run(flushFilesFunc));
 		}
-		final List<SimpleEntry<Action, Result<ResultCode>>> results = processorsEligible.stream()
+		else
+		{
+			flushFilesFunc.run();
+		}
+	}
+	
+	private void execute(
+		final @NotNull ProgressIndicator indicator,
+		final List<SaveCommand> processorsEligible,
+		final Set<PsiFile> psiFilesEligible)
+	{
+		indicator.checkCanceled();
+		indicator.setIndeterminate(false);
+		indicator.setFraction(0d);
+		
+		final List<SaveCommand> saveCommands = processorsEligible.stream()
 			.filter(Objects::nonNull)
-			.peek(command -> LOGGER.info(String.format("Execute command %s on %d files", command, psiFiles.size())))
-			.map(command -> new SimpleEntry<>(command.getAction(), command.execute()))
+			.toList();
+		
+		final AtomicInteger executedCount = new AtomicInteger();
+		final List<SimpleEntry<Action, Result<ResultCode>>> results = saveCommands.stream()
+			.map(command -> {
+				LOGGER.info(String.format("Execute command %s on %d files", command, psiFilesEligible.size()));
+				
+				indicator.checkCanceled();
+				indicator.setText2("Executing '" + command.getAction().getText() + "'");
+				
+				final SimpleEntry<Action, Result<ResultCode>> entry =
+					new SimpleEntry<>(command.getAction(), command.execute());
+				
+				indicator.setFraction((double)executedCount.incrementAndGet() / saveCommands.size());
+				
+				return entry;
+			})
 			.toList();
 		LOGGER.info(String.format("Exit engine with results %s", results.stream()
 			.map(entry -> entry.getKey() + ":" + entry.getValue())

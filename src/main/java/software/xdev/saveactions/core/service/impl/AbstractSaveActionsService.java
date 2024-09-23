@@ -12,12 +12,18 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Stream;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.intellij.openapi.actionSystem.ex.QuickList;
 import com.intellij.openapi.actionSystem.ex.QuickListsManager;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.openapi.progress.EmptyProgressIndicator;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 
@@ -25,6 +31,7 @@ import software.xdev.saveactions.core.ExecutionMode;
 import software.xdev.saveactions.core.component.Engine;
 import software.xdev.saveactions.core.service.SaveActionsService;
 import software.xdev.saveactions.model.Action;
+import software.xdev.saveactions.model.Storage;
 import software.xdev.saveactions.model.StorageFactory;
 import software.xdev.saveactions.processors.Processor;
 
@@ -34,8 +41,8 @@ import software.xdev.saveactions.processors.Processor;
  * implementations by default.
  * <p>
  * The main method is {@link #guardedProcessPsiFiles(Project, Set, Action, ExecutionMode)} and will delegate to
- * {@link Engine#processPsiFilesIfNecessary()}. The method will check if the file needs to be processed and uses the
- * processors to apply the modifications.
+ * {@link Engine#processPsiFilesIfNecessary(ProgressIndicator, boolean)} ()}.
+ * The method will check if the file needs to be processed and uses the processors to apply the modifications.
  * <p>
  * The psi files are ide wide, that means they are shared between projects (and editor windows), so we need to check if
  * the file is physically in that project before reformatting, or else the file is formatted twice and intellij will ask
@@ -52,6 +59,8 @@ abstract class AbstractSaveActionsService implements SaveActionsService
 	private final boolean javaAvailable;
 	private final boolean compilingAvailable;
 	
+	private final ReentrantLock guardedProcessPsiFilesLock = new ReentrantLock();
+	
 	protected AbstractSaveActionsService(final StorageFactory storageFactory)
 	{
 		LOGGER.info("Save Actions Service \"" + this.getClass().getSimpleName() + "\" initialized.");
@@ -62,7 +71,7 @@ abstract class AbstractSaveActionsService implements SaveActionsService
 	}
 	
 	@Override
-	public synchronized void guardedProcessPsiFiles(
+	public void guardedProcessPsiFiles(
 		final Project project,
 		final Set<PsiFile> psiFiles,
 		final Action activation,
@@ -73,10 +82,49 @@ abstract class AbstractSaveActionsService implements SaveActionsService
 			LOGGER.info("Application is closing, stopping invocation");
 			return;
 		}
+		
+		final Storage storage = this.storageFactory.getStorage(project);
 		final Engine engine = new Engine(
-			this.storageFactory.getStorage(project), this.processors, project, psiFiles, activation,
+			storage,
+			this.processors,
+			project,
+			psiFiles,
+			activation,
 			mode);
-		engine.processPsiFilesIfNecessary();
+		
+		final boolean applyAsync = storage.getActions().contains(Action.processAsync);
+		if(applyAsync)
+		{
+			new Task.Backgroundable(project, "Applying Save Actions", true)
+			{
+				@Override
+				public void run(@NotNull final ProgressIndicator indicator)
+				{
+					AbstractSaveActionsService.this.processPsiFilesIfNecessaryWithLock(engine, indicator);
+				}
+			}.queue();
+			return;
+		}
+		
+		this.processPsiFilesIfNecessaryWithLock(engine, null);
+	}
+	
+	private void processPsiFilesIfNecessaryWithLock(final Engine engine, final ProgressIndicator indicator)
+	{
+		LOGGER.trace("Getting lock");
+		this.guardedProcessPsiFilesLock.lock();
+		LOGGER.trace("Got lock");
+		try
+		{
+			engine.processPsiFilesIfNecessary(
+				indicator != null ? indicator : new EmptyProgressIndicator(),
+				indicator != null);
+		}
+		finally
+		{
+			this.guardedProcessPsiFilesLock.unlock();
+			LOGGER.trace("Released lock");
+		}
 	}
 	
 	@Override
