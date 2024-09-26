@@ -22,12 +22,11 @@ import software.xdev.saveactions.processors.java.JavaProcessor;
  */
 public final class SaveActionsJavaService extends AbstractSaveActionsService
 {
-	
 	public SaveActionsJavaService()
 	{
 		super(JAVA);
-		addProcessors(BuildProcessor.stream());
-		addProcessors(GlobalProcessor.stream());
-		addProcessors(JavaProcessor.stream());
+		this.addProcessors(BuildProcessor.stream());
+		this.addProcessors(GlobalProcessor.stream());
+		this.addProcessors(JavaProcessor.stream());
 	}
 }

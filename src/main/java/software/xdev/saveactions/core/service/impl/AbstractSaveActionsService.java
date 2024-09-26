@@ -1,7 +1,6 @@
 package software.xdev.saveactions.core.service.impl;
 
 import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 import static software.xdev.saveactions.model.StorageFactory.JAVA;
 
@@ -168,8 +167,8 @@ abstract class AbstractSaveActionsService implements SaveActionsService
 				.map(Integer::valueOf)
 				.map(quickListsIds::get)
 				.filter(Objects::nonNull)
-				.collect(toList()))
-			.orElse(new ArrayList<>());
+				.toList())
+			.orElseGet(List::of);
 	}
 	
 	protected SaveActionsService addProcessors(final Stream<Processor> processors)

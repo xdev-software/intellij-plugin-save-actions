@@ -21,11 +21,10 @@ import software.xdev.saveactions.processors.GlobalProcessor;
  */
 public final class SaveActionsDefaultService extends AbstractSaveActionsService
 {
-	
 	public SaveActionsDefaultService()
 	{
 		super(DEFAULT);
-		addProcessors(BuildProcessor.stream());
-		addProcessors(GlobalProcessor.stream());
+		this.addProcessors(BuildProcessor.stream());
+		this.addProcessors(GlobalProcessor.stream());
 	}
 }
