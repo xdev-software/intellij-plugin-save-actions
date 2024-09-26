@@ -40,7 +40,7 @@ class InspectionRunnable implements Runnable
 		this.project = project;
 		this.psiFiles = psiFiles;
 		this.toolWrapper = new LocalInspectionToolWrapper(inspectionTool);
-		LOGGER.info(String.format("Running inspection for %s", inspectionTool.getShortName()));
+		LOGGER.info(String.format("Running inspection for %s - %s", inspectionTool.getShortName(), project.getName()));
 	}
 	
 	@Override

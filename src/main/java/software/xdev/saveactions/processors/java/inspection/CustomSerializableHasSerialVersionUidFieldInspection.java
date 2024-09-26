@@ -36,14 +36,12 @@ public class CustomSerializableHasSerialVersionUidFieldInspection extends USeria
 	@Override
 	public @Nls(capitalization = Nls.Capitalization.Sentence) @NotNull String getDisplayName()
 	{
-		
 		return this.getClass().getSimpleName();
 	}
 	
 	@Override
 	public @Nls(capitalization = Nls.Capitalization.Sentence) @NotNull String getGroupDisplayName()
 	{
-		
 		return "SaveActionsInternal";
 	}
 	

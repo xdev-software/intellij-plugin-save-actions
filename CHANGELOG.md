@@ -1,3 +1,6 @@
+## 1.3.1
+* Fix IDE hang when projects with different "Process files asynchronously" are open #160
+
 ## 1.3.0
 * Make it possible to run processors asynchronously #130
   * This way the UI should be more responsive when processing a lot of files
