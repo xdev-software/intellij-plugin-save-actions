@@ -79,7 +79,10 @@ public class Engine
 		}
 		if(!this.storage.isEnabled(this.activation))
 		{
-			LOGGER.info(String.format("Action \"%s\" not enabled on %s", this.activation.getText(), this.project));
+			LOGGER.info(String.format(
+				"Action \"%s\" not enabled on %s",
+				this.activation.getText(),
+				this.project.getName()));
 			return;
 		}
 		
@@ -87,14 +90,14 @@ public class Engine
 		final Set<PsiFile> psiFilesEligible = this.getEligiblePsiFiles(indicator, async);
 		if(psiFilesEligible.isEmpty())
 		{
-			LOGGER.info("No files are eligible");
+			LOGGER.info("No files are eligible - " + this.project.getName());
 			return;
 		}
 		
 		final List<SaveCommand> processorsEligible = this.getEligibleProcessors(indicator, psiFilesEligible);
 		if(processorsEligible.isEmpty())
 		{
-			LOGGER.info("No processors are eligible");
+			LOGGER.info("No processors are eligible - " + this.project.getName());
 			return;
 		}
 		
@@ -105,7 +108,7 @@ public class Engine
 	
 	private Set<PsiFile> getEligiblePsiFiles(final @NotNull ProgressIndicator indicator, final boolean async)
 	{
-		LOGGER.info(String.format("Processing %s files %s mode %s", this.project, this.psiFiles, this.mode));
+		LOGGER.info(String.format("Processing %s files %s mode %s", this.project.getName(), this.psiFiles, this.mode));
 		indicator.checkCanceled();
 		indicator.setText2("Collecting files to process");
 		
@@ -124,7 +127,7 @@ public class Engine
 		final @NotNull ProgressIndicator indicator,
 		final Set<PsiFile> psiFilesEligible)
 	{
-		LOGGER.info(String.format("Start processors (%d)", this.processors.size()));
+		LOGGER.info(String.format("Start processors (%d) - %s", this.processors.size(), this.project.getName()));
 		indicator.checkCanceled();
 		indicator.setText2("Collecting processors");
 		
@@ -142,7 +145,7 @@ public class Engine
 		final boolean async,
 		final Set<PsiFile> psiFilesEligible)
 	{
-		LOGGER.info(String.format("Flushing files (%d)", psiFilesEligible.size()));
+		LOGGER.info(String.format("Flushing files (%d) - %s", psiFilesEligible.size(), this.project.getName()));
 		indicator.checkCanceled();
 		indicator.setText2("Flushing files");
 		
@@ -176,7 +179,11 @@ public class Engine
 		final AtomicInteger executedCount = new AtomicInteger();
 		final List<SimpleEntry<Action, Result<ResultCode>>> results = saveCommands.stream()
 			.map(command -> {
-				LOGGER.info(String.format("Execute command %s on %d files", command, psiFilesEligible.size()));
+				LOGGER.info(String.format(
+					"Execute command %s on %d files - %s",
+					command,
+					psiFilesEligible.size(),
+					this.project.getName()));
 				
 				indicator.checkCanceled();
 				indicator.setText2("Executing '" + command.getAction().getText() + "'");
@@ -189,9 +196,12 @@ public class Engine
 				return entry;
 			})
 			.toList();
-		LOGGER.info(String.format("Exit engine with results %s", results.stream()
-			.map(entry -> entry.getKey() + ":" + entry.getValue())
-			.toList()));
+		LOGGER.info(String.format(
+			"Exit engine with results %s - %s",
+			results.stream()
+				.map(entry -> entry.getKey() + ":" + entry.getValue())
+				.toList(),
+			this.project.getName()));
 	}
 	
 	private boolean isPsiFileEligible(final Project project, final PsiFile psiFile)
@@ -211,7 +221,7 @@ public class Engine
 		final boolean valid = project.isInitialized() && !project.isDisposed();
 		if(!valid)
 		{
-			LOGGER.info("Project invalid. Either not initialized or disposed.");
+			LOGGER.info(String.format("Project %s invalid. Either not initialized or disposed", project.getName()));
 		}
 		return valid;
 	}
@@ -260,7 +270,7 @@ public class Engine
 		final boolean isFresh = psiFile.getModificationStamp() != 0;
 		if(!isFresh)
 		{
-			LOGGER.info(String.format("File %s is not fresh.", psiFile));
+			LOGGER.info(String.format("File %s is not fresh", psiFile));
 		}
 		return isFresh;
 	}
@@ -270,7 +280,7 @@ public class Engine
 		final boolean valid = psiFile.isValid();
 		if(!valid)
 		{
-			LOGGER.info(String.format("File %s is not valid.", psiFile));
+			LOGGER.info(String.format("File %s is not valid", psiFile));
 		}
 		return valid;
 	}
@@ -280,7 +290,7 @@ public class Engine
 		final boolean valid = psiFile.getTextRange() != null;
 		if(!valid)
 		{
-			LOGGER.info(String.format("File %s has no text.", psiFile));
+			LOGGER.info(String.format("File %s has no text", psiFile));
 		}
 		return valid;
 	}
