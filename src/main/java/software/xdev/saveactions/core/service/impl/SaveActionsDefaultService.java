@@ -17,7 +17,6 @@ import software.xdev.saveactions.processors.GlobalProcessor;
  * <p/>
  *
  * @see AbstractSaveActionsService
- * @since 2.4.0
  */
 public final class SaveActionsDefaultService extends AbstractSaveActionsService
 {

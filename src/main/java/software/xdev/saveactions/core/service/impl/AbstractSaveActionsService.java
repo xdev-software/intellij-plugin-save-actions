@@ -48,8 +48,6 @@ import software.xdev.saveactions.processors.Processor;
  * The psi files are ide wide, that means they are shared between projects (and editor windows), so we need to check if
  * the file is physically in that project before reformatting, or else the file is formatted twice and intellij will ask
  * to confirm unlocking of non-project file in the other project, see {@link Engine} for more details.
- *
- * @since 2.4.0
  */
 abstract class AbstractSaveActionsService implements SaveActionsService
 {
