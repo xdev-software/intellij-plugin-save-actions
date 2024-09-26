@@ -7,11 +7,13 @@ import static software.xdev.saveactions.model.StorageFactory.JAVA;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Stream;
 
@@ -59,7 +61,8 @@ abstract class AbstractSaveActionsService implements SaveActionsService
 	private final boolean javaAvailable;
 	private final boolean compilingAvailable;
 	
-	private final ReentrantLock guardedProcessPsiFilesLock = new ReentrantLock();
+	private final Map<Project, ReentrantLock> guardedProcessPsiFilesLocks =
+		Collections.synchronizedMap(new WeakHashMap<>());
 	
 	protected AbstractSaveActionsService(final StorageFactory storageFactory)
 	{
@@ -100,20 +103,31 @@ abstract class AbstractSaveActionsService implements SaveActionsService
 				@Override
 				public void run(@NotNull final ProgressIndicator indicator)
 				{
-					AbstractSaveActionsService.this.processPsiFilesIfNecessaryWithLock(engine, indicator);
+					AbstractSaveActionsService.this.processPsiFilesIfNecessaryWithLock(project, engine, indicator);
 				}
 			}.queue();
 			return;
 		}
 		
-		this.processPsiFilesIfNecessaryWithLock(engine, null);
+		this.processPsiFilesIfNecessaryWithLock(project, engine, null);
 	}
 	
-	private void processPsiFilesIfNecessaryWithLock(final Engine engine, final ProgressIndicator indicator)
+	private void processPsiFilesIfNecessaryWithLock(
+		final Project project,
+		final Engine engine,
+		final ProgressIndicator indicator)
 	{
-		LOGGER.trace("Getting lock");
-		this.guardedProcessPsiFilesLock.lock();
-		LOGGER.trace("Got lock");
+		if(LOGGER.isTraceEnabled())
+		{
+			LOGGER.trace("Getting lock - " + project.getName());
+		}
+		final ReentrantLock lock =
+			this.guardedProcessPsiFilesLocks.computeIfAbsent(project, ignored -> new ReentrantLock());
+		lock.lock();
+		if(LOGGER.isTraceEnabled())
+		{
+			LOGGER.trace("Got lock - " + project.getName());
+		}
 		try
 		{
 			engine.processPsiFilesIfNecessary(
@@ -122,8 +136,11 @@ abstract class AbstractSaveActionsService implements SaveActionsService
 		}
 		finally
 		{
-			this.guardedProcessPsiFilesLock.unlock();
-			LOGGER.trace("Released lock");
+			lock.unlock();
+			if(LOGGER.isTraceEnabled())
+			{
+				LOGGER.trace("Released lock - " + project.getName());
+			}
 		}
 	}
 	
