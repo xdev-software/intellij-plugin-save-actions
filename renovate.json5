@@ -1,4 +1,17 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "rebaseWhen": "behind-base-branch"
+  "rebaseWhen": "behind-base-branch",
+  "packageRules": [
+    {
+      "description": "Workaround, see https://github.com/gradle/gradle/issues/27035",
+      "matchPackagePatterns": [
+        "^com.google.guava:guava"
+      ],
+      "datasources": [
+        "maven"
+      ],
+      "matchCurrentVersion": "0",
+      "enabled": false
+    }
+  ]
 }
