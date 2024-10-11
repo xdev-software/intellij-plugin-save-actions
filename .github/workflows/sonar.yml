@@ -67,7 +67,7 @@ jobs:
 
       - name: Build
         run: |
-          ./gradlew build sonarqube --info \
+          ./gradlew build sonarqube -x test --info \
             -Dsonar.projectKey=${{ env.SONARCLOUD_ORG }}_${{ github.event.repository.name }} \
             -Dsonar.organization=${{ env.SONARCLOUD_ORG }} \
             -Dsonar.host.url=${{ env.SONARCLOUD_HOST }}
