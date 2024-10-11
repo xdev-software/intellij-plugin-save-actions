@@ -78,7 +78,7 @@ public class IdeSupportPanel
 		field.getField().setEnabled(false);
 		field.getField().setText(configurationPath);
 		final TextFieldWithBrowseButton resultPath = new TextFieldWithBrowseButton(field.getField());
-		resultPath.addBrowseFolderListener(null, null, null, descriptor, TEXT_FIELD_WHOLE_TEXT);
+		resultPath.addBrowseFolderListener(null, descriptor, TEXT_FIELD_WHOLE_TEXT);
 		return resultPath;
 	}
 	
