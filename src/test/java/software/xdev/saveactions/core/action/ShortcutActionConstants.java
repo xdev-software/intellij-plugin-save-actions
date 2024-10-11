@@ -37,7 +37,7 @@ public interface ShortcutActionConstants
 		// call plugin on document
 		final AnActionEvent event = AnActionEvent.createEvent(
 			dataContext,
-			action.getTemplatePresentation(),
+			action.getTemplatePresentation().clone(),
 			"save-actions",
 			ActionUiKind.NONE,
 			null);

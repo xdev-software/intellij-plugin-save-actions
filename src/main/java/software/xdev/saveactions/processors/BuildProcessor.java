@@ -86,7 +86,7 @@ public enum BuildProcessor implements Processor
 					.build();
 				AnActionEvent event = AnActionEvent.createEvent(
 					dataContext,
-					anAction.getTemplatePresentation(),
+					anAction.getTemplatePresentation().clone(),
 					UNKNOWN,
 					ActionUiKind.NONE,
 					null);
