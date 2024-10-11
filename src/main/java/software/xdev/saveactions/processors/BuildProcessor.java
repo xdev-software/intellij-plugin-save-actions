@@ -17,6 +17,7 @@ import com.intellij.debugger.DebuggerManagerEx;
 import com.intellij.debugger.impl.DebuggerSession;
 import com.intellij.debugger.ui.HotSwapUI;
 import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.ActionUiKind;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
@@ -83,7 +84,13 @@ public enum BuildProcessor implements Processor
 					.add(EDITOR, FileEditorManager.getInstance(project).getSelectedTextEditor())
 					.setParent(null)
 					.build();
-				AnActionEvent event = AnActionEvent.createFromAnAction(anAction, null, UNKNOWN, dataContext);
+				AnActionEvent event = AnActionEvent.createEvent(
+					dataContext,
+					anAction.getTemplatePresentation(),
+					UNKNOWN,
+					ActionUiKind.NONE,
+					null);
+				
 				anAction.actionPerformed(event);
 			}
 		})
