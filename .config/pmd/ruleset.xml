@@ -151,5 +151,12 @@
 		<exclude name="UseStringBufferForStringAppends"/>
 	</rule>
 
+	<rule ref="category/java/performance.xml/TooFewBranchesForSwitch">
+		<properties>
+			<!-- If you have one case only please use a if -->
+			<property name="minimumNumberCaseForASwitch" value="2"/>
+		</properties>
+	</rule>
+
 	<rule ref="category/java/security.xml"/>
 </ruleset>
