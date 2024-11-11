@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
@@ -43,12 +41,6 @@ public final class SaveActionsDocumentManagerListener implements FileDocumentMan
 		LOGGER.debug(
 			"[+] Start SaveActionsDocumentManagerListener#beforeAllDocumentsSaving, " + this.project.getName());
 		
-		if(REQUIRES_PROJECT_LOAD_IGNORE_WORKAROUND && isInvokedFromProjectLoadBefore243())
-		{
-			LOGGER.debug("Ignoring due to PROJECT_LOAD_IGNORE_WORKAROUND");
-			return;
-		}
-		
 		final List<Document> unsavedDocuments = Arrays.asList(FileDocumentManager.getInstance().getUnsavedDocuments());
 		if(!unsavedDocuments.isEmpty())
 		{
@@ -83,38 +75,4 @@ public final class SaveActionsDocumentManagerListener implements FileDocumentMan
 			this.psiDocumentManager = PsiDocumentManager.getInstance(this.project);
 		}
 	}
-	
-	// region PROJECT_LOAD_IGNORE_WORKAROUND
-	// https://github.com/xdev-software/intellij-plugin-save-actions/issues/145
-	private static final boolean REQUIRES_PROJECT_LOAD_IGNORE_WORKAROUND =
-		determineIfRequiresProjectLoadIgnoreWorkaround();
-	
-	@SuppressWarnings("checkstyle:MagicNumber")
-	static boolean determineIfRequiresProjectLoadIgnoreWorkaround()
-	{
-		try
-		{
-			// Problem was fixed in 2024.3
-			return ApplicationInfo.getInstance().getBuild().getBaselineVersion() < 243;
-		}
-		catch(final Exception ex)
-		{
-			LOGGER.warn("Failed to determine IDE version", ex);
-			return false;
-		}
-	}
-	
-	@SuppressWarnings("checkstyle:MagicNumber")
-	static boolean isInvokedFromProjectLoadBefore243()
-	{
-		// The invoking method ProjectSettingsTracker$submitSettingsFilesRefresh is usually at index 17 and 18
-		return Stream.of(Thread.currentThread().getStackTrace())
-			.map(StackTraceElement::getClassName)
-			.skip(16)
-			.limit(5)
-			.anyMatch(s -> s.startsWith(
-				"com.intellij.openapi.externalSystem.autoimport.ProjectSettingsTracker$submitSettingsFilesRefresh"));
-	}
-	
-	// endregion
 }
