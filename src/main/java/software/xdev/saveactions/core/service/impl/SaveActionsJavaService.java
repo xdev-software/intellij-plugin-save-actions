@@ -18,7 +18,6 @@ import software.xdev.saveactions.processors.java.JavaProcessor;
  * <p/>
  *
  * @see AbstractSaveActionsService
- * @since 2.4.0
  */
 public final class SaveActionsJavaService extends AbstractSaveActionsService
 {

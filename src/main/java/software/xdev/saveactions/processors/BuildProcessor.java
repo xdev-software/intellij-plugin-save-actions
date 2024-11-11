@@ -17,10 +17,13 @@ import com.intellij.debugger.DebuggerManagerEx;
 import com.intellij.debugger.impl.DebuggerSession;
 import com.intellij.debugger.ui.HotSwapUI;
 import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.ActionUiKind;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataContext;
+import com.intellij.openapi.actionSystem.ex.ActionUtil;
 import com.intellij.openapi.actionSystem.impl.SimpleDataContext;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
@@ -83,8 +86,16 @@ public enum BuildProcessor implements Processor
 					.add(EDITOR, FileEditorManager.getInstance(project).getSelectedTextEditor())
 					.setParent(null)
 					.build();
-				AnActionEvent event = AnActionEvent.createFromAnAction(anAction, null, UNKNOWN, dataContext);
-				anAction.actionPerformed(event);
+				AnActionEvent event = AnActionEvent.createEvent(
+					dataContext,
+					anAction.getTemplatePresentation().clone(),
+					UNKNOWN,
+					ActionUiKind.NONE,
+					null);
+				
+				// Run Action on EDT thread
+				ApplicationManager.getApplication().invokeLater(() ->
+					ActionUtil.performActionDumbAwareWithCallbacks(anAction, event));
 			}
 		})
 		{

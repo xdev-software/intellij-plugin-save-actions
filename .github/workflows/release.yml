@@ -9,8 +9,9 @@ permissions:
   pull-requests: write
 
 jobs:
-  check_code: # Validates the code
+  check_code:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
     - uses: actions/checkout@v4
       
@@ -45,6 +46,7 @@ jobs:
   prepare_release:
     runs-on: ubuntu-latest
     needs: [check_code]
+    timeout-minutes: 10
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
@@ -99,6 +101,7 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     needs: [prepare_release]
+    timeout-minutes: 60
     steps:
     - uses: actions/checkout@v4
     
@@ -132,6 +135,7 @@ jobs:
   after_release:
     runs-on: ubuntu-latest
     needs: [publish]
+    timeout-minutes: 10
     steps:
     - uses: actions/checkout@v4
       
