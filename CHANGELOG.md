@@ -1,3 +1,7 @@
+## 1.4.0
+* Dropped support for IntelliJ versions < 2024.3
+  * This is required to fix a few deprecations and remove some workarounds #171
+
 ## 1.3.1
 * Fix IDE hang when projects with different "Process files asynchronously" are open #160
 
