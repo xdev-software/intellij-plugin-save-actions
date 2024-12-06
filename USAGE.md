@@ -68,7 +68,7 @@ The actions are implemented in the form of "quick lists", an IDE function that i
 | ---                                | ---
 | File path inclusions               | Add / remove file path inclusions (by default, everything included). The Java regular expressions match the whole file name from the project root. Include only Java files: `.*\.java`. 
 | File path exclusions               | Add / remove file path exclusions to ignore files (overrides inclusions). The Java regular expressions match the whole file name from the project root. Exclude 'Main.java' only in root folder: `Main\.java`. Exclude file 'Foo.java' only in folder 'src': `src/Foo\.java`. Exclude all xml files in any folder: `.*/.*\.xml`
-| Use external Eclipse configuration | Add external configuration file ".epf" to read/overwrite settings from. This will overwrite the current settings with the ".epf" file content - if the corresponding setting is present (Please note that the checkboxes in the settings UI are not updated and used as "fallback" values!). Use "reset" button to remove
+| Use external Eclipse configuration | Add external configuration file ".epf" to read settings from. This will update the current settings and use only the ".epf" file content. Use "reset" button to remove
 
 ### Java fixes
 
