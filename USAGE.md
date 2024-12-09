@@ -103,7 +103,11 @@ Support for other JetBrains products should also be automatically available but 
 
 ### Eclipse configuration support
 
-The save-actions plugin supports Eclipse configuration `.epf` files by the [Workspace Mechanic](https://marketplace.eclipse.org/content/workspace-mechanic) Eclipse plugin (Java IDE only). You can specify a path to an Eclipse configuration file in the "Eclipse support" settings section to import it. The plugin will load the content of the file in the plugin configuration, and disable the plugin configuration options (the checkbox will be grayed out). Use the "reset" button to remove the import.
+The save-actions plugin supports Eclipse configuration `.epf` files by the [Workspace Mechanic](https://marketplace.eclipse.org/content/workspace-mechanic) Eclipse plugin (Java IDE only).
+You can specify a path to an Eclipse configuration file in the "Eclipse support" settings section to import it.
+The plugin will load the content of the file and configure the corresponding options. 
+Please note that not all plugin options have corresponding ``.epf`` options and therefore might not be configured.
+Use the "reset" button to remove the import.
 
 The plugin will stay in sync with your Eclipse configuration file. Not every features are present on either side, but the ones that are in common are supported.
 
