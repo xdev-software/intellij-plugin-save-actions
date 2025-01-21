@@ -61,7 +61,7 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.11.4'),
             'org.junit.jupiter:junit-jupiter',
             'org.junit.jupiter:junit-jupiter-engine',
-            'org.assertj:assertj-core:3.27.2'
+            'org.assertj:assertj-core:3.27.3'
     testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
         because("Only needed to run tests in a version of IntelliJ IDEA that bundles older versions")
     }
