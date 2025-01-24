@@ -21,7 +21,7 @@ on:
 env:
   UPDATE_BRANCH: update-from-template
   UPDATE_BRANCH_MERGED: update-from-template-merged
-  REMOTE_URL: https://github.com/xdev-software/java-template.git
+  REMOTE_URL: https://github.com/xdev-software/intellij-plugin-template.git
   REMOTE_BRANCH: master
 
 permissions:
