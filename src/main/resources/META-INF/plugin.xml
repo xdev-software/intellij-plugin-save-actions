@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<idea-plugin>
+    <vendor url="https://www.github.com/xdev-software">xdev-software</vendor>
+
+    <description><![CDATA[
+<p>Fork of the popular but now deprecated <a href="https://plugins.jetbrains.com/plugin/7642-save-actions">Save Actions</a> plugin by <a href="https://xdev.software/">XDEV Software</a>.</p>
+<br/>
+<p>Supports configurable, Eclipse like, save actions, including "optimize imports", "reformat code", "rearrange code", "compile file" and some quick fixes for Java like "add / remove 'this' qualifier", etc. The plugin executes the configured actions when the file is synchronised (or saved) on disk.</p>
+<br/>
+<p>More information is available on <a href="https://github.com/xdev-software/intellij-plugin-save-actions">GitHub</a>.</p>
+    ]]></description>
+
+    <change-notes><![CDATA[
+<a href="https://github.com/xdev-software/intellij-plugin-save-actions/releases">https://github.com/xdev-software/intellij-plugin-save-actions/releases</a>
+    ]]>
+    </change-notes>
+
+    <!-- Other product support activated in plugin page during upload at https://plugins.jetbrains.com -->
+    <depends optional="true" config-file="plugin-java.xml">com.intellij.modules.java</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationService
+                serviceImplementation="software.xdev.saveactions.core.service.impl.SaveActionsDefaultService"/>
+
+        <projectConfigurable id="settings.saveactions"
+                             instance="software.xdev.saveactions.ui.Configuration"
+                             displayName="Save Actions"
+                             dynamic="true"/>
+    </extensions>
+
+    <projectListeners>
+        <listener class="software.xdev.saveactions.core.listener.SaveActionsDocumentManagerListener"
+                  topic="com.intellij.openapi.fileEditor.FileDocumentManagerListener"/>
+    </projectListeners>
+
+    <actions>
+        <group id="software.xdev.saveactions.core.action.SaveActionsGroup"
+               text="Save Actions"
+               popup="true">
+            <add-to-group group-id="CodeFormatGroup"
+                          anchor="after"
+                          relative-to-action="RearrangeCode"/>
+
+            <action id="software.xdev.saveactions.core.action.ToggleAction"
+                    class="software.xdev.saveactions.core.action.ToggleAnAction"
+                    text="Enable Save Actions"
+                    description="Toggle the activation of Save Actions"/>
+
+            <action id="software.xdev.saveactions.core.action.ShortcutAction"
+                    class="software.xdev.saveactions.core.action.ShortcutAction"
+                    text="Execute Save Actions on Shortcut"
+                    description="Executes Save Actions with a shortcut">
+                <keyboard-shortcut keymap="$default"
+                                   first-keystroke="shift ctrl S"/>
+            </action>
+
+            <action id="software.xdev.saveactions.core.action.BatchAction"
+                    class="software.xdev.saveactions.core.action.BatchAction"
+                    text="Execute Save Actions on Multiple Files"
+                    description="Executes save actions on multiple files">
+            </action>
+        </group>
+    </actions>
+</idea-plugin>
