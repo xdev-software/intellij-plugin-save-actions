@@ -58,7 +58,7 @@ dependencies {
     checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
     pmd "net.sourceforge.pmd:pmd-ant:${pmdVersion}",
             "net.sourceforge.pmd:pmd-java:${pmdVersion}"
-    testImplementation platform('org.junit:junit-bom:5.12.0'),
+    testImplementation platform('org.junit:junit-bom:5.12.1'),
             'org.junit.jupiter:junit-jupiter',
             'org.junit.jupiter:junit-jupiter-engine',
             'org.assertj:assertj-core:3.27.3'
