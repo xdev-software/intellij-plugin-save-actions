@@ -23,7 +23,7 @@ jobs:
         cache: 'gradle'
       
     - name: Build
-      run: ./gradlew build buildPlugin --info
+      run: ./gradlew build buildPlugin --info --stacktrace
       
     - name: Check for uncommited changes
       run: |
