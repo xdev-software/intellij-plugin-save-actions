@@ -50,10 +50,6 @@ dependencies {
         create(properties("platformType"), properties("platformVersion"))
         bundledPlugins(properties("platformBundledPlugins").map { it.split(",").collect { it.trim() }.findAll { !it.empty } })
         plugins(properties("platformPlugins").map { it.split(",").collect { it.trim() }.findAll { !it.empty } })
-        pluginVerifier()
-        zipSigner()
-        instrumentationTools()
-        testFramework TestFrameworkType.Platform.INSTANCE
     }
     checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
     pmd "net.sourceforge.pmd:pmd-ant:${pmdVersion}",
