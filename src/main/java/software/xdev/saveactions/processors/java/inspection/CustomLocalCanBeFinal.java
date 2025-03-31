@@ -48,6 +48,6 @@ public class CustomLocalCanBeFinal extends LocalCanBeFinal
 	{
 		return Arrays
 			.stream(element.getParent().getChildren())
-			.noneMatch(child -> child instanceof PsiTypeElement && child.getText().equals("val"));
+			.noneMatch(child -> child instanceof PsiTypeElement && "val".equals(child.getText()));
 	}
 }

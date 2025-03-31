@@ -36,24 +36,24 @@ class EpfStorageTest
 	@BeforeEach
 	void before()
 	{
-		storage = new Storage();
+		this.storage = new Storage();
 		
-		storage.setActions(new HashSet<>());
-		storage.setInclusions(new HashSet<>());
-		storage.setExclusions(new HashSet<>());
+		this.storage.setActions(EnumSet.noneOf(Action.class));
+		this.storage.setInclusions(new HashSet<>());
+		this.storage.setExclusions(new HashSet<>());
 		
-		storage.getActions().add(activate);
-		storage.getActions().add(reformat);
-		storage.getActions().add(reformatChangedCode);
-		storage.getActions().add(fieldCanBeFinal);
-		storage.getActions().add(missingOverrideAnnotation);
-		storage.getActions().add(unnecessarySemicolon);
+		this.storage.getActions().add(activate);
+		this.storage.getActions().add(reformat);
+		this.storage.getActions().add(reformatChangedCode);
+		this.storage.getActions().add(fieldCanBeFinal);
+		this.storage.getActions().add(missingOverrideAnnotation);
+		this.storage.getActions().add(unnecessarySemicolon);
 		
-		storage.getInclusions().add("inclusion1");
-		storage.getInclusions().add("inclusion2");
+		this.storage.getInclusions().add("inclusion1");
+		this.storage.getInclusions().add("inclusion2");
 		
-		storage.getExclusions().add("exclusion1");
-		storage.getExclusions().add("exclusion2");
+		this.storage.getExclusions().add("exclusion1");
+		this.storage.getExclusions().add("exclusion2");
 	}
 	
 	@Test
@@ -61,36 +61,36 @@ class EpfStorageTest
 	{
 		Storage epfStorage;
 		
-		epfStorage = EpfStorage.INSTANCE.getStorageOrDefault(storage.getConfigurationPath(), storage);
-		assertThat(storage).isSameAs(epfStorage);
+		epfStorage = EpfStorage.INSTANCE.getStorageOrDefault(this.storage.getConfigurationPath(), this.storage);
+		assertThat(this.storage).isSameAs(epfStorage);
 		
-		storage.setConfigurationPath("bad path");
-		epfStorage = EpfStorage.INSTANCE.getStorageOrDefault(storage.getConfigurationPath(), storage);
-		assertThat(storage).isSameAs(epfStorage);
+		this.storage.setConfigurationPath("bad path");
+		epfStorage = EpfStorage.INSTANCE.getStorageOrDefault(this.storage.getConfigurationPath(), this.storage);
+		assertThat(this.storage).isSameAs(epfStorage);
 	}
 	
 	@Test
 	void should_default_storage_values_are_copied_to_epf_storage_if_empty_file()
 	{
-		Storage epfStorage = EpfStorage.INSTANCE.getStorageOrDefault(EXAMPLE_EPF_0.toString(), storage);
-		assertThat(epfStorage).isNotSameAs(storage);
+		final Storage epfStorage = EpfStorage.INSTANCE.getStorageOrDefault(EXAMPLE_EPF_0.toString(), this.storage);
+		assertThat(epfStorage).isNotSameAs(this.storage);
 		
-		assertThat(epfStorage.getActions()).isNotSameAs(storage.getActions());
-		assertThat(epfStorage.getInclusions()).isNotSameAs(storage.getInclusions());
-		assertThat(epfStorage.getExclusions()).isNotSameAs(storage.getExclusions());
+		assertThat(epfStorage.getActions()).isNotSameAs(this.storage.getActions());
+		assertThat(epfStorage.getInclusions()).isNotSameAs(this.storage.getInclusions());
+		assertThat(epfStorage.getExclusions()).isNotSameAs(this.storage.getExclusions());
 		
-		assertThat(epfStorage.getActions()).isEqualTo(storage.getActions());
-		assertThat(epfStorage.getInclusions()).isEqualTo(storage.getInclusions());
-		assertThat(epfStorage.getExclusions()).isEqualTo(storage.getExclusions());
+		assertThat(epfStorage.getActions()).isEqualTo(this.storage.getActions());
+		assertThat(epfStorage.getInclusions()).isEqualTo(this.storage.getInclusions());
+		assertThat(epfStorage.getExclusions()).isEqualTo(this.storage.getExclusions());
 	}
 	
 	@Test
 	void should_storage_values_are_correct_for_file_format_1()
 	{
-		Storage epfStorage = EpfStorage.INSTANCE.getStorageOrDefault(EXAMPLE_EPF_1.toString(), storage);
-		assertThat(epfStorage).isNotSameAs(storage);
+		final Storage epfStorage = EpfStorage.INSTANCE.getStorageOrDefault(EXAMPLE_EPF_1.toString(), this.storage);
+		assertThat(epfStorage).isNotSameAs(this.storage);
 		
-		EnumSet<Action> expected = EnumSet.of(
+		final EnumSet<Action> expected = EnumSet.of(
 			// from default store (not in java)
 			activate,
 			// in both store
@@ -116,17 +116,17 @@ class EpfStorageTest
 		);
 		
 		assertThat(epfStorage.getActions()).isEqualTo(expected);
-		assertThat(epfStorage.getInclusions()).isEqualTo(storage.getInclusions());
-		assertThat(epfStorage.getExclusions()).isEqualTo(storage.getExclusions());
+		assertThat(epfStorage.getInclusions()).isEqualTo(this.storage.getInclusions());
+		assertThat(epfStorage.getExclusions()).isEqualTo(this.storage.getExclusions());
 	}
 	
 	@Test
 	void should_storage_values_are_correct_for_file_format_2()
 	{
-		Storage epfStorage = EpfStorage.INSTANCE.getStorageOrDefault(EXAMPLE_EPF_2.toString(), storage);
-		assertThat(epfStorage).isNotSameAs(storage);
+		final Storage epfStorage = EpfStorage.INSTANCE.getStorageOrDefault(EXAMPLE_EPF_2.toString(), this.storage);
+		assertThat(epfStorage).isNotSameAs(this.storage);
 		
-		EnumSet<Action> expected = EnumSet.of(
+		final EnumSet<Action> expected = EnumSet.of(
 			missingOverrideAnnotation,
 			unnecessarySemicolon,
 			rearrange,
@@ -141,7 +141,7 @@ class EpfStorageTest
 		);
 		
 		assertThat(epfStorage.getActions()).isEqualTo(expected);
-		assertThat(epfStorage.getInclusions()).isEqualTo(storage.getInclusions());
-		assertThat(epfStorage.getExclusions()).isEqualTo(storage.getExclusions());
+		assertThat(epfStorage.getInclusions()).isEqualTo(this.storage.getInclusions());
+		assertThat(epfStorage.getExclusions()).isEqualTo(this.storage.getExclusions());
 	}
 }

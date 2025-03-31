@@ -9,11 +9,10 @@ import com.intellij.testFramework.fixtures.CodeInsightTestFixture;
 
 public interface BatchActionConstants
 {
-	
-	Consumer<CodeInsightTestFixture> SAVE_ACTION_BATCH_MANAGER = (fixture) ->
+	Consumer<CodeInsightTestFixture> SAVE_ACTION_BATCH_MANAGER = fixture ->
 		WriteCommandAction.writeCommandAction(fixture.getProject()).run(() -> runFixure(fixture));
 	
-	static void runFixure(CodeInsightTestFixture fixture)
+	static void runFixure(final CodeInsightTestFixture fixture)
 	{
 		// set modification timestamp ++
 		fixture.getFile().clearCaches();
