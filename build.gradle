@@ -112,7 +112,7 @@ checkstyle {
 
 pmd {
     consoleOutput = true
-    ruleSetFiles = files(".config/pmd/ruleset.xml")
+    ruleSetFiles = files(".config/pmd/java/ruleset.xml")
     toolVersion = pmdVersion
 }
 
