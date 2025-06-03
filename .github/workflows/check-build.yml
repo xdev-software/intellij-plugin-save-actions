@@ -1,0 +1,130 @@
+name: Check Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ develop ]
+    paths-ignore: 
+      - '**.md'
+      - '.config/**'
+      - '.github/**'
+      - '.idea/**'
+      - 'assets/**'
+  pull_request:
+    branches: [ develop ]
+    paths-ignore: 
+      - '**.md'
+      - '.config/**'
+      - '.github/**'
+      - '.idea/**'
+      - 'assets/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    strategy:
+      matrix:
+        java: [21]
+        distribution: [temurin]
+
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: ${{ matrix.distribution }}
+        java-version: ${{ matrix.java }}
+        cache: 'gradle'
+      
+    - name: Build
+      run: ./gradlew build buildPlugin --info --stacktrace
+
+    - name: Try upload test reports when failure occurs
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: test-reports-${{ matrix.java }}
+        path: build/reports/tests/test/**
+      
+    - name: Check for uncommited changes
+      run: |
+        if [[ "$(git status --porcelain)" != "" ]]; then
+          echo ----------------------------------------
+          echo git status
+          echo ----------------------------------------
+          git status
+          echo ----------------------------------------
+          echo git diff
+          echo ----------------------------------------
+          git diff
+          echo ----------------------------------------
+          echo Troubleshooting
+          echo ----------------------------------------
+          echo "::error::Unstaged changes detected. Locally try running: git clean -ffdx && mvn -B clean package"
+          exit 1
+        fi
+
+    - name: Upload plugin files
+      uses: actions/upload-artifact@v4
+      with:
+        name: plugin-files-java-${{ matrix.java }}
+        path: build/libs/template-placeholder-*.jar
+        if-no-files-found: error
+
+  checkstyle:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'renovate/') }}
+    timeout-minutes: 15
+
+    strategy:
+      matrix:
+        java: [21]
+        distribution: [temurin]
+
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: ${{ matrix.distribution }}
+        java-version: ${{ matrix.java }}
+        cache: 'gradle'
+
+    - name: Run Checkstyle
+      run: ./gradlew checkstyleMain checkstyleTest -PcheckstyleEnabled --stacktrace
+
+  pmd:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || !startsWith(github.head_ref, 'renovate/') }}
+    timeout-minutes: 15
+
+    strategy:
+      matrix:
+        java: [21]
+        distribution: [temurin]
+
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: ${{ matrix.distribution }}
+        java-version: ${{ matrix.java }}
+        cache: 'gradle'
+
+    - name: Run PMD
+      run: ./gradlew pmdMain pmdTest -PpmdEnabled --stacktrace
+
+    - name: Upload report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: pmd-report
+        if-no-files-found: ignore
+        path: |
+          build/reports/pmd/*.html
