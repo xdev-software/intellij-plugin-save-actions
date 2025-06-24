@@ -1,3 +1,7 @@
+## 1.4.1
+* Dropped support for IntelliJ versions < 2025.2
+  * Resolves "``ActionUtil.performActionDumbAwareWithCallbacks`` deprecated" #250
+
 ## 1.4.0
 * Dropped support for IntelliJ versions < 2024.3
   * This is required to fix a few deprecations and remove some workarounds #171
