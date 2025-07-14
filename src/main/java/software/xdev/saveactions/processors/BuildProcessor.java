@@ -95,7 +95,7 @@ public enum BuildProcessor implements Processor
 				
 				// Run Action on EDT thread
 				ApplicationManager.getApplication().invokeLater(() ->
-					ActionUtil.performActionDumbAwareWithCallbacks(anAction, event));
+					ActionUtil.performAction(anAction, event));
 			}
 		})
 		{
