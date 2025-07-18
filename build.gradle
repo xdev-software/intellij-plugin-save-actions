@@ -3,8 +3,7 @@ plugins {
     id 'idea'
     id 'checkstyle'
     id 'pmd'
-    id 'org.jetbrains.intellij.platform' version '2.3.0'
-    id 'org.sonarqube' version '6.2.0.5505'
+    id 'org.jetbrains.intellij.platform' version '2.6.0'
 }
 
 ext {
@@ -59,7 +58,7 @@ dependencies {
     checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
     pmd "net.sourceforge.pmd:pmd-ant:${pmdVersion}",
             "net.sourceforge.pmd:pmd-java:${pmdVersion}"
-    testImplementation platform('org.junit:junit-bom:5.13.2'),
+    testImplementation platform('org.junit:junit-bom:5.13.3'),
             'org.junit.jupiter:junit-jupiter',
             'org.junit.jupiter:junit-jupiter-engine',
             'org.assertj:assertj-core:3.27.3'
@@ -140,16 +139,6 @@ compileTestJava.options.encoding = 'UTF-8'
 // Activate junit since gradle 4.7
 test {
     useJUnitPlatform()
-}
-
-sonar {
-    properties {
-        // Ignore sonar warnings globally
-        property 'sonar.issue.ignore.multicriteria', 'S1948'
-        // Ignore serialization waring as it's only relevant for RMI which is not used
-        property 'sonar.issue.ignore.multicriteria.S1948.ruleKey', 'java:S1948'
-        property 'sonar.issue.ignore.multicriteria.S1948.resourceKey', '**/*.java'
-    }
 }
 
 // Add resources directory because intellij test framework checks there for test resources (instead of build/resources)
