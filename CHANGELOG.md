@@ -1,3 +1,6 @@
+## 1.4.1
+* Fix ``Add class qualifier to static member access outside declaring class`` not working correctly for ``switch`` statements #263
+
 ## 1.4.0
 * Dropped support for IntelliJ versions < 2024.3
   * This is required to fix a few deprecations and remove some workarounds #171
