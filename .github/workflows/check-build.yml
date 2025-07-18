@@ -40,7 +40,7 @@ jobs:
         cache: 'gradle'
       
     - name: Build
-      run: ./gradlew build buildPlugin --info
+      run: ./gradlew build buildPlugin --info --stacktrace
 
     - name: Try upload test reports when failure occurs
       uses: actions/upload-artifact@v4
@@ -95,7 +95,7 @@ jobs:
         cache: 'gradle'
 
     - name: Run Checkstyle
-      run: ./gradlew checkstyleMain checkstyleTest -PcheckstyleEnabled
+      run: ./gradlew checkstyleMain checkstyleTest -PcheckstyleEnabled --stacktrace
 
   pmd:
     runs-on: ubuntu-latest
@@ -118,7 +118,7 @@ jobs:
         cache: 'gradle'
 
     - name: Run PMD
-      run: ./gradlew pmdMain pmdTest -PpmdEnabled
+      run: ./gradlew pmdMain pmdTest -PpmdEnabled --stacktrace
 
     - name: Upload report
       if: always()

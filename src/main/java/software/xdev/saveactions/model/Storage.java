@@ -1,6 +1,7 @@
 package software.xdev.saveactions.model;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -30,7 +31,7 @@ public final class Storage implements PersistentStateComponent<Storage>
 	public Storage()
 	{
 		this.firstLaunch = true;
-		this.actions = new HashSet<>();
+		this.actions = EnumSet.noneOf(Action.class);
 		this.exclusions = new HashSet<>();
 		this.inclusions = new HashSet<>();
 		this.configurationPath = null;
@@ -41,7 +42,7 @@ public final class Storage implements PersistentStateComponent<Storage>
 	public Storage(final Storage storage)
 	{
 		this.firstLaunch = storage.firstLaunch;
-		this.actions = new HashSet<>(storage.actions);
+		this.actions = EnumSet.copyOf(storage.actions);
 		this.exclusions = new HashSet<>(storage.exclusions);
 		this.inclusions = new HashSet<>(storage.inclusions);
 		this.configurationPath = storage.configurationPath;

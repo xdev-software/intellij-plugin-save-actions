@@ -28,6 +28,7 @@ build/
 .idea/*
 !.idea/saveactions_settings.xml
 !.idea/checkstyle-idea.xml
+!.idea/externalDependencies.xml
 
 !.idea/inspectionProfiles/
 .idea/inspectionProfiles/*

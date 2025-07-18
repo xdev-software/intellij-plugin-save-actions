@@ -1,9 +1,8 @@
 [![Latest version](https://img.shields.io/jetbrains/plugin/v/22113?logo=jetbrains)](https://plugins.jetbrains.com/plugin/22113)
 [![Build](https://img.shields.io/github/actions/workflow/status/xdev-software/intellij-plugin-save-actions/check-build.yml?branch=develop)](https://github.com/xdev-software/intellij-plugin-save-actions/actions/workflows/check-build.yml?query=branch%3Adevelop)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=xdev-software_intellij-plugin-save-actions&metric=alert_status)](https://sonarcloud.io/dashboard?id=xdev-software_intellij-plugin-save-actions)
 [![Feel free to leave a rating](https://img.shields.io/jetbrains/plugin/r/rating/22113?style=social&logo=jetbrains&label=Feel%20free%20to%20leave%20a%20rating)](https://plugins.jetbrains.com/plugin/22113/reviews)
 
-# <img alt="Save Actions Plugin icon light" src="./src/main/resources/META-INF/pluginIcon.svg" height="30"> Save Actions X
+# <img alt="Save Actions Plugin icon light" src="./src/main/resources/META-INF/pluginIcon.svg" width="30"> Save Actions X
 
 > [!NOTE]  
 > This plugin is a fork of [dubreuia/intellij-plugin-save-actions](https://github.com/dubreuia/intellij-plugin-save-actions) and [fishermans/intellij-plugin-save-actions](https://github.com/fishermans/intellij-plugin-save-actions) and is kept in maintenance mode:

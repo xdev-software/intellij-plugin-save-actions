@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
 import com.intellij.psi.JavaResolveResult;
+import com.intellij.psi.PsiCaseLabelElementList;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiEnumConstant;
@@ -15,7 +16,7 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiMethodCallExpression;
 import com.intellij.psi.PsiModifier;
 import com.intellij.psi.PsiReferenceExpression;
-import com.intellij.psi.PsiSwitchLabelStatement;
+import com.intellij.psi.PsiSwitchLabelStatementBase;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtil;
 import com.siyeh.ig.BaseInspectionVisitor;
@@ -113,7 +114,7 @@ public class CustomUnqualifiedStaticUsageInspection extends UnqualifiedStaticUsa
 				return false;
 			}
 			final PsiMember member = (PsiMember)element;
-			if(member instanceof PsiEnumConstant && expression.getParent() instanceof PsiSwitchLabelStatement)
+			if(this.isEnumInSwitch(member, expression))
 			{
 				return false;
 			}
@@ -124,6 +125,20 @@ public class CustomUnqualifiedStaticUsageInspection extends UnqualifiedStaticUsa
 				return false;
 			}
 			return member.hasModifierProperty(PsiModifier.STATIC);
+		}
+		
+		private boolean isEnumInSwitch(final PsiMember member, final PsiReferenceExpression expression)
+		{
+			if(!(member instanceof PsiEnumConstant))
+			{
+				return false;
+			}
+			
+			final PsiElement parent = expression.getParent();
+			return parent instanceof PsiCaseLabelElementList
+				|| parent != null && parent.getParent() instanceof PsiSwitchLabelStatementBase
+				// This was the original code and might be needed for older java versions
+				|| parent instanceof PsiSwitchLabelStatementBase;
 		}
 	}
 }
