@@ -1,7 +1,6 @@
 package software.xdev.saveactions.model;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -18,9 +17,12 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 
 @State(name = "SaveActionSettings", storages = {@com.intellij.openapi.components.Storage("saveactions_settings.xml")})
 @Service(Service.Level.PROJECT)
+@SuppressWarnings("PMD.UseEnumCollections") // Set must be nullable!
 public final class Storage implements PersistentStateComponent<Storage>
 {
 	private boolean firstLaunch;
+	// Must use a set that supports nullable values!
+	// For example EnumSet will crash when encountering an unknown/null value
 	private Set<Action> actions;
 	private Set<String> exclusions;
 	private Set<String> inclusions;
@@ -31,7 +33,7 @@ public final class Storage implements PersistentStateComponent<Storage>
 	public Storage()
 	{
 		this.firstLaunch = true;
-		this.actions = EnumSet.noneOf(Action.class);
+		this.actions = new HashSet<>();
 		this.exclusions = new HashSet<>();
 		this.inclusions = new HashSet<>();
 		this.configurationPath = null;
@@ -42,7 +44,7 @@ public final class Storage implements PersistentStateComponent<Storage>
 	public Storage(final Storage storage)
 	{
 		this.firstLaunch = storage.firstLaunch;
-		this.actions = EnumSet.copyOf(storage.actions);
+		this.actions = new HashSet<>(storage.actions);
 		this.exclusions = new HashSet<>(storage.exclusions);
 		this.inclusions = new HashSet<>(storage.inclusions);
 		this.configurationPath = storage.configurationPath;
