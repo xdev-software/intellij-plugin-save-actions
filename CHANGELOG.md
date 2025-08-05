@@ -1,3 +1,6 @@
+## 1.4.2
+* Fix storage deserialization crash on unknown actions value #273
+
 ## 1.4.1
 * Fix ``Add class qualifier to static member access outside declaring class`` not working correctly for ``switch`` statements #263
 
