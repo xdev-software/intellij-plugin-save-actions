@@ -56,9 +56,6 @@ public enum ActionTestFile
 	ExplicitTypeCanBeDiamond_KO,
 	ExplicitTypeCanBeDiamond_OK,
 	
-	SuppressAnnotation_KO,
-	SuppressAnnotation_OK,
-	
 	UnnecessarySemicolon_KO,
 	UnnecessarySemicolon_OK,
 	
