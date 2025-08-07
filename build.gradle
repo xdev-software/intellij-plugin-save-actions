@@ -1,0 +1,152 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'checkstyle'
+    id 'pmd'
+    id 'org.jetbrains.intellij.platform' version '2.7.0'
+}
+
+ext {
+    checkstyleVersion = '10.26.1'
+
+    pmdVersion = '7.16.0'
+}
+
+def properties(String key) {
+    return providers.gradleProperty(key)
+}
+
+def environment(String key) {
+    return providers.environmentVariable(key)
+}
+
+apply plugin: 'org.jetbrains.intellij.platform'
+apply plugin: 'java'
+apply plugin: 'checkstyle'
+
+// Add plugin group and version
+group = properties("pluginGroup").get()
+version = properties("pluginVersion").get()
+
+// Add build script repository to maven central
+repositories {
+    mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+        jetbrainsRuntime()
+    }
+}
+
+// https://github.com/gradle/gradle/issues/27035
+configurations.checkstyle {
+    resolutionStrategy.capabilitiesResolution.withCapability("com.google.collections:google-collections") {
+        select("com.google.guava:guava:0")
+    }
+}
+
+// Add dependencies to test, junit5 api (annotations) and engine (runtime)
+dependencies {
+    intellijPlatform {
+        create(properties("platformType"), properties("platformVersion"))
+        bundledPlugins(properties("platformBundledPlugins").map { it.split(",").collect { it.trim() }.findAll { !it.empty } })
+        plugins(properties("platformPlugins").map { it.split(",").collect { it.trim() }.findAll { !it.empty } })
+        pluginVerifier()
+        zipSigner()
+        instrumentationTools()
+    }
+    checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
+    pmd "net.sourceforge.pmd:pmd-ant:${pmdVersion}",
+            "net.sourceforge.pmd:pmd-java:${pmdVersion}"
+    testImplementation platform('org.junit:junit-bom:5.13.4'),
+            'org.junit.jupiter:junit-jupiter',
+            'org.junit.jupiter:junit-jupiter-engine',
+            'org.assertj:assertj-core:3.27.3'
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
+        because("Only needed to run tests in a version of IntelliJ IDEA that bundles older versions")
+    }
+}
+
+// Add intellij task configuration for base intellij version (minimum compatibility)
+// This needs to fit the tag <idea-version since-build="xxx"> in plugin.xml
+// See https://www.jetbrains.com/intellij-repository/snapshots
+// See https://www.jetbrains.com/intellij-repository/releases
+intellijPlatform {
+    pluginConfiguration {
+        name = properties("pluginName")
+        version = properties("pluginVersion")
+    }
+    patchPluginXml {
+        pluginId = properties("pluginGroup")
+        pluginName = properties("pluginName")
+        pluginVersion = properties("pluginVersion")
+        sinceBuild = properties("platformSinceBuild")
+        untilBuild = provider { null }
+    }
+    pluginVerification {
+        ides {
+            recommended()
+        }
+    }
+    signPlugin {
+        certificateChain = environment("CERTIFICATE_CHAIN")
+        privateKey = environment("PRIVATE_KEY")
+        password = environment("PRIVATE_KEY_PASSWORD")
+    }
+    publishPlugin {
+        token = environment("PUBLISH_TOKEN")
+        // The pluginVersion is based on the SemVer (https://semver.org) and supports pre-release labels, like 2.1.7-alpha.3
+        // Specify pre-release label to publish the plugin in a custom Release Channel automatically. Read more:
+        // https://plugins.jetbrains.com/docs/intellij/deployment.html#specifying-a-release-channel
+        channels = properties("pluginVersion")
+                .map { [((it.split('-') as List)[1] ?: "default").split('\\.').find { true }.toLowerCase()] }
+    }
+}
+
+checkstyle {
+    configDirectory = file("$rootProject.projectDir/.config/checkstyle")
+    ignoreFailures = false
+    showViolations = true
+    toolVersion = checkstyleVersion
+}
+
+pmd {
+    consoleOutput = true
+    ruleSetFiles = files(".config/pmd/java/ruleset.xml")
+    toolVersion = pmdVersion
+}
+
+tasks.withType(Checkstyle).configureEach {
+    enabled = project.hasProperty("checkstyleEnabled");
+}
+
+tasks.withType(Pmd).configureEach {
+    enabled = project.hasProperty("pmdEnabled")
+}
+
+// Configure compileJava AND compileTestJava
+// https://docs.gradle.org/current/dsl/org.gradle.api.tasks.compile.JavaCompile.html
+tasks.withType(JavaCompile).configureEach {
+    // JAVA compatibility
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+
+compileJava.options.encoding = 'UTF-8'
+compileJava.options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+compileTestJava.options.encoding = 'UTF-8'
+
+// Activate junit since gradle 4.7
+test {
+    useJUnitPlatform()
+}
+
+// Add resources directory because intellij test framework checks there for test resources (instead of build/resources)
+sourceSets {
+    test.output.resourcesDir = "build/classes/java/resources"
+}
+
+tasks {
+    wrapper {
+        gradleVersion = properties("gradleVersion").get()
+    }
+}
