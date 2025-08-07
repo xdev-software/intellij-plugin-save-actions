@@ -1,3 +1,7 @@
+## 1.5.0
+* Dropped support for IntelliJ versions < 2025.2
+  * Resolves "``ActionUtil.performActionDumbAwareWithCallbacks`` deprecated" #250
+
 ## 1.4.2
 * Fix storage deserialization crash on unknown actions value #273
 
