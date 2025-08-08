@@ -7,7 +7,7 @@ plugins {
 }
 
 ext {
-    checkstyleVersion = '10.26.1'
+    checkstyleVersion = '11.0.0'
 
     pmdVersion = '7.16.0'
 }
