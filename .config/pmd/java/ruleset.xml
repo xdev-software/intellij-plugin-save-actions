@@ -194,4 +194,52 @@
 	</rule>
 
 	<rule ref="category/java/security.xml"/>
+
+	<rule name="AvoidSystemSetterCall"
+		  language="java"
+		  message="Setters of java.lang.System should not be called unless really needed"
+		  class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>
+			Calling setters of java.lang.System usually indicates bad design and likely causes unexpected behavior.
+			For example, it may break when multiple Threads are setting the value.
+			It may also overwrite user defined options or properties.
+
+			Try to pass the value only to the place where it's really needed and use it there accordingly.
+		</description>
+		<priority>3</priority>
+		<properties>
+			<property name="xpath">
+				<value>
+					<![CDATA[
+//MethodCall[starts-with(@MethodName,'set')]/TypeExpression[pmd-java:typeIsExactly('java.lang.System')]
+]]>
+				</value>
+			</property>
+		</properties>
+	</rule>
+
+	<rule name="JavaObjectSerializationIsUnsafe"
+		  language="java"
+		  message="Using Java Object (De-)Serialization is unsafe and has led to too many security vulnerabilities"
+		  class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>
+			Nearly every known usage of (Java) Object Deserialization has resulted in [a security vulnerability](https://cloud.google.com/blog/topics/threat-intelligence/hunting-deserialization-exploits?hl=en).
+			Vulnerabilities are so common that there are [dedicated projects for exploit payload generation](https://github.com/frohoff/ysoserial).
+
+			Java Object Serialization may also fail to deserialize when the underlying classes are changed.
+
+			Use proven data interchange formats like JSON instead.
+		</description>
+		<priority>2</priority>
+		<properties>
+			<property name="xpath">
+				<value>
+					<![CDATA[
+//ClassDeclaration[@Interface = false()]/ClassBody/FieldDeclaration/VariableDeclarator/VariableId[@Name='serialVersionUID'] |
+//ConstructorCall/ClassType[pmd-java:typeIsExactly('java.io.ObjectInputStream') or pmd-java:typeIsExactly('java.io.ObjectOutputStream')]
+]]>
+				</value>
+			</property>
+		</properties>
+	</rule>
 </ruleset>

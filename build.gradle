@@ -3,11 +3,11 @@ plugins {
     id 'idea'
     id 'checkstyle'
     id 'pmd'
-    id 'org.jetbrains.intellij.platform' version '2.7.0'
+    id 'org.jetbrains.intellij.platform' version '2.7.2'
 }
 
 ext {
-    checkstyleVersion = '10.26.1'
+    checkstyleVersion = '11.0.0'
 
     pmdVersion = '7.16.0'
 }
