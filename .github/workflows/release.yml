@@ -92,7 +92,7 @@ jobs:
           See [Changelog#v${{ steps.version.outputs.release }}](https://github.com/xdev-software/${{ github.event.repository.name }}/blob/develop/CHANGELOG.md#${{ steps.version.outputs.releasenumber }}) for more information.
 
           ## Installation
-          The plugin is listed on the [Marketplace](https://plugins.jetbrains.com/plugin/pluginId).
+          The plugin is listed on the [Marketplace](https://plugins.jetbrains.com/plugin/22113).
           
           Open the plugin Marketplace in your IDE (``File > Settings > Plugins > Marketplace``), search for the plugin and hit the install button.
           
