@@ -71,7 +71,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: plugin-files-java-${{ matrix.java }}
-        path: build/libs/template-placeholder-*.jar
+        path: build/libs/intellij-plugin-save-actions-*.jar
         if-no-files-found: error
 
   checkstyle:
