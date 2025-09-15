@@ -44,7 +44,7 @@ configurations.checkstyle {
     }
 }
 
-// Add dependencies to test, junit5 api (annotations) and engine (runtime)
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 dependencies {
     intellijPlatform {
         create(properties("platformType"), properties("platformVersion"))
@@ -53,6 +53,7 @@ dependencies {
         pluginVerifier()
         zipSigner()
         instrumentationTools()
+        testFramework TestFrameworkType.Platform.INSTANCE
     }
     checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
     pmd "net.sourceforge.pmd:pmd-ant:${pmdVersion}",
