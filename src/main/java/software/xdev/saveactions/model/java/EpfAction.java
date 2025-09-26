@@ -4,7 +4,10 @@ import static java.util.Collections.unmodifiableList;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import software.xdev.saveactions.model.Action;
@@ -64,6 +67,9 @@ public enum EpfAction
 		Action.explicitTypeCanBeDiamond,
 		EpfKey.remove_redundant_type_arguments);
 	
+	private static final Map<Action, EpfAction> ACTION_VALUES = stream()
+		.collect(Collectors.toMap(EpfAction::getAction, Function.identity()));
+	
 	private final Action action;
 	private final List<EpfKey> epfKeys;
 	
@@ -85,7 +91,7 @@ public enum EpfAction
 	
 	public static Optional<EpfAction> getEpfActionForAction(final Action action)
 	{
-		return stream().filter(epfAction -> epfAction.action.equals(action)).findFirst();
+		return Optional.ofNullable(ACTION_VALUES.get(action));
 	}
 	
 	public static Stream<EpfAction> stream()

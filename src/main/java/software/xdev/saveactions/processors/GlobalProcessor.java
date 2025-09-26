@@ -2,9 +2,12 @@ package software.xdev.saveactions.processors;
 
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.jetbrains.annotations.NotNull;
@@ -37,6 +40,9 @@ public enum GlobalProcessor implements Processor
 		(project, psiFiles) -> reformatCode(project, psiFiles, true)),
 	
 	rearrange(Action.rearrange, GlobalProcessor::rearrangeCode);
+	
+	private static final Map<Action, Processor> ACTION_VALUES = stream()
+		.collect(Collectors.toMap(Processor::getAction, Function.identity()));
 	
 	@NotNull
 	private static Runnable rearrangeCode(final Project project, final PsiFile[] psiFiles)
@@ -103,7 +109,7 @@ public enum GlobalProcessor implements Processor
 	
 	public static Optional<Processor> getProcessorForAction(final Action action)
 	{
-		return stream().filter(processor -> processor.getAction().equals(action)).findFirst();
+		return Optional.ofNullable(ACTION_VALUES.get(action));
 	}
 	
 	public static Stream<Processor> stream()

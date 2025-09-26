@@ -27,7 +27,7 @@ class JavaProcessorTest
 		JavaProcessor.stream()
 			.forEach(processor -> assertThat(processor.getAction().getType()).isEqualTo(java));
 		JavaProcessor.stream()
-			.forEach(processor -> assertThat(((JavaProcessor)processor).getInspection()).isNotNull());
+			.forEach(processor -> assertThat(processor.getInspection()).isNotNull());
 	}
 	
 	@Test

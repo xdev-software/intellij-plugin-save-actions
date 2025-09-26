@@ -3,11 +3,13 @@ package software.xdev.saveactions.core.component;
 import static java.util.stream.Collectors.toSet;
 
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -45,6 +47,7 @@ public class Engine
 {
 	private static final Logger LOGGER = Logger.getInstance(SaveActionsService.class);
 	private static final String REGEX_STARTS_WITH_ANY_STRING = ".*?";
+	private static final Map<String, Pattern> PATTERN_CACHE = Collections.synchronizedMap(new WeakHashMap<>());
 	
 	private final Storage storage;
 	private final List<Processor> processors;
@@ -327,14 +330,17 @@ public class Engine
 		return psiFileIncluded;
 	}
 	
+	@SuppressWarnings("PMD.AvoidRecompilingPatterns")
 	private boolean atLeastOneMatch(final String psiFileUrl, final Set<String> patterns)
 	{
 		for(final String pattern : patterns)
 		{
 			try
 			{
-				final Matcher matcher = Pattern.compile(REGEX_STARTS_WITH_ANY_STRING + pattern).matcher(psiFileUrl);
-				if(matcher.matches())
+				final Pattern compiledPattern = PATTERN_CACHE.computeIfAbsent(
+					pattern,
+					p -> Pattern.compile(REGEX_STARTS_WITH_ANY_STRING + p));
+				if(compiledPattern.matcher(psiFileUrl).matches())
 				{
 					return true;
 				}

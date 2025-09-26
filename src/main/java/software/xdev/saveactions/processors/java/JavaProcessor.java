@@ -2,10 +2,13 @@ package software.xdev.saveactions.processors.java;
 
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.intellij.codeInspection.ExplicitTypeCanBeDiamondInspection;
@@ -129,6 +132,9 @@ public enum JavaProcessor implements Processor
 		Action.accessCanBeTightened,
 		() -> new CustomAccessCanBeTightenedInspection(new VisibilityInspection()));
 	
+	private static final Map<Action, JavaProcessor> ACTION_VALUES = stream()
+		.collect(Collectors.toMap(JavaProcessor::getAction, Function.identity()));
+	
 	private final Action action;
 	private final LocalInspectionTool inspection;
 	
@@ -169,12 +175,12 @@ public enum JavaProcessor implements Processor
 		return this.inspection;
 	}
 	
-	public static Optional<Processor> getProcessorForAction(final Action action)
+	public static Optional<JavaProcessor> getProcessorForAction(final Action action)
 	{
-		return stream().filter(processor -> processor.getAction().equals(action)).findFirst();
+		return Optional.ofNullable(ACTION_VALUES.get(action));
 	}
 	
-	public static Stream<Processor> stream()
+	public static Stream<JavaProcessor> stream()
 	{
 		return Arrays.stream(values());
 	}
