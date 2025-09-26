@@ -169,7 +169,7 @@ abstract class AbstractSaveActionsService implements SaveActionsService
 			.orElseGet(List::of);
 	}
 	
-	protected SaveActionsService addProcessors(final Stream<Processor> processors)
+	protected SaveActionsService addProcessors(final Stream<? extends Processor> processors)
 	{
 		processors.forEach(this.processors::add);
 		this.processors.sort(new Processor.OrderComparator());

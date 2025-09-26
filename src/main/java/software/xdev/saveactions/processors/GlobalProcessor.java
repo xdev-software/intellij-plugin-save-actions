@@ -41,7 +41,7 @@ public enum GlobalProcessor implements Processor
 	
 	rearrange(Action.rearrange, GlobalProcessor::rearrangeCode);
 	
-	private static final Map<Action, Processor> ACTION_VALUES = stream()
+	private static final Map<Action, GlobalProcessor> ACTION_VALUES = stream()
 		.collect(Collectors.toMap(Processor::getAction, Function.identity()));
 	
 	@NotNull
@@ -107,12 +107,12 @@ public enum GlobalProcessor implements Processor
 		return this.command;
 	}
 	
-	public static Optional<Processor> getProcessorForAction(final Action action)
+	public static Optional<GlobalProcessor> getProcessorForAction(final Action action)
 	{
 		return Optional.ofNullable(ACTION_VALUES.get(action));
 	}
 	
-	public static Stream<Processor> stream()
+	public static Stream<GlobalProcessor> stream()
 	{
 		return Arrays.stream(values());
 	}

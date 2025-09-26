@@ -144,12 +144,12 @@ public enum BuildProcessor implements Processor
 		return this.command;
 	}
 	
-	public static Optional<Processor> getProcessorForAction(final Action action)
+	public static Optional<BuildProcessor> getProcessorForAction(final Action action)
 	{
 		return stream().filter(processor -> processor.getAction().equals(action)).findFirst();
 	}
 	
-	public static Stream<Processor> stream()
+	public static Stream<BuildProcessor> stream()
 	{
 		return Arrays.stream(values());
 	}
