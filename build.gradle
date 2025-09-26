@@ -45,6 +45,9 @@ configurations.checkstyle {
 }
 
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
+
+// Add dependencies to test, junit5 api (annotations) and engine (runtime)
 dependencies {
     intellijPlatform {
         create(properties("platformType"), properties("platformVersion"))
@@ -61,7 +64,7 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.13.4'),
             'org.junit.jupiter:junit-jupiter',
             'org.junit.jupiter:junit-jupiter-engine',
-            'org.assertj:assertj-core:3.27.4'
+            'org.assertj:assertj-core:3.27.6'
     testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
         because("Only needed to run tests in a version of IntelliJ IDEA that bundles older versions")
     }
@@ -73,8 +76,13 @@ dependencies {
 // See https://www.jetbrains.com/intellij-repository/releases
 intellijPlatform {
     pluginConfiguration {
+        id = properties("pluginGroup")
         name = properties("pluginName")
         version = properties("pluginVersion")
+        ideaVersion {
+            sinceBuild = properties("platformSinceBuild")
+            untilBuild = provider { null }
+        }
     }
     patchPluginXml {
         pluginId = properties("pluginGroup")
@@ -85,7 +93,15 @@ intellijPlatform {
     }
     pluginVerification {
         ides {
-            recommended()
+            select {
+                it.types = [IntelliJPlatformType.IntellijIdeaCommunity]
+                it.sinceBuild = properties("platformSinceBuild")
+                it.untilBuild = '252.*'
+            }
+            select {
+                it.types = [IntelliJPlatformType.IntellijIdea]
+                it.sinceBuild = '253'
+            }
         }
     }
     signPlugin {
