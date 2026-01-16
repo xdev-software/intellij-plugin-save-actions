@@ -10,10 +10,14 @@
 
 	<!-- Only rules that don't overlap with CheckStyle! -->
 
+	<!-- About: Formatting -->
+	<!-- Some lines (e.g. description, examples and CDATA) have to start without any indents or this will result in incorrect formatting -->
+
 	<rule ref="category/java/bestpractices.xml/AvoidPrintStackTrace"/>
 	<rule ref="category/java/bestpractices.xml/AvoidUsingHardCodedIP"/>
 	<rule ref="category/java/bestpractices.xml/ConstantsInInterface"/>
 	<rule ref="category/java/bestpractices.xml/ExhaustiveSwitchHasDefault"/>
+	<rule ref="category/java/bestpractices.xml/LabeledStatement"/>
 	<rule ref="category/java/bestpractices.xml/LiteralsFirstInComparisons"/>
 	<!-- CheckStyle can't handle this switch behavior -> delegated to PMD -->
 	<rule ref="category/java/bestpractices.xml/NonExhaustiveSwitch"/>
@@ -25,6 +29,7 @@
 	<rule ref="category/java/bestpractices.xml/PreserveStackTrace"/>
 	<rule ref="category/java/bestpractices.xml/SimplifiableTestAssertion"/>
 	<rule ref="category/java/bestpractices.xml/SystemPrintln"/>
+	<rule ref="category/java/bestpractices.xml/UnnecessaryWarningSuppression"/>
 	<rule ref="category/java/bestpractices.xml/UnusedAssignment"/>
 	<rule ref="category/java/bestpractices.xml/UnusedFormalParameter"/>
 	<rule ref="category/java/bestpractices.xml/UnusedPrivateField"/>
@@ -145,6 +150,7 @@
 	<rule ref="category/java/errorprone.xml/DontUseFloatTypeForLoopIndices"/>
 	<rule ref="category/java/errorprone.xml/EqualsNull"/>
 	<rule ref="category/java/errorprone.xml/IdempotentOperations"/>
+	<rule ref="category/java/errorprone.xml/IdenticalConditionalBranches"/>
 	<rule ref="category/java/errorprone.xml/ImplicitSwitchFallThrough"/>
 	<rule ref="category/java/errorprone.xml/InstantiationToGetClass"/>
 	<rule ref="category/java/errorprone.xml/InvalidLogMessageFormat"/>
@@ -207,14 +213,14 @@
 		message="StringBuilder/StringBuffer should not be used"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			Usually all cases where `StringBuilder` (or the outdated `StringBuffer`) is used are either due to confusing (legacy) logic or may be replaced by a simpler string concatenation.
+Usually all cases where `StringBuilder` (or the outdated `StringBuffer`) is used are either due to confusing (legacy) logic or in situations where it may be easily replaced by a simpler string concatenation.
 
-			Solution:
-			* Do not use `StringBuffer` because it's thread-safe and usually this is not needed
-			* If `StringBuilder` is only used in a simple method (like `toString`) and is effectively inlined: Use a simpler string concatenation (`"a" + x + "b"`). This will be optimized by the Java compiler internally.
-			* In all other cases: 
-			  * Check what is happening and if it makes ANY sense! If for example a CSV file is built here consider using a proper library instead!
-			  * Abstract the Strings into a DTO, join them together using a collection (or `StringJoiner`) or use Java's Streaming API instead
+Solution:
+* Do not use `StringBuffer` because it's thread-safe and usually this is not needed
+* If `StringBuilder` is only used in a simple method (like `toString`) and is effectively inlined: Use a simpler string concatenation (`"a" + x + "b"`). This will be [optimized by the Java compiler internally](https://docs.oracle.com/javase/specs/jls/se25/html/jls-15.html#jls-15.18.1).
+* In all other cases: 
+	* Check what is happening and if it makes ANY sense! If for example a CSV file is built here consider using a proper library instead!
+	* Abstract the Strings into a DTO, join them together using a collection (or `StringJoiner`) or use Java's Streaming API instead
 		</description>
 		<priority>3</priority>
 		<properties>
@@ -233,11 +239,11 @@
 		message="Setters of java.lang.System should not be called unless really needed"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			Calling setters of java.lang.System usually indicates bad design and likely causes unexpected behavior.
-			For example, it may break when multiple Threads are setting the value.
-			It may also overwrite user defined options or properties.
+Calling setters of `java.lang.System` usually indicates bad design and likely causes unexpected behavior.
+For example, it may break when multiple Threads are working with the same value.
+It may also overwrite user defined options or properties.
 
-			Try to pass the value only to the place where it's really needed and use it there accordingly.
+Try to pass the value only to the place where it's really needed and use it there accordingly.
 		</description>
 		<priority>3</priority>
 		<properties>
@@ -256,10 +262,10 @@
 		message="Avoid @PostConstruct"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			Using a `@PostConstruct` method is usually only done when field injection is used and initialization needs to be performed after that.
+Using a `@PostConstruct` method is usually only done when field injection is used and initialization needs to be performed after that.
 
-			It's better to do this directly in the constructor with constructor injection, so that all logic will be encapsulated there.
-			This also makes using the bean in environments where JavaEE is not present - for example in tests - a lot easier, as forgetting to call the `@PostConstruct` method is no longer possible.
+It's better to do this directly in the constructor with constructor injection, so that all logic will be encapsulated there.
+This also makes using the bean in environments where JavaEE is not present - for example in tests - a lot easier, as forgetting to call the `@PostConstruct` method is no longer possible.
 		</description>
 		<priority>3</priority>
 		<properties>
@@ -278,9 +284,9 @@
 		message="Avoid @PreDestroy"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			`@PreDestroy` should be replaced by implementing `AutoCloseable` and overwriting the `close` method instead.
+`@PreDestroy` should be replaced by implementing `AutoCloseable` and overwriting the `close` method instead.
 
-			This also makes using the bean in environments where JavaEE is not present - for example in tests - a lot easier, as forgetting to call the `@PreDestroy` method is no much more difficult.
+This also makes using the bean in environments where JavaEE is not present - for example in tests - a lot easier, as forgetting to call the `@PreDestroy` method is no much more difficult.
 		</description>
 		<priority>3</priority>
 		<properties>
@@ -299,10 +305,10 @@
 		message="Avoid unmanaged threads"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			Trying to manually manage threads usually gets quickly out of control and may result in various problems like uncontrollable spawning of threads.
-			Threads can also not be cancelled properly.
+Trying to manually manage threads usually gets quickly out of control and may result in various problems like uncontrollable spawning of threads.
+Threads can also not be cancelled properly.
 
-			Use managed Thread services like `ExecutorService` and `CompletableFuture` instead.
+Use managed Thread services like `ExecutorService` and `CompletableFuture` instead.
 		</description>
 		<priority>3</priority>
 		<properties>
@@ -321,10 +327,10 @@
 		message="ZipEntry name should be sanitized"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			ZipEntry name should be sanitized.
-			Unsanitized names may contain '..' which can result in path traversal ("ZipSlip").
+ZipEntry name should be sanitized.
+Unsanitized names may contain '..' which can result in path traversal ("ZipSlip").
 
-			You can suppress this warning when you properly sanitized the name.
+You can suppress this warning when you properly sanitized the name.
 		</description>
 		<priority>4</priority>
 		<properties>
@@ -343,12 +349,13 @@
 		message="Using Java Object (De-)Serialization is unsafe and has led to too many security vulnerabilities"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			Nearly every known usage of (Java) Object Deserialization has resulted in [a security vulnerability](https://cloud.google.com/blog/topics/threat-intelligence/hunting-deserialization-exploits?hl=en).
-			Vulnerabilities are so common that there are [dedicated projects for exploit payload generation](https://github.com/frohoff/ysoserial).
+Nearly every known usage of (Java) Object Deserialization has resulted in [a security vulnerability](https://cloud.google.com/blog/topics/threat-intelligence/hunting-deserialization-exploits?hl=en).
+Vulnerabilities are so common that there are [dedicated projects for exploit payload generation](https://github.com/frohoff/ysoserial).
 
-			Java Object Serialization may also fail to deserialize when the underlying classes are changed.
+Java Object Serialization may also fail to deserialize properly when the underlying classes are changed.
+This can result in unexpected crashes when outdated data is deserialized.
 
-			Use proven data interchange formats like JSON instead.
+Use proven data interchange formats like JSON instead.
 		</description>
 		<priority>2</priority>
 		<properties>
@@ -368,10 +375,11 @@
 	<rule name="VaadinNativeHTMLIsUnsafe"
 		language="java"
 		message="Unescaped native HTML is unsafe and will result in XSS vulnerabilities"
-		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" >
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule"
+		externalInfoUrl="https://developer.mozilla.org/en-US/docs/Web/API/Element/innerHTML">
 		<description>
-			Do not use native HTML! Use Vaadin layouts and components to create required structure.
-			If you are 100% sure that you escaped the value properly and you have no better options you can suppress this.
+Do not use native HTML! Use Vaadin layouts and components to create required structure.
+If you are 100% sure that you escaped the value properly and you have no better options you can suppress this.
 		</description>
 		<priority>2</priority>
 		<properties>
@@ -395,9 +403,9 @@
 		message="Avoid using DecimalFormat or ChoiceFormat as field since it is thread-unsafe"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			java.text.NumberFormat: DecimalFormat and ChoiceFormat are thread-unsafe.
+java.text.NumberFormat: DecimalFormat and ChoiceFormat are thread-unsafe.
 
-			Solution: Create a new local one when needed in a method.
+Solution: Create a new local one when needed in a method.
 		</description>
 		<priority>1</priority>
 		<properties>
@@ -427,11 +435,11 @@ public class Foo {
 		message="Detected possible resource expensive implicit regex pattern compilation"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			A regular expression is compiled implicitly on every invocation. 
-			Problem: This can be (CPU) expensive, depending on the length of the regular expression.
+A regular expression is compiled implicitly on every invocation. 
+Problem: This can be (CPU) expensive, depending on the length of the regular expression.
 
-			Solution: Compile the regex pattern only once and assign it to a private static final Pattern field.
-			java.util.Pattern objects are thread-safe, so they can be shared among threads.
+Solution: Compile the regex pattern only once and assign it to a private static final Pattern field.
+java.util.Pattern objects are thread-safe, so they can be shared among threads.
 		</description>
 		<priority>2</priority>
 		<properties>
@@ -476,11 +484,11 @@ String good_replaceInnerLineBreakBySpace() {
 		message="Default buffer capacity is used which usually needs expensive expansions"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			The default constructor of ByteArrayOutputStream creates a 32 bytes initial capacity and for StringWriter 16 chars. 
-			Such a small buffer as capacity usually needs several expensive expansions.
+The default constructor of ByteArrayOutputStream creates a 32 bytes initial capacity and for StringWriter 16 chars. 
+Such a small buffer as capacity usually needs several expensive expansions.
 
-			Solution: Explicitly declared the buffer size so that an expansion is not needed in most cases. 
-			Typically much larger than 32, e.g. 4096.
+Solution: Explicitly declared the buffer size so that an expansion is not needed in most cases. 
+Typically much larger than 32, e.g. 4096.
 		</description>
 		<priority>2</priority>
 		<properties>
@@ -516,12 +524,12 @@ class Good {
 		message="Avoid re-streaming enum values to find a value by a field"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			The time to find element is O(n); n = the number of enum values. 
-			This identical processing is executed for every call. 
-			Considered problematic when `n > 3`.
+The time to find element is O(n); n = the number of enum values. 
+This identical processing is executed for every call. 
+Considered problematic when `n > 3`.
 
-			Solution: Use a static field-to-enum-value Map. Access time is O(1), provided the hashCode is well-defined.
-			Implement a fromString method to provide the reverse conversion by using the map.
+Solution: Use a static field-to-enum-value Map. Access time is O(1), provided the hashCode is well-defined.
+Implement a fromString method to provide the reverse conversion by using the map.
 		</description>
 		<priority>3</priority>
 		<properties>
@@ -582,11 +590,11 @@ public enum Fruit {
 		message="Pattern.compile is used in a method. Compiling a regex pattern can be expensive, make it a static final field."
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			A regular expression is compiled on every invocation. 
-			Problem: this can be expensive, depending on the length of the regular expression.
+A regular expression is compiled on every invocation. 
+Problem: this can be expensive, depending on the length of the regular expression.
 
-			Solution: Usually a pattern is a literal, not dynamic and can be compiled only once. Assign it to a private static field. 
-			java.util.Pattern objects are thread-safe so they can be shared among threads.
+Solution: Usually a pattern is a literal, not dynamic and can be compiled only once. Assign it to a private static field. 
+java.util.Pattern objects are thread-safe so they can be shared among threads.
 		</description>
 		<priority>2</priority>
 		<properties>
@@ -628,10 +636,10 @@ public static void good() {
 		message="Avoid expensive recreation of DateTimeFormatter"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			Recreating a DateTimeFormatter is relatively expensive.
+Recreating a DateTimeFormatter is relatively expensive.
 
-			Solution: Java 8+ java.time.DateTimeFormatter is thread-safe and can be shared among threads. 
-			Create the formatter from a pattern only once, to initialize a static final field.
+Solution: Java 8+ java.time.DateTimeFormatter is thread-safe and can be shared among threads. 
+Create the formatter from a pattern only once, to initialize a static final field.
 		</description>
 		<priority>2</priority>
 		<properties>
@@ -658,11 +666,11 @@ or pmd-java:matchesSig('java.time.format.DateTimeFormatterBuilder#toFormatter(_)
 		message="Avoid expensive recreation of security providers"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			Creating a security provider is expensive because of loading of algorithms and other classes. 
-			Additionally, it uses synchronized which leads to lock contention when used with multiple threads.
+Creating a security provider is expensive because of loading of algorithms and other classes. 
+Additionally, it uses synchronized which leads to lock contention when used with multiple threads.
 
-			Solution: This only needs to happen once in the JVM lifetime, because once loaded the provider is typically available from the Security class. 
-			Create the security provider only once: Only in case when it's not yet available from the Security class.
+Solution: This only needs to happen once in the JVM lifetime, because once loaded the provider is typically available from the Security class. 
+Create the security provider only once: Only in case when it's not yet available from the Security class.
 		</description>
 		<priority>2</priority>
 		<properties>
@@ -709,9 +717,9 @@ class Foo {
 		message="Expensive Reflection is used"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			Reflection is relatively expensive.
+Reflection is relatively expensive.
 
-			Solution: Avoid reflection. Use the non-reflective, explicit way like generation by IDE.
+Solution: Avoid reflection. Use the non-reflective, explicit way like generation by IDE.
 		</description>
 		<priority>2</priority>
 		<properties>
@@ -752,11 +760,11 @@ class Good {
 		message="SimpleDateFormat is used. Since it is thread-unsafe, it needs expensive recreation."
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			java.util.SimpleDateFormat is thread-unsafe.
-			The usual solution is to create a new one when needed in a method.
-			Creating SimpleDateFormat is relatively expensive.
+java.util.SimpleDateFormat is thread-unsafe.
+The usual solution is to create a new one when needed in a method.
+Creating SimpleDateFormat is relatively expensive.
 
-			Solution: Use java.time.DateTimeFormatter. These classes are immutable, thus thread-safe and can be made static.
+Solution: Use java.time.DateTimeFormatter. These classes are immutable, thus thread-safe and can be made static.
 		</description>
 		<priority>2</priority>
 		<properties>
@@ -793,15 +801,15 @@ public class Foo {
 		message="Avoid the ForkJoinPool::commonPool used in parallelStream for blocking calls"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			Blocking calls, for instance remote calls, may exhaust the common pool for some time thereby blocking all other use of the common pool.
-			In addition, nested use of the common pool can lead to deadlock. Do not use the common pool for blocking calls. 
-			The parallelStream() call uses the common pool.
+Blocking calls, for instance remote calls, may exhaust the common pool for some time thereby blocking all other use of the common pool.
+In addition, nested use of the common pool can lead to deadlock. Do not use the common pool for blocking calls. 
+The parallelStream() call uses the common pool.
 
-			Solution: Use a dedicated thread pool with enough threads to get proper parallelism.
-			The number of threads in the common pool is equal to the number of CPUs and meant to utilize all of them.
-			It assumes CPU-intensive non-blocking processing of in-memory data.
+Solution: Use a dedicated thread pool with enough threads to get proper parallelism.
+The number of threads in the common pool is equal to the number of CPUs and meant to utilize all of them.
+It assumes CPU-intensive non-blocking processing of in-memory data.
 
-			See also: [_Be Aware of ForkJoinPool#commonPool()_](https://dzone.com/articles/be-aware-of-forkjoinpoolcommonpool)
+See also: [_Be Aware of ForkJoinPool#commonPool()_](https://dzone.com/articles/be-aware-of-forkjoinpoolcommonpool)
 		</description>
 		<priority>2</priority>
 		<properties>
@@ -861,15 +869,15 @@ public class Foo {
 		message="Avoid using the common thread pool, use a separate pool"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			CompletableFuture.supplyAsync/runAsync is typically used for remote calls.
-			By default it uses the common pool.
-			The number of threads in the common pool is equal to the number of CPU's, which is suitable for in-memory processing.
-			For I/O, however, this number is typically not suitable because most time is spent waiting for the response and not in CPU.
-			The common pool must not be used for blocking calls.
+CompletableFuture.supplyAsync/runAsync is typically used for remote calls.
+By default it uses the common pool.
+The number of threads in the common pool is equal to the number of CPU's, which is suitable for in-memory processing.
+For I/O, however, this number is typically not suitable because most time is spent waiting for the response and not in CPU.
+The common pool must not be used for blocking calls.
 
-			Solution: A separate, properly sized pool of threads (an Executor) should be used for the async calls.
+Solution: A separate, properly sized pool of threads (an Executor) should be used for the async calls.
 
-			See also: [_Be Aware of ForkJoinPool#commonPool()_](https://dzone.com/articles/be-aware-of-forkjoinpoolcommonpool)
+See also: [_Be Aware of ForkJoinPool#commonPool()_](https://dzone.com/articles/be-aware-of-forkjoinpoolcommonpool)
 		</description>
 		<priority>2</priority>
 		<properties>
@@ -907,9 +915,9 @@ public class Foo {
 		message="Avoid CompletionService.take, use poll"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			`take()` stalls indefinitely in case of hanging threads and consumes a thread.
+`take()` stalls indefinitely in case of hanging threads and consumes a thread.
 
-			Solution: use `poll()` with a timeout value and handle the timeout.
+Solution: use `poll()` with a timeout value and handle the timeout.
 		</description>
 		<priority>2</priority>
 		<properties>
@@ -943,9 +951,9 @@ public static <T> void collectAllCollectionReplyFromThreads(CompletionService<Li
 		message="Avoid using ExecutorService::invokeAll or invokeAny without a timeout"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			Stalls indefinitely in case of stalled Callable(s) and consumes threads.
+Stalls indefinitely in case of stalled Callable(s) and consumes threads.
 
-			Solution: Provide a timeout to the invokeAll/invokeAny method and handle the timeout.
+Solution: Provide a timeout to the invokeAll/invokeAny method and handle the timeout.
 		</description>
 		<priority>2</priority>
 		<properties>
@@ -978,9 +986,9 @@ class Foo {
 		message="Avoid future.get without timeout"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			Stalls indefinitely in case of hanging threads and consumes a thread.
+Stalls indefinitely in case of hanging threads and consumes a thread.
 
-			Solution: Provide a timeout value and handle the timeout.
+Solution: Provide a timeout value and handle the timeout.
 		</description>
 		<priority>2</priority>
 		<properties>
@@ -1011,10 +1019,10 @@ public static String good(CompletableFuture<String> complFuture) throws Exceptio
 		message="An HttpClient is created and combined with request-response"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			Apache HttpClient with its connection pool and timeouts should be setup once and then used for many requests. 
-			It is quite expensive to create and can only provide the benefits of pooling when reused in all requests for that connection.
+Apache HttpClient with its connection pool and timeouts should be setup once and then used for many requests. 
+It is quite expensive to create and can only provide the benefits of pooling when reused in all requests for that connection.
 
-			Solution: Create/build HttpClient with proper connection pooling and timeouts once, and then use it for requests.
+Solution: Create/build HttpClient with proper connection pooling and timeouts once, and then use it for requests.
 		</description>
 		<priority>3</priority>
 		<properties>
@@ -1053,11 +1061,11 @@ class Foo {
 		message="A Gson object is created for each method call, which is expensive."
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>
-			Problem: Gson creation is relatively expensive. A JMH benchmark shows a 24x improvement reusing one instance.
+Problem: Gson creation is relatively expensive. A JMH benchmark shows a 24x improvement reusing one instance.
 
-			Solution: Since Gson objects are thread-safe after creation, they can be shared between threads. 
-			So reuse created instances from a static field. 
-			Pay attention to use thread-safe (custom) adapters and serializers.
+Solution: Since Gson objects are thread-safe after creation, they can be shared between threads. 
+So reuse created instances from a static field. 
+Pay attention to use thread-safe (custom) adapters and serializers.
 		</description>
 		<priority>3</priority>
 		<properties>

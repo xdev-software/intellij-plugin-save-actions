@@ -28,7 +28,7 @@ jobs:
         java: [21]
         distribution: [temurin]
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Set up JDK
       uses: actions/setup-java@v5
@@ -50,7 +50,7 @@ jobs:
       run: ./gradlew build buildPlugin --info --stacktrace
 
     - name: Try upload test reports when failure occurs
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       if: failure()
       with:
         name: test-reports-${{ matrix.java }}
@@ -75,10 +75,10 @@ jobs:
         fi
 
     - name: Upload plugin files
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: plugin-files-java-${{ matrix.java }}
-        path: build/libs/intellij-plugin-save-actions-*.jar
+        path: build/distributions/*.zip
         if-no-files-found: error
 
   checkstyle:
@@ -90,7 +90,7 @@ jobs:
         java: [21]
         distribution: [temurin]
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Set up JDK
       uses: actions/setup-java@v5
@@ -120,7 +120,7 @@ jobs:
         java: [21]
         distribution: [temurin]
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Set up JDK
       uses: actions/setup-java@v5
@@ -143,7 +143,7 @@ jobs:
 
     - name: Upload report
       if: always()
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: pmd-report
         if-no-files-found: ignore

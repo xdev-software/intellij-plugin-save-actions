@@ -91,7 +91,7 @@
 			<property name="ignoreFieldDeclaration" value="true"/>
 			<property name="ignoreHashCodeMethod" value="true"/>
 			<!-- Defaults + other common constant values (e.g. time) -->
-			<property name="ignoreNumbers" value="-1, 0, 1, 2, 3, 4, 5, 10, 12, 24, 31, 60, 100, 1000"/>
+			<property name="ignoreNumbers" value="-1, 0, 1, 2, 3, 4, 5, 8, 10, 12, 16, 24, 25, 31, 32, 50, 60, 64, 100, 128, 200, 256, 500, 512, 1000, 1024, 2000, 2048, 4000, 4096, 8000, 8192"/>
 		</module>
 		<module name="MemberName"/>
 		<module name="MethodLength"/>
@@ -122,9 +122,7 @@
 		<module name="StaticVariableName"/>
 		<module name="StringLiteralEquality"/>
 		<module name="SuppressWarningsHolder"/>
-		<module name="TodoComment">
-			<property name="severity" value="info"/>
-		</module>
+		<module name="TodoComment"/>
 		<module name="TypecastParenPad"/>
 		<module name="TypeName"/>
 		<module name="UnnecessaryParentheses"/>
