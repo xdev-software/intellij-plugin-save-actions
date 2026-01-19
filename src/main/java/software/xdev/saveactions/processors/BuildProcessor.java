@@ -65,6 +65,7 @@ public enum BuildProcessor implements Processor
 			}
 		}),
 	
+	@SuppressWarnings("checkstyle:IllegalIdentifierName")
 	executeAction(
 		Action.executeAction,
 		(project, psiFiles) -> () -> {

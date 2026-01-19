@@ -80,7 +80,7 @@ class BuildPanel
 		this.quickListElements.addAll(quickListWrappers);
 		if(!this.quickLists.isEmpty())
 		{
-			final String selectedItem = this.quickLists.get(0);
+			final String selectedItem = this.quickLists.getFirst();
 			this.quickListElements.stream()
 				.filter(wrapper -> wrapper.hasId(selectedItem))
 				.findFirst()
@@ -107,6 +107,7 @@ class BuildPanel
 		return wrapper;
 	}
 	
+	@SuppressWarnings("checkstyle:IllegalIdentifierName")
 	private static final class QuickListWrapper
 	{
 		private final QuickList quickList;

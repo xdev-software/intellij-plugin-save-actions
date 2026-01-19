@@ -23,6 +23,7 @@ abstract class FileMaskPanel extends JPanel
 {
 	private final SortedListModel patternModels = new SortedListModel();
 	
+	@SuppressWarnings("checkstyle:IllegalIdentifierName")
 	private final JBList<String> patternList;
 	
 	private final JPanel patternPanel;
