@@ -37,7 +37,7 @@ jobs:
         java-version: ${{ matrix.java }}
 
     - name: Cache Gradle
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: |
           ~/.gradle/caches
@@ -50,7 +50,7 @@ jobs:
       run: ./gradlew build buildPlugin --info --stacktrace
 
     - name: Try upload test reports when failure occurs
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       if: failure()
       with:
         name: test-reports-${{ matrix.java }}
@@ -75,7 +75,7 @@ jobs:
         fi
 
     - name: Upload plugin files
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: plugin-files-java-${{ matrix.java }}
         path: build/distributions/*.zip
@@ -99,7 +99,7 @@ jobs:
         java-version: ${{ matrix.java }}
 
     - name: Cache Gradle
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: |
           ~/.gradle/caches
@@ -132,7 +132,7 @@ jobs:
       run: ./gradlew pmdMain pmdTest -PpmdEnabled --stacktrace -x test
 
     - name: Cache Gradle
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: |
           ~/.gradle/caches
@@ -143,7 +143,7 @@ jobs:
 
     - name: Upload report
       if: always()
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: pmd-report
         if-no-files-found: ignore

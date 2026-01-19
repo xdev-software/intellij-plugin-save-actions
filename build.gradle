@@ -7,9 +7,9 @@ plugins {
 }
 
 ext {
-    checkstyleVersion = '12.2.0'
+    checkstyleVersion = '13.0.0'
 
-    pmdVersion = '7.19.0'
+    pmdVersion = '7.20.0'
 }
 
 def properties(String key) {
@@ -61,7 +61,7 @@ dependencies {
     checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
     pmd "net.sourceforge.pmd:pmd-ant:${pmdVersion}",
             "net.sourceforge.pmd:pmd-java:${pmdVersion}"
-    testImplementation platform('org.junit:junit-bom:6.0.1'),
+    testImplementation platform('org.junit:junit-bom:6.0.2'),
             'org.junit.jupiter:junit-jupiter',
             'org.junit.jupiter:junit-jupiter-engine',
             'org.assertj:assertj-core:3.27.6'
