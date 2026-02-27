@@ -64,7 +64,7 @@ jobs:
       run: ./gradlew verifyPlugin --info --stacktrace
 
     - name: Upload report
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       if: ${{ always() }}
       with:
         name: plugin-verifier-reports

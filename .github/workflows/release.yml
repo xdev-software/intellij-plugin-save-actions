@@ -135,7 +135,7 @@ jobs:
       run: ./gradlew publishPlugin --info --stacktrace
 
     - name: Upload plugin files
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: plugin-files
         path: build/distributions/*

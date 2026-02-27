@@ -35,7 +35,7 @@ jobs:
         run: ./gradlew publishPlugin --info --stacktrace
 
       - name: Upload plugin files
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: plugin-files-java-${{ matrix.java }}
           path: build/distributions/*
