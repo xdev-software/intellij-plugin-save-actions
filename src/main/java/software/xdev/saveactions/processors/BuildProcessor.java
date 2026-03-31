@@ -3,7 +3,6 @@ package software.xdev.saveactions.processors;
 import static com.intellij.openapi.actionSystem.ActionPlaces.UNKNOWN;
 import static com.intellij.openapi.actionSystem.CommonDataKeys.EDITOR;
 import static com.intellij.openapi.actionSystem.CommonDataKeys.PROJECT;
-import static software.xdev.saveactions.utils.Helper.toVirtualFiles;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -27,6 +26,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.compiler.CompilerManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 
 import software.xdev.saveactions.core.ExecutionMode;
@@ -47,7 +47,9 @@ public enum BuildProcessor implements Processor
 			{
 				return;
 			}
-			CompilerManager.getInstance(project).compile(toVirtualFiles(psiFiles), null);
+			CompilerManager.getInstance(project).compile(
+				Arrays.stream(psiFiles).map(PsiFile::getVirtualFile).toArray(VirtualFile[]::new),
+				null);
 		}),
 	
 	reload(
