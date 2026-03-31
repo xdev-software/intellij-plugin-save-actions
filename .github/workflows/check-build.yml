@@ -42,7 +42,7 @@ jobs:
         path: |
           ~/.gradle/caches
           ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-build-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        key: ${{ runner.os }}-gradle-build-${{ hashFiles('**/*.gradle*', '**/gradle.properties', '**/gradle-wrapper.properties') }}
         restore-keys: |
           ${{ runner.os }}-gradle-build-
 
@@ -50,7 +50,7 @@ jobs:
       run: ./gradlew build buildPlugin --info --stacktrace
 
     - name: Try upload test reports when failure occurs
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       if: failure()
       with:
         name: test-reports-${{ matrix.java }}
@@ -75,7 +75,7 @@ jobs:
         fi
 
     - name: Upload plugin files
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: plugin-files-java-${{ matrix.java }}
         path: build/distributions/*.zip
@@ -104,7 +104,7 @@ jobs:
         path: |
           ~/.gradle/caches
           ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-checkstyle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        key: ${{ runner.os }}-gradle-checkstyle-${{ hashFiles('**/*.gradle*', '**/gradle.properties', '**/gradle-wrapper.properties') }}
         restore-keys: |
           ${{ runner.os }}-gradle-checkstyle-
 
@@ -137,13 +137,13 @@ jobs:
         path: |
           ~/.gradle/caches
           ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-pmd-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        key: ${{ runner.os }}-gradle-pmd-${{ hashFiles('**/*.gradle*', '**/gradle.properties', '**/gradle-wrapper.properties') }}
         restore-keys: |
           ${{ runner.os }}-gradle-pmd-
 
     - name: Upload report
       if: always()
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: pmd-report
         if-no-files-found: ignore

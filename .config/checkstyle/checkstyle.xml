@@ -79,6 +79,11 @@
 			<property name="format" value="^(?!(.*(Map|List|Set))$).+$"/>
 			<property name="tokens" value="PARAMETER_DEF, VARIABLE_DEF, PATTERN_VARIABLE_DEF, RECORD_COMPONENT_DEF, LAMBDA"/>
 		</module>
+		<!-- Name classes correctly and don't use generic name for everything -->
+		<module name="IllegalIdentifierName">
+			<property name="format" value="^(?!(.*(Helper|Util))$).+$"/>
+			<property name="tokens" value=" CLASS_DEF"/>
+		</module>
 		<module name="IllegalImport"/>
 		<module name="InterfaceIsType"/>
 		<module name="JavadocStyle">
