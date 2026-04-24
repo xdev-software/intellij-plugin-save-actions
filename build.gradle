@@ -44,8 +44,8 @@ configurations.checkstyle {
     }
 }
 
-import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 // Add dependencies to test, junit5 api (annotations) and engine (runtime)
 dependencies {
@@ -55,6 +55,8 @@ dependencies {
         plugins(properties("platformPlugins").map { it.split(",").collect { it.trim() }.findAll { !it.empty } })
         pluginVerifier()
         zipSigner()
+        // 2026-04 Can't change "Platform" to "JUnit5" because IntelliJ still has
+        // required code/fixtures only in Platform and they are hardwired with JUnit4
         testFramework TestFrameworkType.Platform.INSTANCE
     }
     checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
