@@ -120,7 +120,7 @@ public class Engine
 				.filter(psiFile -> this.isPsiFileEligible(this.project, psiFile))
 				.collect(toSet());
 		final Set<PsiFile> psiFilesEligible = async
-			? ReadAction.compute(psiFilesEligibleFunc)
+			? ReadAction.computeBlocking(psiFilesEligibleFunc)
 			: psiFilesEligibleFunc.compute();
 		LOGGER.info(String.format("Valid files %s", psiFilesEligible));
 		return psiFilesEligible;
