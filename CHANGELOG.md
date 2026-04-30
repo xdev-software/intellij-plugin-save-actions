@@ -1,3 +1,6 @@
+## 1.6.1
+* Fix rare second reformat error #193
+
 ## 1.6.0
 * Minor code cleanups and optimizations
 * Dropped support for IntelliJ versions < 2026.1
