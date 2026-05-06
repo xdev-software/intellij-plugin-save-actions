@@ -1,6 +1,5 @@
 package software.xdev.saveactions.model.java;
 
-import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
@@ -15,7 +14,7 @@ class EpfActionTest
 	@Test
 	void should_epf_action_have_no_duplicate_action()
 	{
-		final List<Action> actions = EpfAction.stream().map(EpfAction::getAction).collect(toList());
+		final List<Action> actions = EpfAction.stream().map(EpfAction::getAction).toList();
 		assertThat(actions).doesNotHaveDuplicates();
 	}
 	

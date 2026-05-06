@@ -8,9 +8,6 @@
 out
 classes
 
-# Vim
-*.swp
-
 # Plugins
 *.idea/checkstyle-idea.xml
 
@@ -29,6 +26,8 @@ build/
 !.idea/saveactions_settings.xml
 !.idea/checkstyle-idea.xml
 !.idea/externalDependencies.xml
+!.idea/pmd-x.xml
+!.idea/PMDPlugin.xml
 
 !.idea/inspectionProfiles/
 .idea/inspectionProfiles/*

@@ -1,6 +1,5 @@
 package software.xdev.saveactions.model.java;
 
-import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.FileInputStream;
@@ -56,14 +55,14 @@ class EpfKeyTest
 			.map(Object::toString)
 			.filter(key -> EpfKey.getPrefixes().stream().anyMatch(key::startsWith))
 			.map(key -> key.substring(key.lastIndexOf('.') == -1 ? 0 : key.lastIndexOf('.') + 1))
-			.collect(toList());
+			.toList();
 	}
 	
 	private List<String> getEpfKeyNames()
 	{
 		return EpfKey.stream()
 			.map(EpfKey::name)
-			.collect(toList());
+			.toList();
 	}
 	
 	private Properties readProperties(final String configurationPath) throws IOException

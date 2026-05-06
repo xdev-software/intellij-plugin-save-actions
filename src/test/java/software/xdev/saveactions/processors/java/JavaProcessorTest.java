@@ -1,6 +1,5 @@
 package software.xdev.saveactions.processors.java;
 
-import static java.util.stream.Collectors.toList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static software.xdev.saveactions.model.ActionType.java;
 
@@ -17,7 +16,7 @@ class JavaProcessorTest
 	@Test
 	void should_java_processor_have_no_duplicate_action()
 	{
-		final List<Action> actions = JavaProcessor.stream().map(Processor::getAction).collect(toList());
+		final List<Action> actions = JavaProcessor.stream().map(Processor::getAction).toList();
 		assertThat(actions).doesNotHaveDuplicates();
 	}
 	
@@ -27,7 +26,7 @@ class JavaProcessorTest
 		JavaProcessor.stream()
 			.forEach(processor -> assertThat(processor.getAction().getType()).isEqualTo(java));
 		JavaProcessor.stream()
-			.forEach(processor -> assertThat(((JavaProcessor)processor).getInspection()).isNotNull());
+			.forEach(processor -> assertThat(processor.getInspection()).isNotNull());
 	}
 	
 	@Test

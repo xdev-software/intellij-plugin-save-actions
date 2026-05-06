@@ -17,17 +17,16 @@ import software.xdev.saveactions.core.service.SaveActionsService;
 
 public interface SaveActionManagerConstants
 {
-	
 	BiConsumer<CodeInsightTestFixture, SaveActionsService> SAVE_ACTION_MANAGER = (fixture, saveActionService) ->
 		WriteCommandAction.writeCommandAction(fixture.getProject()).run(() -> runFixture(fixture, saveActionService));
 	
-	static void runFixture(CodeInsightTestFixture fixture, SaveActionsService saveActionService)
+	static void runFixture(final CodeInsightTestFixture fixture, final SaveActionsService saveActionService)
 	{
 		// set modification timestamp ++
 		fixture.getFile().clearCaches();
 		
 		// call plugin on document
-		Set<PsiFile> psiFiles = new HashSet<>(singleton(fixture.getFile()));
+		final Set<PsiFile> psiFiles = new HashSet<>(singleton(fixture.getFile()));
 		saveActionService.guardedProcessPsiFiles(fixture.getProject(), psiFiles, activate, saveAll);
 	}
 }

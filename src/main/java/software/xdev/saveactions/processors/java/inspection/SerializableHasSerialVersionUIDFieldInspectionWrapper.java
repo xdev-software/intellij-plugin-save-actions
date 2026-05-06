@@ -58,7 +58,7 @@ public final class SerializableHasSerialVersionUIDFieldInspectionWrapper
 			this.targetClass = targetClass;
 		}
 		
-		public LocalInspectionTool getInspectionInstance()
+		LocalInspectionTool getInspectionInstance()
 		{
 			try
 			{

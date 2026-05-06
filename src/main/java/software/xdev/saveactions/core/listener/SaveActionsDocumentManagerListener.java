@@ -39,7 +39,7 @@ public final class SaveActionsDocumentManagerListener implements FileDocumentMan
 	public void beforeAllDocumentsSaving()
 	{
 		LOGGER.debug(
-			"[+] Start SaveActionsDocumentManagerListener#beforeAllDocumentsSaving, " + this.project.getName());
+			"[+] Start SaveActionsDocumentManagerListener#beforeAllDocumentsSaving: " + this.project.getName());
 		
 		final List<Document> unsavedDocuments = Arrays.asList(FileDocumentManager.getInstance().getUnsavedDocuments());
 		if(!unsavedDocuments.isEmpty())

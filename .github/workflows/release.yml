@@ -13,18 +13,27 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-    - uses: actions/checkout@v4
-      
+    - uses: actions/checkout@v6
+
     - name: Set up JDK
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v5
       with:
         java-version: '21'
         distribution: 'temurin'
-        cache: 'gradle'
+
+    - name: Try restore Gradle Cache
+      uses: actions/cache/restore@v5
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-build-${{ hashFiles('**/*.gradle*', '**/gradle.properties', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-build-
       
     - name: Build
       run: ./gradlew build buildPlugin --info --stacktrace
-      
+
     - name: Check for uncommited changes
       run: |
         if [[ "$(git status --porcelain)" != "" ]]; then
@@ -50,13 +59,13 @@ jobs:
     outputs:
       upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
-    - uses: actions/checkout@v4
-      
+    - uses: actions/checkout@v6
+
     - name: Configure Git
       run: |
         git config --global user.email "actions@github.com"
         git config --global user.name "GitHub Actions"
-      
+
     - name: UN-Snap version and output
       id: version
       run: |
@@ -71,7 +80,7 @@ jobs:
 
         echo "Contents of gradle.properties"
         cat gradle.properties
-  
+
     - name: Commit and Push
       run: |
         git add -A
@@ -79,10 +88,10 @@ jobs:
         git push origin
         git tag v${{ steps.version.outputs.release }}
         git push origin --tags
-    
+
     - name: Create Release
       id: create_release
-      uses: shogo82148/actions-create-release@4661dc54f7b4b564074e9fbf73884d960de569a3 # v1
+      uses: shogo82148/actions-create-release@6a396031bc74c57403da1018fec74d24c6aa03cd # v1
       with:
         tag_name: v${{ steps.version.outputs.release }}
         release_name: v${{ steps.version.outputs.release }}
@@ -103,21 +112,20 @@ jobs:
     needs: [prepare_release]
     timeout-minutes: 60
     steps:
-    - uses: actions/checkout@v4
-    
+    - uses: actions/checkout@v6
+
     - name: Set up JDK
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v5
       with:
         distribution: 'temurin'
         java-version: 21
-        cache: 'gradle'
-    
+
     - name: Init Git and pull
       run: |
         git config --global user.email "actions@github.com"
         git config --global user.name "GitHub Actions"
         git pull
-    
+
     - name: Publish Plugin
       env:
         PUBLISH_TOKEN: ${{ secrets.JETBRAINS_MARKETPLACE_PUBLISH_TOKEN }}
@@ -127,7 +135,7 @@ jobs:
       run: ./gradlew publishPlugin --info --stacktrace
 
     - name: Upload plugin files
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: plugin-files
         path: build/distributions/*
@@ -137,21 +145,21 @@ jobs:
     needs: [publish]
     timeout-minutes: 10
     steps:
-    - uses: actions/checkout@v4
-      
+    - uses: actions/checkout@v6
+
     - name: Init Git and pull
       run: |
         git config --global user.email "actions@github.com"
         git config --global user.name "GitHub Actions"
         git pull
-        
+
     - name: Inc Version and SNAP root
       run: |
         originalVersion=$(grep -Po 'pluginVersion=\K.*' gradle.properties)
         newVersion="$(echo $originalVersion | cut -d '-' -f1 | awk -F. -v OFS=. 'NF==1{print ++$NF}; NF>1{$NF=sprintf("%0*d", length($NF), ($NF+1)); print}')-SNAPSHOT"
         echo "New version: $newVersion"
         sed -i "s/pluginVersion=$originalVersion/pluginVersion=$newVersion/" gradle.properties
-        
+
         echo "Contents of gradle.properties"
         cat gradle.properties
 
@@ -160,7 +168,7 @@ jobs:
         git add -A
         git commit -m "Preparing for next development iteration"
         git push origin
-    
+
     - name: pull-request
       env:
         GH_TOKEN: ${{ github.token }}

@@ -3,13 +3,13 @@ plugins {
     id 'idea'
     id 'checkstyle'
     id 'pmd'
-    id 'org.jetbrains.intellij.platform' version '2.7.0'
+    id 'org.jetbrains.intellij.platform' version '2.15.0'
 }
 
 ext {
-    checkstyleVersion = '10.26.1'
+    checkstyleVersion = '13.4.1'
 
-    pmdVersion = '7.16.0'
+    pmdVersion = '7.24.0'
 }
 
 def properties(String key) {
@@ -44,7 +44,10 @@ configurations.checkstyle {
     }
 }
 
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+
+// Add dependencies to test, junit5 api (annotations) and engine (runtime)
 dependencies {
     intellijPlatform {
         create(properties("platformType"), properties("platformVersion"))
@@ -52,16 +55,17 @@ dependencies {
         plugins(properties("platformPlugins").map { it.split(",").collect { it.trim() }.findAll { !it.empty } })
         pluginVerifier()
         zipSigner()
-        instrumentationTools()
+        // 2026-04 Can't change "Platform" to "JUnit5" because IntelliJ still has
+        // required code/fixtures only in Platform and they are hardwired with JUnit4
         testFramework TestFrameworkType.Platform.INSTANCE
     }
     checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
     pmd "net.sourceforge.pmd:pmd-ant:${pmdVersion}",
             "net.sourceforge.pmd:pmd-java:${pmdVersion}"
-    testImplementation platform('org.junit:junit-bom:5.13.4'),
+    testImplementation platform('org.junit:junit-bom:6.0.3'),
             'org.junit.jupiter:junit-jupiter',
             'org.junit.jupiter:junit-jupiter-engine',
-            'org.assertj:assertj-core:3.27.3'
+            'org.assertj:assertj-core:3.27.7'
     testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
         because("Only needed to run tests in a version of IntelliJ IDEA that bundles older versions")
     }
@@ -73,8 +77,13 @@ dependencies {
 // See https://www.jetbrains.com/intellij-repository/releases
 intellijPlatform {
     pluginConfiguration {
+        id = properties("pluginGroup")
         name = properties("pluginName")
         version = properties("pluginVersion")
+        ideaVersion {
+            sinceBuild = properties("platformSinceBuild")
+            untilBuild = provider { null }
+        }
     }
     patchPluginXml {
         pluginId = properties("pluginGroup")
@@ -85,7 +94,10 @@ intellijPlatform {
     }
     pluginVerification {
         ides {
-            recommended()
+            select {
+                it.types = [IntelliJPlatformType.IntellijIdea]
+                it.sinceBuild = properties("platformSinceBuild")
+            }
         }
     }
     signPlugin {

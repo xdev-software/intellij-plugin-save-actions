@@ -12,6 +12,14 @@
       ],
       "matchCurrentVersion": "0",
       "enabled": false
+    },
+    {
+      "description": "org.jetbrains.intellij.platform - Changelog",
+      "packagePattern": "^org.jetbrains.intellij.platform",
+      "matchDatasources": [
+        "maven"
+      ],
+      "changelogUrl": "https://github.com/JetBrains/intellij-platform-gradle-plugin/releases"
     }
   ]
 }

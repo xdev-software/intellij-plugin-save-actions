@@ -1,6 +1,12 @@
+## 1.6.0
+* Fix rare second reformat error #193
+* Minor code cleanups and optimizations
+* Dropped support for IntelliJ versions < 2026.1
+  * Resolves "`ReadAction.compute` deprecated"
+
 ## 1.5.0
 * Dropped support for IntelliJ versions < 2025.2
-  * Resolves "``ActionUtil.performActionDumbAwareWithCallbacks`` deprecated" #250
+  * Resolves "`ActionUtil.performActionDumbAwareWithCallbacks` deprecated" #250
 
 ## 1.4.2
 * Fix storage deserialization crash on unknown actions value #273
