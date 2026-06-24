@@ -22,7 +22,7 @@ jobs:
         distribution: 'temurin'
 
     - name: Try restore Gradle Cache
-      uses: actions/cache/restore@v5
+      uses: actions/cache/restore@v6
       with:
         path: |
           ~/.gradle/caches
