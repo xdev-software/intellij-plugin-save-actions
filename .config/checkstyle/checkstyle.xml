@@ -146,7 +146,8 @@
 		<module name="UnnecessarySemicolonInTryWithResources"/>
 		<module name="UnusedImports"/>
 		<module name="UnusedLocalVariable"/>
-		<module name="UnusedTryResourceShouldBeUnnamed"/>
+		<!-- Disabled by default; should be enabled on Java 25+ -->
+		<!-- <module name="UnusedTryResourceShouldBeUnnamed"/> -->
 		<module name="UpperEll"/>
 		<module name="VisibilityModifier">
 			<property name="packageAllowed" value="true"/>
