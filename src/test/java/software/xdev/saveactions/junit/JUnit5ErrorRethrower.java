@@ -7,13 +7,13 @@ import org.opentest4j.AssertionFailedError;
 import com.intellij.platform.testFramework.core.FileComparisonFailedError;
 
 
-public final class JUnit5Utils
+public final class JUnit5ErrorRethrower
 {
-	private JUnit5Utils()
+	private JUnit5ErrorRethrower()
 	{
 	}
 	
-	public static void rethrowAsJunit5Error(final AssertionError error)
+	public static void rethrow(final AssertionError error)
 	{
 		if(error.getCause() instanceof final InvocationTargetException intellijInternal
 			&& intellijInternal.getCause() instanceof final FileComparisonFailedError fileComparisonFailure)
@@ -26,7 +26,7 @@ public final class JUnit5Utils
 		throw error;
 	}
 	
-	public static void rethrowAsJunit5Error(final Runnable runnable)
+	public static void rethrow(final Runnable runnable)
 	{
 		try
 		{
@@ -34,7 +34,7 @@ public final class JUnit5Utils
 		}
 		catch(final AssertionError error)
 		{
-			rethrowAsJunit5Error(error);
+			rethrow(error);
 		}
 	}
 }

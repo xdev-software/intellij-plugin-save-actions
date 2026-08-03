@@ -18,7 +18,7 @@ import software.xdev.saveactions.core.action.BatchActionConstants;
 import software.xdev.saveactions.core.action.ShortcutActionConstants;
 import software.xdev.saveactions.core.component.SaveActionManagerConstants;
 import software.xdev.saveactions.core.service.SaveActionsServiceManager;
-import software.xdev.saveactions.junit.JUnit5Utils;
+import software.xdev.saveactions.junit.JUnit5ErrorRethrower;
 import software.xdev.saveactions.model.Storage;
 
 
@@ -51,21 +51,21 @@ public abstract class IntegrationTest
 	{
 		this.fixture.configureByFile(before.getFilename());
 		SaveActionManagerConstants.SAVE_ACTION_MANAGER.accept(this.fixture, SaveActionsServiceManager.getService());
-		JUnit5Utils.rethrowAsJunit5Error(() -> this.fixture.checkResultByFile(after.getFilename()));
+		JUnit5ErrorRethrower.rethrow(() -> this.fixture.checkResultByFile(after.getFilename()));
 	}
 	
 	void assertSaveActionShortcut(final ActionTestFile before, final ActionTestFile after)
 	{
 		this.fixture.configureByFile(before.getFilename());
 		ShortcutActionConstants.SAVE_ACTION_SHORTCUT_MANAGER.accept(this.fixture);
-		JUnit5Utils.rethrowAsJunit5Error(() -> this.fixture.checkResultByFile(after.getFilename()));
+		JUnit5ErrorRethrower.rethrow(() -> this.fixture.checkResultByFile(after.getFilename()));
 	}
 	
 	void assertSaveActionBatch(final ActionTestFile before, final ActionTestFile after)
 	{
 		this.fixture.configureByFile(before.getFilename());
 		BatchActionConstants.SAVE_ACTION_BATCH_MANAGER.accept(this.fixture);
-		JUnit5Utils.rethrowAsJunit5Error(() -> this.fixture.checkResultByFile(after.getFilename()));
+		JUnit5ErrorRethrower.rethrow(() -> this.fixture.checkResultByFile(after.getFilename()));
 	}
 	
 	private String getTestDataPath()
