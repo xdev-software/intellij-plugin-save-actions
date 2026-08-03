@@ -1,0 +1,101 @@
+name: Check IDE Compatibility
+
+on:
+  schedule:
+    - cron: '55 8 * * 1'
+  workflow_dispatch:
+
+jobs:
+  check-ide-compatibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+    - name: Free up disk space
+      run: |
+        sudo df -h
+        declare -a paths_to_wipe=(
+          "/usr/share/dotnet"
+          "/usr/local/.ghcup"
+          "/usr/local/swift"
+          "/usr/share/swift"
+          "/usr/lib/jvm"
+          "/usr/local/lib/android"
+          "/usr/lib/google-cloud-sdk"
+          "/usr/local/share/boost"
+          "/usr/local/share/powershell"
+          "/usr/local/share/chromium"
+          "/usr/local/lib/node_modules"
+          "/usr/lib/mono"
+          "/usr/lib/heroku"
+          "/usr/lib/firefox"
+          "/usr/share/miniconda"
+          "/opt/microsoft"
+          "/opt/chrome"
+          "/opt/pipx"
+          "$AGENT_TOOLSDIRECTORY"
+        )
+        for p in "${paths_to_wipe[@]}"
+        do
+          echo "Clearing $p"
+          sudo rm -rf $p || true
+        done
+        sudo df -h
+
+    - uses: actions/checkout@v7
+
+    - name: Set up JDK
+      uses: actions/setup-java@v5
+      with:
+        distribution: 'temurin'
+        java-version: 21
+
+    - name: Cache Gradle
+      uses: actions/cache@v6
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-ide-compatibility-${{ hashFiles('**/*.gradle*', '**/gradle.properties', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-ide-compatibility-
+
+    - name: Check compatibility
+      id: check-compatibility
+      run: ./gradlew verifyPlugin --info --stacktrace
+
+    - name: Upload report
+      uses: actions/upload-artifact@v7
+      if: ${{ always() }}
+      with:
+        name: plugin-verifier-reports
+        path: build/reports/pluginVerifier/**
+        if-no-files-found: warn
+
+    - name: Find already existing issue
+      id: find-issue
+      if: ${{ always() }}
+      run: |
+        echo "number=$(gh issue list -l 'bug' -l 'automated' -L 1 -S 'in:title "IDE Compatibility Problem"' -s 'open' --json 'number' --jq '.[].number')" >> $GITHUB_OUTPUT
+      env:
+        GH_TOKEN: ${{ github.token }}
+
+    - name: Close issue if everything is fine
+      if: ${{ success() && steps.find-issue.outputs.number != '' }}
+      run: gh issue close -r 'not planned' ${{ steps.find-issue.outputs.number }}
+      env:
+        GH_TOKEN: ${{ github.token }}
+
+    - name: Create issue report
+      if: ${{ failure() && steps.check-compatibility.conclusion == 'failure' }}
+      run: |
+        echo 'Encountered problems during plugin verification' > reported.md
+        echo 'Please check the build logs for details' >> reported.md
+
+    - name: Create Issue From File
+      if: ${{ failure() && steps.check-compatibility.conclusion == 'failure' }}
+      uses: peter-evans/create-issue-from-file@fca9117c27cdc29c6c4db3b86c48e4115a786710 # v6
+      with:
+        issue-number: ${{ steps.find-issue.outputs.number }}
+        title: IDE Compatibility Problem
+        content-filepath: ./reported.md
+        labels: bug, automated
