@@ -7,7 +7,7 @@ plugins {
 }
 
 ext {
-    checkstyleVersion = '13.8.0'
+    checkstyleVersion = '13.9.0'
 
     pmdVersion = '7.26.0'
 }
@@ -140,8 +140,8 @@ tasks.withType(Pmd).configureEach {
 // https://docs.gradle.org/current/dsl/org.gradle.api.tasks.compile.JavaCompile.html
 tasks.withType(JavaCompile).configureEach {
     // JAVA compatibility
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 compileJava.options.encoding = 'UTF-8'
