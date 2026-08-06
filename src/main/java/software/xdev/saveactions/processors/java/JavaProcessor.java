@@ -5,7 +5,6 @@ import java.util.EnumSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -163,11 +162,14 @@ public enum JavaProcessor implements Processor
 	}
 	
 	@Override
-	public SaveWriteCommand getSaveCommand(final Project project, final Set<PsiFile> psiFiles)
+	public SaveWriteCommand createSaveCommand(final Project project, final Set<PsiFile> psiFiles)
 	{
-		final BiFunction<Project, PsiFile[], Runnable> command =
-			(p, f) -> new InspectionRunnable(project, psiFiles, this.getInspection());
-		return new SaveWriteCommand(project, psiFiles, this.getModes(), this.getAction(), command);
+		return new SaveWriteCommand(
+			project,
+			psiFiles,
+			this.getModes(),
+			this.getAction(),
+			(_, _) -> new InspectionRunnable(project, psiFiles, this.getInspection()));
 	}
 	
 	public LocalInspectionTool getInspection()

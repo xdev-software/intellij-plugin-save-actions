@@ -12,16 +12,18 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import com.intellij.codeInsight.CodeInsightBundle;
 import com.intellij.codeInsight.CodeInsightSettings;
+import com.intellij.codeInsight.actions.AbstractLayoutCodeProcessor;
 import com.intellij.codeInsight.actions.OptimizeImportsProcessor;
 import com.intellij.codeInsight.actions.RearrangeCodeProcessor;
 import com.intellij.codeInsight.actions.ReformatCodeProcessor;
 import com.intellij.ide.util.PropertiesComponent;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
+import com.intellij.util.ui.EDT;
 
 import software.xdev.saveactions.core.ExecutionMode;
 import software.xdev.saveactions.model.Action;
@@ -49,41 +51,70 @@ public enum GlobalProcessor implements Processor
 		.collect(Collectors.toMap(Processor::getAction, Function.identity()));
 	
 	@NotNull
-	private static Runnable rearrangeCode(final Project project, final PsiFile[] psiFiles)
+	private static Runnable optimizeImports(final Project project, final Set<PsiFile> psiFiles)
 	{
-		return new RearrangeCodeProcessor(
-			project,
+		return useOptimizedProcessor(
 			psiFiles,
-			CodeInsightBundle.message("command.rearrange.code"),
-			null)::run;
-	}
-	
-	@NotNull
-	private static Runnable optimizeImports(final Project project, final PsiFile[] psiFiles)
-	{
-		return new OptimizeImportsProcessor(project, psiFiles, null)::run;
+			f -> new OptimizeImportsProcessor(project, f),
+			f -> new OptimizeImportsProcessor(project, f, null));
 	}
 	
 	@NotNull
 	private static Runnable reformatCode(
 		final Project project,
-		final PsiFile[] psiFiles,
+		final Set<PsiFile> psiFiles,
 		final boolean processChangedTextOnly)
 	{
-		return new IgnoreSecondReformatReformatCodeProcessor(project, psiFiles, null, processChangedTextOnly)::run;
+		return useOptimizedProcessor(
+			psiFiles,
+			f -> new SaveReformatCodeProcessor(project, f, processChangedTextOnly),
+			f -> new SaveReformatCodeProcessor(project, f, processChangedTextOnly));
 	}
 	
-	static class IgnoreSecondReformatReformatCodeProcessor extends ReformatCodeProcessor
+	/**
+	 * Improved version of {@link ReformatCodeProcessor}:
+	 * <ul>
+	 *     <li>Correctly uses Threads</li>
+	 *     <li>Removes the "2nd Reformat" popup</li>
+	 * </ul>
+	 */
+	static class SaveReformatCodeProcessor extends ReformatCodeProcessor
 	{
 		protected static final String SECOND_REFORMAT_CONFIRMED = "second.reformat.confirmed.2";
 		
-		IgnoreSecondReformatReformatCodeProcessor(
+		protected final boolean requiresBGTWhenCalledFromEDT;
+		
+		SaveReformatCodeProcessor(
 			final Project project,
-			final PsiFile[] files,
-			@Nullable final Runnable postRunnable,
+			final PsiFile file,
 			final boolean processChangedTextOnly)
 		{
-			super(project, files, postRunnable, processChangedTextOnly);
+			super(project, file, null, processChangedTextOnly);
+			this.requiresBGTWhenCalledFromEDT = false;
+		}
+		
+		SaveReformatCodeProcessor(
+			final Project project,
+			final PsiFile[] files,
+			final boolean processChangedTextOnly)
+		{
+			super(project, files, null, processChangedTextOnly);
+			// The upstream code in AbstractLayoutCodeProcessor#run assumes that - if it is not a single file -
+			// execution is already happening on BGT. This is not the case and causes
+			// problems like "GitContentRevision.getContentAsBytes() should not be called from EDT" #347
+			this.requiresBGTWhenCalledFromEDT = true;
+		}
+		
+		@Override
+		public void run()
+		{
+			if(!this.requiresBGTWhenCalledFromEDT || !EDT.isCurrentThreadEdt())
+			{
+				super.run();
+				return;
+			}
+			
+			ApplicationManager.getApplication().executeOnPooledThread(super::run);
 		}
 		
 		@Override
@@ -116,10 +147,36 @@ public enum GlobalProcessor implements Processor
 		}
 	}
 	
-	private final Action action;
-	private final BiFunction<Project, PsiFile[], Runnable> command;
+	@NotNull
+	private static Runnable rearrangeCode(final Project project, final Set<PsiFile> psiFiles)
+	{
+		return useOptimizedProcessor(
+			psiFiles,
+			RearrangeCodeProcessor::new,
+			f -> new RearrangeCodeProcessor(
+				project,
+				f,
+				CodeInsightBundle.message("command.rearrange.code"),
+				null));
+	}
 	
-	GlobalProcessor(final Action action, final BiFunction<Project, PsiFile[], Runnable> command)
+	private static <P extends AbstractLayoutCodeProcessor> Runnable useOptimizedProcessor(
+		final Set<PsiFile> psiFiles,
+		final Function<PsiFile, P> singleFileConstructor,
+		final Function<PsiFile[], P> multiFilesConstructor)
+	{
+		// AbstractLayoutCodeProcessor#run differs between single files and multiple files!
+		// When using single files it dispatches a BGT for the task
+		// when using multiple files it does not
+		return (psiFiles.size() == 1
+			? singleFileConstructor.apply(psiFiles.iterator().next())
+			: multiFilesConstructor.apply(psiFiles.toArray(PsiFile[]::new)))::run;
+	}
+	
+	private final Action action;
+	private final BiFunction<Project, Set<PsiFile>, Runnable> command;
+	
+	GlobalProcessor(final Action action, final BiFunction<Project, Set<PsiFile>, Runnable> command)
 	{
 		this.action = action;
 		this.command = command;
@@ -144,12 +201,17 @@ public enum GlobalProcessor implements Processor
 	}
 	
 	@Override
-	public SaveWriteCommand getSaveCommand(final Project project, final Set<PsiFile> psiFiles)
+	public SaveWriteCommand createSaveCommand(final Project project, final Set<PsiFile> psiFiles)
 	{
-		return new SaveWriteCommand(project, psiFiles, this.getModes(), this.getAction(), this.getCommand());
+		return new SaveWriteCommand(
+			project,
+			psiFiles,
+			this.getModes(),
+			this.getAction(),
+			this.getCommand());
 	}
 	
-	public BiFunction<Project, PsiFile[], Runnable> getCommand()
+	public BiFunction<Project, Set<PsiFile>, Runnable> getCommand()
 	{
 		return this.command;
 	}

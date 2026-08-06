@@ -20,11 +20,14 @@ public abstract class SaveCommand
 	private final Set<PsiFile> psiFiles;
 	private final Set<ExecutionMode> modes;
 	private final Action action;
-	private final BiFunction<Project, PsiFile[], Runnable> command;
+	private final BiFunction<Project, Set<PsiFile>, Runnable> command;
 	
 	protected SaveCommand(
-		final Project project, final Set<PsiFile> psiFiles, final Set<ExecutionMode> modes, final Action action,
-		final BiFunction<Project, PsiFile[], Runnable> command)
+		final Project project,
+		final Set<PsiFile> psiFiles,
+		final Set<ExecutionMode> modes,
+		final Action action,
+		final BiFunction<Project, Set<PsiFile>, Runnable> command)
 	{
 		this.project = project;
 		this.psiFiles = psiFiles;
@@ -58,7 +61,7 @@ public abstract class SaveCommand
 		return this.action;
 	}
 	
-	public BiFunction<Project, PsiFile[], Runnable> getCommand()
+	public BiFunction<Project, Set<PsiFile>, Runnable> getCommand()
 	{
 		return this.command;
 	}

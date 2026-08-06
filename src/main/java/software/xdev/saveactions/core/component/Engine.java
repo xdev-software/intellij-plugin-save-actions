@@ -135,7 +135,7 @@ public class Engine
 		indicator.setText2("Collecting processors");
 		
 		final List<SaveCommand> processorsEligible = this.processors.stream()
-			.map(processor -> processor.getSaveCommand(this.project, psiFilesEligible))
+			.map(processor -> processor.createSaveCommand(this.project, psiFilesEligible))
 			.filter(command -> this.storage.isEnabled(command.getAction()))
 			.filter(command -> command.getModes().contains(this.mode))
 			.toList();

@@ -22,7 +22,7 @@ public interface Processor
 	
 	int getOrder();
 	
-	SaveCommand getSaveCommand(Project project, Set<PsiFile> psiFiles);
+	SaveCommand createSaveCommand(Project project, Set<PsiFile> psiFiles);
 	
 	class OrderComparator implements Comparator<Processor>
 	{

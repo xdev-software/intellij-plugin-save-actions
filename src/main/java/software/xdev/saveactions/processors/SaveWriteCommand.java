@@ -18,8 +18,11 @@ import software.xdev.saveactions.model.Action;
 public class SaveWriteCommand extends SaveCommand
 {
 	public SaveWriteCommand(
-		final Project project, final Set<PsiFile> psiFiles, final Set<ExecutionMode> modes, final Action action,
-		final BiFunction<Project, PsiFile[], Runnable> command)
+		final Project project,
+		final Set<PsiFile> psiFiles,
+		final Set<ExecutionMode> modes,
+		final Action action,
+		final BiFunction<Project, Set<PsiFile>, Runnable> command)
 	{
 		super(project, psiFiles, modes, action, command);
 	}
@@ -29,11 +32,12 @@ public class SaveWriteCommand extends SaveCommand
 	{
 		try
 		{
-			WriteCommandAction.writeCommandAction(this.getProject(), this.getPsiFilesAsArray())
-				.run(() -> this.getCommand().apply(this.getProject(), this.getPsiFilesAsArray()).run());
+			WriteCommandAction.writeCommandAction(this.getProject(), this.getPsiFiles())
+				.run(() -> this.getCommand().apply(this.getProject(), this.getPsiFiles()).run());
+			
 			return new Result<>(ResultCode.OK);
 		}
-		catch(final Exception e)
+		catch(final Exception _)
 		{
 			return new Result<>(ResultCode.FAILED);
 		}
