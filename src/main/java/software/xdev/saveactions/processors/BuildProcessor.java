@@ -48,13 +48,13 @@ public enum BuildProcessor implements Processor
 				return;
 			}
 			CompilerManager.getInstance(project).compile(
-				Arrays.stream(psiFiles).map(PsiFile::getVirtualFile).toArray(VirtualFile[]::new),
+				psiFiles.stream().map(PsiFile::getVirtualFile).toArray(VirtualFile[]::new),
 				null);
 		}),
 	
 	reload(
 		Action.reload,
-		(project, psiFiles) -> () -> {
+		(project, _) -> () -> {
 			if(!SaveActionsServiceManager.getService().isCompilingAvailable())
 			{
 				return;
@@ -70,7 +70,7 @@ public enum BuildProcessor implements Processor
 	@SuppressWarnings("checkstyle:IllegalIdentifierName")
 	executeAction(
 		Action.executeAction,
-		(project, psiFiles) -> () -> {
+		(project, _) -> () -> {
 			ActionManager actionManager = ActionManager.getInstance();
 			
 			List<String> actionIds = SaveActionsServiceManager.getService().getQuickLists(project).stream()
@@ -103,16 +103,16 @@ public enum BuildProcessor implements Processor
 		})
 		{
 			@Override
-			public SaveCommand getSaveCommand(final Project project, final Set<PsiFile> psiFiles)
+			public SaveCommand createSaveCommand(final Project project, final Set<PsiFile> psiFiles)
 			{
 				return new SaveReadCommand(project, psiFiles, this.getModes(), this.getAction(), this.getCommand());
 			}
 		};
 	
 	private final Action action;
-	private final BiFunction<Project, PsiFile[], Runnable> command;
+	private final BiFunction<Project, Set<PsiFile>, Runnable> command;
 	
-	BuildProcessor(final Action action, final BiFunction<Project, PsiFile[], Runnable> command)
+	BuildProcessor(final Action action, final BiFunction<Project, Set<PsiFile>, Runnable> command)
 	{
 		this.action = action;
 		this.command = command;
@@ -137,12 +137,12 @@ public enum BuildProcessor implements Processor
 	}
 	
 	@Override
-	public SaveCommand getSaveCommand(final Project project, final Set<PsiFile> psiFiles)
+	public SaveCommand createSaveCommand(final Project project, final Set<PsiFile> psiFiles)
 	{
 		return new SaveWriteCommand(project, psiFiles, this.getModes(), this.getAction(), this.getCommand());
 	}
 	
-	public BiFunction<Project, PsiFile[], Runnable> getCommand()
+	public BiFunction<Project, Set<PsiFile>, Runnable> getCommand()
 	{
 		return this.command;
 	}

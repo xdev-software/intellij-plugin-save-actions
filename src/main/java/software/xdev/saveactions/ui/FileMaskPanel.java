@@ -102,7 +102,7 @@ abstract class FileMaskPanel extends JPanel
 		return actionButton -> {
 			final String pattern = Messages.showInputDialog(
 				this.textAddMessage, this.textAddTitle, null, null, this.getRegexInputValidator());
-			if(pattern != null && (patterns.add(pattern)))
+			if(pattern != null && patterns.add(pattern))
 			{
 				this.patternModels.addElementSorted(pattern);
 			}
