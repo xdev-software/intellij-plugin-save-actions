@@ -2,7 +2,7 @@ name: Check IDE Compatibility
 
 on:
   schedule:
-    - cron: '55 8 * * 1'
+    - cron: '55 16 * * 0'
   workflow_dispatch:
 
 jobs:
