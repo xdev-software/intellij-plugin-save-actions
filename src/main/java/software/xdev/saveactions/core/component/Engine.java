@@ -345,7 +345,7 @@ public class Engine
 					return true;
 				}
 			}
-			catch(final PatternSyntaxException e)
+			catch(final PatternSyntaxException _)
 			{
 				// invalid patterns are ignored
 				return false;
