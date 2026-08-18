@@ -4,6 +4,8 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="software.xdev.saveactions.core.service.impl.SaveActionsJavaService"/>
+        <projectService
+                serviceImplementation="software.xdev.saveactions.processors.java.inspection.CustomLocalCanBeFinal$MethodCache"/>
     </extensions>
 
 </idea-plugin>

@@ -1,3 +1,6 @@
+# 1.6.2
+* Add caching to `Add final modifier to local variable or parameter` to improve performance #197
+
 # 1.6.1
 * Fix `GitContentRevision.getContentAsBytes() should not be called from EDT` #347
 
