@@ -85,9 +85,22 @@ public class CustomLocalCanBeFinal extends LocalCanBeFinal
 				method.getSignature(PsiSubstitutor.EMPTY).hashCode());
 			
 			final PsiCodeBlock body = method.getBody();
-			return bodyCache.computeIfAbsent(
-				body != null ? body.getText().hashCode() : -1,
-				ignored -> createIfAbsent.apply(method));
+			final int bodyHash = body != null ? body.getText().hashCode() : -1;
+			
+			// Validate that the cached ProblemDescriptors still reference valid PSI elements.
+			// When a file is modified externally (e.g. by an AI assistant writing to disk),
+			// the PSI tree is rebuilt and previously cached descriptors may hold stale references.
+			// Applying fixes with stale PSI elements can corrupt the document or prevent the
+			// editor from reloading the file. See #392
+			final ProblemDescriptor[] cachedResult = bodyCache.get(bodyHash);
+			if(cachedResult != null && areDescriptorsValid(cachedResult))
+			{
+				return cachedResult;
+			}
+			
+			final ProblemDescriptor[] newResult = createIfAbsent.apply(method);
+			bodyCache.put(bodyHash, newResult);
+			return newResult;
 		}
 		
 		private static <K, X, Y> Map<X, Y> computeNewMaxSizeMapIfAbsent(final Map<K, Map<X, Y>> target, final K key)
@@ -95,6 +108,19 @@ public class CustomLocalCanBeFinal extends LocalCanBeFinal
 			return target.computeIfAbsent(
 				key,
 				ignored -> Collections.synchronizedMap(new MaxSizedLinkedHashMap<>(2)));
+		}
+		
+		private static boolean areDescriptorsValid(final ProblemDescriptor[] descriptors)
+		{
+			for(final ProblemDescriptor descriptor : descriptors)
+			{
+				final PsiElement element = descriptor.getPsiElement();
+				if(element == null || !element.isValid())
+				{
+					return false;
+				}
+			}
+			return true;
 		}
 	}
 }
