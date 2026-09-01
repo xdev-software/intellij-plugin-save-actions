@@ -169,7 +169,7 @@
 	<rule ref="category/java/errorprone.xml/UnconditionalIfStatement"/>
 	<rule ref="category/java/errorprone.xml/UnnecessaryCaseChange"/>
 	<rule ref="category/java/errorprone.xml/UnsupportedJdkApiUsage"/>
-	<rule ref="category/java/errorprone.xml/UselessPureMethodCall"/>
+	<rule ref="category/java/errorprone.xml/UnusedReturnValue"/>
 
 
 	<rule ref="category/java/multithreading.xml">
