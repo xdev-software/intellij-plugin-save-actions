@@ -1,31 +1,23 @@
-# Compiled class file
-*.class
-
-# Log file
-*.log
-
-# Package/Binary Files don't belong into a git repo
-*.jar
-*.war
-*.ear
-*.zip
-*.tar.gz
-*.dll
-*.exe
-*.bin
-
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-
-# Eclipse
-.metadata
-.settings
-.classpath
-.project
-
-# == IntelliJ ==
+# Intellij
+.idea/*
 *.iml
 *.ipr
+*.iws
+
+# Generated java classes
+out
+classes
+
+# Plugins
+*.idea/checkstyle-idea.xml
+
+# Gradle
+.gradle/
+build/
+
+# IntelliJ Platform Plugin
+.intellijPlatform
+
 
 # Some files are user/installation independent and are used for configuring the IDE
 # See also https://stackoverflow.com/a/35279076
