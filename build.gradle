@@ -48,12 +48,18 @@ import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
 
 // Add dependencies to test, junit5 api (annotations) and engine (runtime)
 dependencies {
-    intellijPlatform {
-        create(properties("platformType"), properties("platformVersion"))
-        bundledPlugins(properties("platformBundledPlugins").map { it.split(",").collect { it.trim() }.findAll { !it.empty } })
-        plugins(properties("platformPlugins").map { it.split(",").collect { it.trim() }.findAll { !it.empty } })
-        pluginVerifier()
-        zipSigner()
+    // Downloading 3GB of IntelliJ is not needed for CheckStyle
+    if (!project.hasProperty("checkstyleEnabled")) {
+        intellijPlatform {
+            create(properties("platformType"), properties("platformVersion")) {
+                // PMD 7.27: This will otherwise crash because PMD assumes all files are ZIP files
+                useInstaller = !project.hasProperty("pmdEnabled")
+            }
+            bundledPlugins(properties("platformBundledPlugins").map { it.split(",").collect { it.trim() }.findAll { !it.empty } })
+            plugins(properties("platformPlugins").map { it.split(",").collect { it.trim() }.findAll { !it.empty } })
+            pluginVerifier()
+            zipSigner()
+        }
     }
     checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
     pmd "net.sourceforge.pmd:pmd-ant:${pmdVersion}",
