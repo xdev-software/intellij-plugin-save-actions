@@ -109,7 +109,7 @@ jobs:
           ${{ runner.os }}-gradle-checkstyle-
 
     - name: Run Checkstyle
-      run: ./gradlew checkstyleMain checkstyleTest -PcheckstyleEnabled --stacktrace
+      run: ./gradlew checkstyleMain checkstyleTest -PcheckstyleEnabled --stacktrace -x compileJava -x compileTestJava -x classes -x testClasses
 
   pmd:
     runs-on: ubuntu-latest
