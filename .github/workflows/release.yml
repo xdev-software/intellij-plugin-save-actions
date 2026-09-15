@@ -18,7 +18,7 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v5
       with:
-        java-version: '25'
+        java-version: '26.0.2+10'
         distribution: 'temurin'
 
     - name: Try restore Gradle Cache
@@ -118,7 +118,7 @@ jobs:
       uses: actions/setup-java@v5
       with:
         distribution: 'temurin'
-        java-version: 25
+        java-version: 26.0.2+10
 
     - name: Init Git and pull
       run: |
