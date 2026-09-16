@@ -43,6 +43,10 @@ jobs:
             -o current-changelog.html
             current-changelog.md
 
+      - name: DEBUG
+        run: |
+          cat current-changelog.html
+
       - name: Publish Plugin
         env:
           PUBLISH_TOKEN: ${{ secrets.JETBRAINS_MARKETPLACE_PUBLISH_TOKEN }}
