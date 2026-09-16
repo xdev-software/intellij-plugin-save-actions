@@ -37,6 +37,7 @@ jobs:
           echo "Contents of changelog"
           cat current-changelog.md
 
+      # IntelliJ needs HTML and can't use markdown
       - name: Convert changelog to HTML
         uses: docker://pandoc/core:3
         with:
@@ -44,10 +45,6 @@ jobs:
             -f markdown
             -o current-changelog.html
             current-changelog.md
-
-      - name: DEBUG
-        run: |
-          cat current-changelog.html
 
       - name: Publish Plugin
         env:

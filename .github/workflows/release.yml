@@ -126,12 +126,33 @@ jobs:
         git config --global user.name "GitHub Actions"
         git pull
 
+    - name: Generate Changelog
+      run: |
+        version=$(grep -Po 'pluginVersion=\K.*' gradle.properties)
+
+        awk -v ver="$version" '/^# / { if (p) { exit }; if ($2 == ver) { p=1; next } } p' CHANGELOG.md > current-changelog.md
+        echo "" >> current-changelog.md
+        echo "[Full changelog](https://github.com/${{ github.repository }}/blob/develop/CHANGELOG.md)" >> current-changelog.md
+
+        echo "Contents of changelog"
+        cat current-changelog.md
+
+    # IntelliJ needs HTML and can't use markdown
+    - name: Convert changelog to HTML
+      uses: docker://pandoc/core:3
+      with:
+        args: >-
+          -f markdown
+          -o current-changelog.html
+          current-changelog.md
+
     - name: Publish Plugin
       env:
         PUBLISH_TOKEN: ${{ secrets.JETBRAINS_MARKETPLACE_PUBLISH_TOKEN }}
         CERTIFICATE_CHAIN: ${{ secrets.JETBRAINS_MARKETPLACE_CERTIFICATE_CHAIN }}
         PRIVATE_KEY: ${{ secrets.JETBRAINS_MARKETPLACE_PRIVATE_KEY }}
         PRIVATE_KEY_PASSWORD: ${{ secrets.JETBRAINS_MARKETPLACE_PRIVATE_KEY_PASSWORD }}
+        CHANGE_NOTES_HTML_FILE: current-changelog.html
       run: ./gradlew publishPlugin --info --stacktrace
 
     - name: Upload plugin files
