@@ -1,3 +1,8 @@
+# 1.6.3
+* This is a test
+* This is [a link](https://example.org)
+* This is _italic_
+
 # 1.6.2
 * Add caching to `Add final modifier to local variable or parameter` to improve performance #197
 
