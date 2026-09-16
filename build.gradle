@@ -93,9 +93,9 @@ intellijPlatform {
         untilBuild = provider { null }
         changeNotes = provider {
             def changeNotesFile = System.getenv("CHANGE_NOTES_HTML_FILE");
-            return "<![CDATA[" + (changeNotesFile != null
+            return (changeNotesFile != null
                     ? rootProject.file(changeNotesFile).text
-                    : "") + "]]>";
+                    : "");
         }
     }
     pluginVerification {
