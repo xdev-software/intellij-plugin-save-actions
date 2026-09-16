@@ -53,4 +53,4 @@ We can accept code written with the help of AI into the project, but the code mu
 
 * External AI tooling (e.g. bots, agents) directly interacting with the project - without a human - are not allowed and will be banned and reported.
 * For commit messages the same guidelines as described above for issues apply - fully generated messages are not allowed.
-* AI assisted/generated commits can NOT use the `Co-authored-by` tag as this  is reserved for humans - use `Assisted-by` instead.
+* AI assisted/generated commits can NOT use the `Co-authored-by` tag as this is reserved for humans - use `Assisted-by`/`Generated-by` instead.
