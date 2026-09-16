@@ -7,9 +7,9 @@ plugins {
 }
 
 ext {
-    checkstyleVersion = '13.11.0'
+    checkstyleVersion = '14.1.0'
 
-    pmdVersion = '7.26.0'
+    pmdVersion = '7.27.0'
 }
 
 def properties(String key) {
@@ -49,15 +49,21 @@ import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 // Add dependencies to test, junit5 api (annotations) and engine (runtime)
 dependencies {
-    intellijPlatform {
-        create(properties("platformType"), properties("platformVersion"))
-        bundledPlugins(properties("platformBundledPlugins").map { it.split(",").collect { it.trim() }.findAll { !it.empty } })
-        plugins(properties("platformPlugins").map { it.split(",").collect { it.trim() }.findAll { !it.empty } })
-        pluginVerifier()
-        zipSigner()
-        // 2026-04 Can't change "Platform" to "JUnit5" because IntelliJ still has
-        // required code/fixtures only in Platform and they are hardwired with JUnit4
-        testFramework TestFrameworkType.Platform.INSTANCE
+    // Downloading 3GB of IntelliJ is not needed for CheckStyle
+    if (!project.hasProperty("checkstyleEnabled")) {
+        intellijPlatform {
+            create(properties("platformType"), properties("platformVersion")) {
+                // PMD 7.27: This will otherwise crash because PMD assumes all files are ZIP files
+                useInstaller = !project.hasProperty("pmdEnabled")
+            }
+            bundledPlugins(properties("platformBundledPlugins").map { it.split(",").collect { it.trim() }.findAll { !it.empty } })
+            plugins(properties("platformPlugins").map { it.split(",").collect { it.trim() }.findAll { !it.empty } })
+            pluginVerifier()
+            zipSigner()
+            // 2026-04 Can't change "Platform" to "JUnit5" because IntelliJ still has
+            // required code/fixtures only in Platform and they are hardwired with JUnit4
+            testFramework TestFrameworkType.Platform.INSTANCE
+        }
     }
     checkstyle "com.puppycrawl.tools:checkstyle:${checkstyleVersion}"
     pmd "net.sourceforge.pmd:pmd-ant:${pmdVersion}",
@@ -91,6 +97,12 @@ intellijPlatform {
         pluginVersion = properties("pluginVersion")
         sinceBuild = properties("platformSinceBuild")
         untilBuild = provider { null }
+        changeNotes = provider {
+            def changeNotesFile = System.getenv("CHANGE_NOTES_HTML_FILE");
+            return changeNotesFile != null
+                    ? rootProject.file(changeNotesFile).text
+                    : "";
+        }
     }
     pluginVerification {
         ides {
