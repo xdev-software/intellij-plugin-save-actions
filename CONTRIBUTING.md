@@ -1,66 +1,56 @@
-## Contributing
+# Contributing
 
-We would absolutely love to get the community involved, and we welcome any form of contributions – comments and questions on different communication channels, issues and pull request and anything that you build and share using our components.
+We would absolutely love to get the community involved and we welcome any form of contributions - comments and questions, issues, pull request and anything that you build and share using our project.
 
-### Communication channels
+## Communication channels
 * Communication is primarily done using issues.
-* If you need support as soon as possible and you can't wait for any pull request, feel free to use [our support](https://xdev.software/en/services/support).
+* If you need support as soon as possible and you can't wait for any pull request, feel free to use [our support](https://xdev.software/en/services-products/support).
 * As a last resort measure or on otherwise important matter you may also [contact us directly](https://xdev.software/en/about-us/contact).
 
-### Ways to help
-* **Report bugs**<br/>Create an issue or send a pull request
+## Ways to help
+* **Report bugs**<br/>Create an issue and send a pull request
 * **Send pull requests**<br/>If you want to contribute code, check out the development instructions below.
-  * However when contributing new features, please first discuss the change you wish to make via issue with the owners of this repository before making a change. Otherwise your work might be rejected and your effort was pointless.
+  * However when contributing larger new features, please first discuss the change you wish to make via issue with the owners of this repository before making it.<br/>Otherwise your work might be rejected and your effort was pointless.
+  * Please also note that your pull request might not be noticed immediately when it's not attached to an issue.
 
-We also encourage you to read the [contribution instructions by GitHub](https://docs.github.com/en/get-started/quickstart/contributing-to-projects).
+We also encourage you to read the [contribution instructions by GitHub](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project).
 
 ## Developing
 
-### Software Requirements
-You should have the following things installed:
-* Git
-* Java 25 - should be as unmodified as possible (Recommended: [Eclipse Adoptium](https://adoptium.net/temurin/releases/))
-* Gradle (shipped inside the repo as Gradle Wrapper - also available inside IntelliJ)
+Project specific development instructions can be found in [DEVELOPING.md](./DEVELOPING.md)
 
-### Recommended setup
-* Install `IntelliJ`
-  * Recommended setup actions
-    * Disable not needed plugins
-    * Disable [telemetry](https://www.jetbrains.com/help/idea/settings-usage-statistics.html)
-    * Configure the available memory
-  * Import the project
-  * You will get prompted to install the required plugins
-  * Ensure that everything is encoded in `UTF-8`
-  * Ensure that the JDK/Java-Version is correct
 
-## Development environment
+## On AI use / LLM generated content
 
-<i>See also [JetBrains Docs for developing IntelliJ Plugins](https://plugins.jetbrains.com/docs/intellij/developing-plugins.html)</i>
+_Our reason for the strict policy is due to [unqualified people using the technology](https://en.wikipedia.org/wiki/AI_slop)._
 
-The plugin is built with gradle, but you don't need to install it if you build with the IntelliJ gradle plugin (check out the [prerequisites](https://plugins.jetbrains.com/docs/intellij/plugin-required-experience.html)). If you don't intend to use the IntelliJ gradle plugin, you can use native gradle (replace `./gradlew` by `gradle`).
+<sup>This policy was inspired by the AI policies of `curl`, `MESA`, `matplotlib` and `Ghostty`.</sup>
 
-Start idea and import the `build.gradle` file with "File > Open". Then in the "Import Project from Gradle" window, make sure you check "Use gradle 'wrapper' task configuration" before clicking "Finish". You now have a gradle wrapper installed (`gradlew`) that you can use on the command line to generate idea folders:
+### Issues and security reports
 
-```bash
-# Initialize idea folders
-./gradlew cleanIdea idea
-```
+If you asked an AI tool to find problems in the project, you must make sure to reveal this fact in your issue.
 
-IntelliJ should refresh and the project is now configured as a gradle project. You can find IntelliJ gradle tasks in "Gradle > Gradle projects > template-placeholder > Tasks > intellij". To run the plugin, use the `runIde` task:
+You must also double-check the findings carefully before reporting them to us to validate that the issue is indeed existing and working exactly as the AI says. AI-based tools frequently generate inaccurate or fabricated results.
 
-```bash
-# Run the plugin (starts new idea)
-./gradlew runIde
-```
+Further: It is rarely a good idea to copy and paste an AI generated report to the project. Those are typically too wordy and rarely to the point - in addition to the common fabricated details.<br/>
+If you actually find a problem with an AI and you have verified it yourself to be true: Write the issue/report yourself and explain the problem as you have learned it. This makes sure the AI-generated inaccuracies and invented issues are filtered out early before they waste more people's time.
 
-## Releasing [![Build](https://img.shields.io/github/actions/workflow/status/xdev-software/template-placeholder/release.yml?branch=master)](https://github.com/xdev-software/template-placeholder/actions/workflows/release.yml)
+As we take security reports seriously, we investigate each report with priority. This work is both time and energy consuming and pulls us away from doing other meaningful work. Fake and otherwise made up security problems effectively prevent us from doing real project work and make us waste time and resources.
 
-Before releasing:
-* Consider doing a [test-deployment](https://github.com/xdev-software/template-placeholder/actions/workflows/test-deploy.yml?query=branch%3Adevelop) before actually releasing.
-* Check the [changelog](CHANGELOG.md)
+We will ban and report users who submit made up fake reports.
 
-If the ``develop`` is ready for release, create a pull request to the ``master``-Branch and merge the changes
+### Pull requests
 
-When the release is finished do the following:
-* Merge the auto-generated PR (with the incremented version number) back into the ``develop``
+When contributing content to the project, you give us permission to use it as-is and you must make sure you are allowed to distribute it to us. By submitting a change to us, you agree that the changes can and should be adopted and get redistributed under the project's license. Authors should be explicitly aware that the burden is on them to ensure no unlicensed code is submitted to the project.
 
+This is independent if AI is used or not.
+
+When contributing a pull request you should of course always make sure that the proposal is good quality and a best effort that follows our guidelines. A basic rule of thumb is that if someone can spot that the contribution was made with the help of AI, you have more work to do.
+
+We can accept code written with the help of AI into the project, but the code must still follow coding standards, be written clearly and adhere to all the normal requirements we have.
+
+### Further notices
+
+* External AI tooling (e.g. bots, agents) directly interacting with the project - without a human - are not allowed and will be banned and reported.
+* For commit messages the same guidelines as described above for issues apply - fully generated messages are not allowed.
+* AI assisted/generated commits can NOT use the `Co-authored-by` tag as this is reserved for humans - use `Assisted-by`/`Generated-by` instead.
