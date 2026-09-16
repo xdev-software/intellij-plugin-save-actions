@@ -43,6 +43,7 @@ jobs:
           sudo rm -rf $p || true
         done
         sudo df -h
+      background: true
 
     - uses: actions/checkout@v7
 
