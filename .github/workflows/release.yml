@@ -97,8 +97,8 @@ jobs:
         release_name: v${{ steps.version.outputs.release }}
         commitish: master
         body: |
-          ## [Changelog](https://github.com/xdev-software/${{ github.event.repository.name }}/blob/develop/CHANGELOG.md#${{ steps.version.outputs.releasenumber }})
-          See [Changelog#v${{ steps.version.outputs.release }}](https://github.com/xdev-software/${{ github.event.repository.name }}/blob/develop/CHANGELOG.md#${{ steps.version.outputs.releasenumber }}) for more information.
+          ## [Changelog](https://github.com/${{ github.repository }}/blob/develop/CHANGELOG.md#${{ steps.version.outputs.releasenumber }})
+          See [Changelog#v${{ steps.version.outputs.release }}](https://github.com/${{ github.repository }}/blob/develop/CHANGELOG.md#${{ steps.version.outputs.releasenumber }}) for more information.
 
           ## Installation
           The plugin is listed on the [Marketplace](https://plugins.jetbrains.com/plugin/pluginId).
