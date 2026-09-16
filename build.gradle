@@ -93,6 +93,12 @@ intellijPlatform {
         pluginVersion = properties("pluginVersion")
         sinceBuild = properties("platformSinceBuild")
         untilBuild = provider { null }
+        changeNotes = provider {
+            def changeNotesFile = System.getenv("CHANGE_NOTES_HTML_FILE");
+            return changeNotesFile != null
+                    ? rootProject.file(changeNotesFile).text
+                    : "";
+        }
     }
     pluginVerification {
         ides {
