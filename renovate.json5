@@ -17,7 +17,7 @@
       "matchPackagePatterns": [
         "^com.google.guava:guava"
       ],
-      "datasources": [
+      "matchDatasources": [
         "maven"
       ],
       "matchCurrentVersion": "0",
