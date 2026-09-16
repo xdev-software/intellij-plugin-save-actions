@@ -28,10 +28,11 @@ jobs:
 
           echo "_Please note that this is a SNAPSHOT which might be unstable_" > current-changelog.md
           echo "" >> current-changelog.md
-          awk -v ver="$version" '/^# / { if (p) { exit }; if ($2 == ver) { p=1; next } } p' CHANGELOG.md >> current-changelog.md
+          awk -v ver="$originalVersion" '/^# / { if (p) { exit }; if ($2 == ver) { p=1; next } } p' CHANGELOG.md >> current-changelog.md
           echo "" >> current-changelog.md
           echo "[Full changelog](https://github.com/${{ github.repository }}/blob/develop/CHANGELOG.md)" >> current-changelog.md
 
+          echo "Contents of changelog"
           cat current-changelog.md
 
       - name: Convert changelog to HTML
@@ -39,8 +40,8 @@ jobs:
         with:
           args: >-
             -f markdown
+            -o current-changelog.html
             current-changelog.md
-            current-changelog.html
 
       - name: Publish Plugin
         env:
