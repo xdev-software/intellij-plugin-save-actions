@@ -37,13 +37,13 @@ IntelliJ should refresh and the project is now configured as a gradle project. Y
 ./gradlew runIde
 ```
 
-## Releasing [![Build](https://img.shields.io/github/actions/workflow/status/xdev-software/template-placeholder/release.yml?branch=master)](https://github.com/xdev-software/template-placeholder/actions/workflows/release.yml)
+## Releasing
 
 Before releasing:
-* Consider doing a [test-deployment](https://github.com/xdev-software/template-placeholder/actions/workflows/test-deploy.yml?query=branch%3Adevelop) before actually releasing.
+* Consider doing a `test-deployment` before actually releasing.
 * Check the [changelog](CHANGELOG.md)
 
-If the ``develop`` is ready for release, create a pull request to the ``master``-Branch and merge the changes
+If the `develop` is ready for release, create a pull request to the `master`-Branch and merge the changes
 
 When the release is finished do the following:
-* Merge the auto-generated PR (with the incremented version number) back into the ``develop``
+* Merge the auto-generated PR (with the incremented version number) back into the `develop`
