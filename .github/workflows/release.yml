@@ -15,21 +15,22 @@ jobs:
     steps:
     - uses: actions/checkout@v7
 
-    - name: Set up JDK
-      uses: actions/setup-java@v6
-      with:
-        java-version: '25'
-        distribution: 'temurin'
+    - parallel:
+      - name: Set up JDK
+        uses: actions/setup-java@v6
+        with:
+          java-version: '25'
+          distribution: 'temurin'
 
-    - name: Try restore Gradle Cache
-      uses: actions/cache/restore@v6
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-build-${{ hashFiles('**/*.gradle*', '**/gradle.properties', '**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-build-
+      - name: Try restore Gradle Cache
+        uses: actions/cache/restore@v6
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-build-${{ hashFiles('**/*.gradle*', '**/gradle.properties', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-build-
       
     - name: Build
       run: ./gradlew build buildPlugin --info --stacktrace
