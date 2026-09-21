@@ -21,7 +21,6 @@ jobs:
           "/usr/local/.ghcup"
           "/usr/local/swift"
           "/usr/share/swift"
-          "/usr/lib/jvm"
           "/usr/local/lib/android"
           "/usr/lib/google-cloud-sdk"
           "/usr/local/share/boost"
