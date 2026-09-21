@@ -34,7 +34,6 @@ jobs:
           "/opt/microsoft"
           "/opt/chrome"
           "/opt/pipx"
-          "$AGENT_TOOLSDIRECTORY"
         )
         for p in "${paths_to_wipe[@]}"
         do
