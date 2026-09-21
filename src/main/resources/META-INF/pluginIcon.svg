@@ -1,0 +1,12 @@
+<svg width="16" height="16" viewBox="0 0 40 40" style="fill:none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <radialGradient xlink:href="#a" id="b" cx="20.034" cy="19.978" r="15.421" fx="20.034" fy="19.978" gradientTransform="matrix(1 0 0 1.00009 0 -.002)" gradientUnits="userSpaceOnUse"/>
+    <linearGradient id="a">
+      <stop offset="0" style="stop-color:#c02222;stop-opacity:1"/>
+      <stop offset="1" style="stop-color:#d71e23;stop-opacity:1"/>
+    </linearGradient>
+  </defs>
+  <path d="M3.28 3.28v0h25.157M3.28 36.72v0V3.28M36.68 36.72v0H3.28M28.437 3.28v0l8.242 9.15c.106 5.92.045 15.83 0 24.29" style="stroke:#313131;stroke-width:2.52456379;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
+  <ellipse cx="19.554" cy="20.521" rx="4.218" ry="4.223" style="stroke:#313131;stroke-width:1.88038802;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
+  <path d="M4.613 19.978V4.555h23.213l3.756 4.17 3.756 4.17.06 2.113c.076 2.707.076 9.402 0 15.562l-.06 4.83H4.613Zm16.076 5.616c1.871-.387 3.528-2.061 3.934-3.974.376-1.775-.115-3.421-1.412-4.737-1.052-1.067-2.177-1.532-3.705-1.532-1.399 0-2.604.501-3.6 1.496-1.013 1.011-1.527 2.248-1.527 3.675 0 2.391 1.55 4.398 3.887 5.036.557.152 1.776.17 2.423.036z" style="fill:url(#b);fill-opacity:1;stroke:none;stroke-width:.22916347;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
+</svg>
