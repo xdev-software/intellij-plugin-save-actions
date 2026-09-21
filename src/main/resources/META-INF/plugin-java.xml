@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<idea-plugin>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationService serviceImplementation="software.xdev.saveactions.core.service.impl.SaveActionsJavaService"/>
+        <projectService
+                serviceImplementation="software.xdev.saveactions.processors.java.inspection.CustomLocalCanBeFinal$MethodCache"/>
+    </extensions>
+
+</idea-plugin>
