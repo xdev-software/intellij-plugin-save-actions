@@ -8,21 +8,23 @@ import static software.xdev.saveactions.model.Action.reload;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.AbstractListModel;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
-
-import org.jdesktop.swingx.combobox.ListComboBoxModel;
 
 import com.intellij.openapi.actionSystem.ex.QuickList;
 import com.intellij.openapi.actionSystem.ex.QuickListsManager;
@@ -57,7 +59,6 @@ class BuildPanel
 			this.panel.add(this.wrap(checkboxes.get(compile), null));
 			this.panel.add(this.wrap(checkboxes.get(reload), null));
 		}
-		@SuppressWarnings("unchecked")
 		final JComboBox<QuickListWrapper> comboBox = new ComboBox<>(this.quickListModel);
 		this.panel.add(this.wrap(checkboxes.get(executeAction), comboBox));
 		this.panel.add(Box.createHorizontalGlue());
@@ -138,8 +139,7 @@ class BuildPanel
 			}
 			if(description.length() > QUICK_LIST_MAX_DESCRIPTION_LENGTH)
 			{
-				description = description.substring(0, QUICK_LIST_MAX_DESCRIPTION_LENGTH);
-				description = description + "...";
+				description = description.substring(0, QUICK_LIST_MAX_DESCRIPTION_LENGTH) + "...";
 			}
 			return format("{0} ({1})", name, description);
 		}
@@ -176,5 +176,62 @@ class BuildPanel
 				quickLists.add(selectedItem.getId());
 			}
 		};
+	}
+	
+	/**
+	 * Fork of <code>org.jdesktop.swingx.combobox.ListComboBoxModel</code> because org.jdesktop was removed on 263+
+	 */
+	static class ListComboBoxModel<E> extends AbstractListModel<E> implements ComboBoxModel<E>, ActionListener
+	{
+		static final String UPDATE = "update";
+		protected final List<E> data;
+		protected E selected;
+		
+		ListComboBoxModel(final List<E> list)
+		{
+			this.data = list;
+			if(!list.isEmpty())
+			{
+				this.selected = list.getFirst();
+			}
+		}
+		
+		@SuppressWarnings("unchecked")
+		@Override
+		public void setSelectedItem(final Object item)
+		{
+			if(this.selected != null && !this.selected.equals(item) || this.selected == null && item != null)
+			{
+				this.selected = (E)item;
+				this.fireContentsChanged(this, -1, -1);
+			}
+		}
+		
+		@Override
+		public E getSelectedItem()
+		{
+			return this.selected;
+		}
+		
+		@Override
+		public E getElementAt(final int index)
+		{
+			return this.data.get(index);
+		}
+		
+		@Override
+		public int getSize()
+		{
+			return this.data.size();
+		}
+		
+		@Override
+		public void actionPerformed(final ActionEvent evt)
+		{
+			if(UPDATE.equals(evt.getActionCommand()))
+			{
+				this.fireContentsChanged(this, 0, this.getSize() - 1);
+			}
+		}
 	}
 }

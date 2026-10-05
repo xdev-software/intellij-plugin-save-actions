@@ -19,23 +19,16 @@ jobs:
         declare -a paths_to_wipe=(
           "/usr/share/dotnet"
           "/usr/local/.ghcup"
-          "/usr/local/swift"
           "/usr/share/swift"
-          "/usr/lib/jvm"
           "/usr/local/lib/android"
           "/usr/lib/google-cloud-sdk"
-          "/usr/local/share/boost"
           "/usr/local/share/powershell"
           "/usr/local/share/chromium"
           "/usr/local/lib/node_modules"
-          "/usr/lib/mono"
-          "/usr/lib/heroku"
           "/usr/lib/firefox"
           "/usr/share/miniconda"
           "/opt/microsoft"
-          "/opt/chrome"
           "/opt/pipx"
-          "$AGENT_TOOLSDIRECTORY"
         )
         for p in "${paths_to_wipe[@]}"
         do
@@ -43,24 +36,26 @@ jobs:
           sudo rm -rf $p || true
         done
         sudo df -h
+      background: true
 
     - uses: actions/checkout@v7
 
-    - name: Set up JDK
-      uses: actions/setup-java@v5
-      with:
-        distribution: 'temurin'
-        java-version: 25
+    - parallel:
+      - name: Set up JDK
+        uses: actions/setup-java@v6
+        with:
+          distribution: 'temurin'
+          java-version: 25
 
-    - name: Cache Gradle
-      uses: actions/cache@v6
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-ide-compatibility-${{ hashFiles('**/*.gradle*', '**/gradle.properties', '**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-ide-compatibility-
+      - name: Cache Gradle
+        uses: actions/cache@v6
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-ide-compatibility-${{ hashFiles('**/*.gradle*', '**/gradle.properties', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-ide-compatibility-
 
     - name: Check compatibility
       id: check-compatibility

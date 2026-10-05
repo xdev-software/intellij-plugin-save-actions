@@ -65,6 +65,7 @@
 		<module name="ExplicitInitialization">
 			<property name="severity" value="info"/>
 		</module>
+		<module name="ExpressionOverBlockLambda"/>
 		<module name="FinalClass"/>
 		<module name="FinalParameters"/>
 		<module name="GenericWhitespace"/>
@@ -111,14 +112,17 @@
 		<module name="ModifierOrder"/>
 		<module name="NeedBraces"/>
 		<module name="NoClone"/>
+		<module name="NoCodeInFile"/>
 		<module name="NoFinalizer"/>
 		<module name="NonEmptyAtclauseDescription"/>
 		<module name="NoWhitespaceAfter"/>
 		<module name="NoWhitespaceBefore"/>
+		<module name="ModifierOrder"/>
 		<module name="OneStatementPerLine"/>
 		<module name="OneTopLevelClass"/>
 		<module name="OperatorWrap"/>
 		<module name="OuterTypeNumber"/>
+		<module name="PackageDeclaration"/>
 		<module name="PackageName"/>
 		<module name="ParameterName"/>
 		<module name="ParenPad"/>
@@ -144,6 +148,7 @@
 		<module name="UnnecessarySemicolonInTryWithResources"/>
 		<module name="UnusedImports"/>
 		<module name="UnusedLocalVariable"/>
+		<module name="UnusedPrivateField"/>
 		<!-- Disabled by default; should be enabled on Java 25+ -->
 		<!-- <module name="UnusedTryResourceShouldBeUnnamed"/> -->
 		<module name="UpperEll"/>

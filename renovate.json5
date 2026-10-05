@@ -3,11 +3,21 @@
   "rebaseWhen": "behind-base-branch",
   "packageRules": [
     {
+      "description": "Don't manage Java version in actions",
+      "matchDepTypes": [
+        "uses-with"
+      ],
+      "matchDatasources": [
+        "java-version"
+      ],
+      "enabled": false
+    },
+    {
       "description": "Workaround, see https://github.com/gradle/gradle/issues/27035",
       "matchPackagePatterns": [
         "^com.google.guava:guava"
       ],
-      "datasources": [
+      "matchDatasources": [
         "maven"
       ],
       "matchCurrentVersion": "0",
