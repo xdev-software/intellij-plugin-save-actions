@@ -1,3 +1,6 @@
+# 1.6.3
+* Fork `ListComboBoxModel` because it was removed in IntelliJ 263+
+
 # 1.6.2
 * Add caching to `Add final modifier to local variable or parameter` to improve performance #197
 
