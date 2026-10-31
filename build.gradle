@@ -9,7 +9,7 @@ plugins {
 ext {
     checkstyleVersion = '14.3.0'
 
-    pmdVersion = '7.28.0'
+    pmdVersion = '7.29.0'
 }
 
 def properties(String key) {
