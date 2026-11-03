@@ -30,7 +30,7 @@ Start idea and import the `build.gradle` file with "File > Open". Then in the "I
 ./gradlew cleanIdea idea
 ```
 
-IntelliJ should refresh and the project is now configured as a gradle project. You can find IntelliJ gradle tasks in "Gradle > Gradle projects > template-placeholder > Tasks > intellij". To run the plugin, use the `runIde` task:
+IntelliJ should refresh and the project is now configured as a gradle project. You can find IntelliJ gradle tasks in "Gradle > Gradle projects > intellij-plugin-save-actions > Tasks > intellij". To run the plugin, use the `runIde` task:
 
 ```bash
 # Run the plugin (starts new idea)
