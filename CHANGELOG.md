@@ -1,3 +1,7 @@
+# 1.6.4
+_Emergency fix for IntelliJ 2026.3_
+* Fix plugin storage crash #427
+
 # 1.6.3
 * Fork `ListComboBoxModel` because it was removed in IntelliJ 263+
 
