@@ -3,11 +3,11 @@ package software.xdev.saveactions.integration;
 public class Class {
 
     public void canBeStatic() {
-
+        int i = 1 + 1;
     }
 
-    public void method() {
-        canBeStatic();
+    private void method() {
+        this.toString();
     }
 
 }

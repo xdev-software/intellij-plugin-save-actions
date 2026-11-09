@@ -12,13 +12,13 @@ import org.jetbrains.annotations.Nullable;
 import com.intellij.codeInspection.InspectionManager;
 import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.codeInspection.localCanBeFinal.LocalCanBeFinal;
+import com.intellij.concurrency.ConcurrentCollectionFactory;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiCodeBlock;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiSubstitutor;
 import com.intellij.psi.PsiTypeElement;
-import com.intellij.util.containers.CollectionFactory;
 
 import software.xdev.saveactions.util.collections.MaxSizedLinkedHashMap;
 
@@ -71,7 +71,7 @@ public class CustomLocalCanBeFinal extends LocalCanBeFinal
 		private final Map<PsiMethod,
 			Map<Integer, // Signature / Parameter hash
 				Map<Integer, // Body hash (store as hash instead of string to save memory)
-					ProblemDescriptor[]>>> cache = CollectionFactory.createConcurrentWeakKeySoftValueMap();
+					ProblemDescriptor[]>>> cache = ConcurrentCollectionFactory.createConcurrentWeakKeySoftValueMap();
 		
 		ProblemDescriptor[] computeIfAbsent(
 			final PsiMethod method,

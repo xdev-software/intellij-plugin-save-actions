@@ -9,7 +9,7 @@ import software.xdev.saveactions.model.java.EpfStorage;
 
 public enum StorageFactory
 {
-	DEFAULT(project -> project.getService(Storage.class)),
+	DEFAULT(project -> project.getService(PersistentStorageState.class).getState()),
 	
 	JAVA(project -> {
 		Storage defaultStorage = DEFAULT.getStorage(project);

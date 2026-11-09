@@ -10,7 +10,7 @@ import com.intellij.openapi.actionSystem.ToggleAction;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 
-import software.xdev.saveactions.model.Storage;
+import software.xdev.saveactions.model.PersistentStorageState;
 
 
 /**
@@ -24,8 +24,7 @@ public class ToggleAnAction extends ToggleAction implements DumbAware
 		final Project project = event.getProject();
 		if(project != null)
 		{
-			final Storage storage = project.getService(Storage.class);
-			return storage.isEnabled(activate);
+			return project.getService(PersistentStorageState.class).getState().isEnabled(activate);
 		}
 		return false;
 	}
@@ -36,8 +35,7 @@ public class ToggleAnAction extends ToggleAction implements DumbAware
 		final Project project = event.getProject();
 		if(project != null)
 		{
-			final Storage storage = project.getService(Storage.class);
-			storage.setEnabled(activate, state);
+			project.getService(PersistentStorageState.class).getState().setEnabled(activate, state);
 		}
 	}
 	

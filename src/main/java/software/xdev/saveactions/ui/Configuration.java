@@ -35,6 +35,7 @@ import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.project.Project;
 
 import software.xdev.saveactions.model.Action;
+import software.xdev.saveactions.model.PersistentStorageState;
 import software.xdev.saveactions.model.Storage;
 import software.xdev.saveactions.model.java.EpfStorage;
 import software.xdev.saveactions.ui.java.IdeSupportPanel;
@@ -48,7 +49,7 @@ public class Configuration implements Configurable
 	
 	private static final String TEXT_DISPLAY_NAME = "Save Actions";
 	
-	private final Storage storage;
+	private final Project project;
 	
 	private final Set<String> exclusions = new HashSet<>();
 	private final Set<String> inclusions = new HashSet<>();
@@ -63,26 +64,21 @@ public class Configuration implements Configurable
 	
 	public Configuration(final Project project)
 	{
-		this.storage = project.getService(Storage.class);
+		this.project = project;
+	}
+	
+	private Storage getStorage()
+	{
+		return this.project.getService(PersistentStorageState.class).getState();
 	}
 	
 	@Nullable
 	@Override
 	public JComponent createComponent()
 	{
-		final JPanel panel = this.initComponent();
-		this.initFirstLaunch();
+		final JPanel panel = this.initComponent(this.getStorage());
 		this.initActionListeners();
 		return panel;
-	}
-	
-	private void initFirstLaunch()
-	{
-		if(this.storage.isFirstLaunch())
-		{
-			this.updateSelectedStateOfCheckboxes(Action.getDefaults());
-			this.storage.stopFirstLaunch();
-		}
 	}
 	
 	private void initActionListeners()
@@ -96,35 +92,37 @@ public class Configuration implements Configurable
 	@Override
 	public boolean isModified()
 	{
+		final Storage storage = this.getStorage();
 		for(final Map.Entry<Action, JCheckBox> checkbox : this.checkboxes.entrySet())
 		{
-			if(this.storage.isEnabled(checkbox.getKey()) != checkbox.getValue().isSelected())
+			if(storage.isEnabled(checkbox.getKey()) != checkbox.getValue().isSelected())
 			{
 				return true;
 			}
 		}
-		if(this.storage.getConfigurationPath() != null
-			&& !this.storage.getConfigurationPath().equals(this.ideSupport.getPath()))
+		if(storage.getConfigurationPath() != null
+			&& !storage.getConfigurationPath().equals(this.ideSupport.getPath()))
 		{
 			return true;
 		}
-		return !this.storage.getExclusions().equals(this.exclusions)
-			|| !this.storage.getInclusions().equals(this.inclusions)
-			|| !this.storage.getQuickLists().equals(this.quickLists);
+		return !storage.getExclusions().equals(this.exclusions)
+			|| !storage.getInclusions().equals(this.inclusions)
+			|| !storage.getQuickLists().equals(this.quickLists);
 	}
 	
 	@Override
 	public void apply()
 	{
+		final Storage storage = this.getStorage();
 		for(final Map.Entry<Action, JCheckBox> checkbox : this.checkboxes.entrySet())
 		{
-			this.storage.setEnabled(checkbox.getKey(), checkbox.getValue().isSelected());
+			storage.setEnabled(checkbox.getKey(), checkbox.getValue().isSelected());
 		}
-		this.storage.setExclusions(new HashSet<>(this.exclusions));
-		this.storage.setInclusions(new HashSet<>(this.inclusions));
-		this.storage.setQuickLists(new ArrayList<>(this.quickLists));
-		this.storage.setConfigurationPath(this.ideSupport.getPath());
-		final Storage efpStorage = EpfStorage.INSTANCE.getStorageOrDefault(this.ideSupport.getPath(), this.storage);
+		storage.setExclusions(new HashSet<>(this.exclusions));
+		storage.setInclusions(new HashSet<>(this.inclusions));
+		storage.setQuickLists(new ArrayList<>(this.quickLists));
+		storage.setConfigurationPath(this.ideSupport.getPath());
+		final Storage efpStorage = EpfStorage.INSTANCE.getStorageOrDefault(this.ideSupport.getPath(), storage);
 		this.updateSelectedStateOfCheckboxes(efpStorage.getActions());
 		this.updateCheckboxEnabled(null);
 	}
@@ -132,12 +130,13 @@ public class Configuration implements Configurable
 	@Override
 	public void reset()
 	{
-		this.updateSelectedStateOfCheckboxes(this.storage.getActions());
+		final Storage storage = this.getStorage();
+		this.updateSelectedStateOfCheckboxes(storage.getActions());
 		this.updateCheckboxEnabled(null);
-		this.updateExclusions();
-		this.updateInclusions();
-		this.updateQuickLists();
-		this.ideSupport.setPath(this.storage.getConfigurationPath());
+		this.updateExclusions(storage);
+		this.updateInclusions(storage);
+		this.updateQuickLists(storage);
+		this.ideSupport.setPath(storage.getConfigurationPath());
 	}
 	
 	private void updateSelectedStateOfCheckboxes(final Set<Action> selectedActions)
@@ -176,7 +175,7 @@ public class Configuration implements Configurable
 		return null;
 	}
 	
-	private JPanel initComponent()
+	private JPanel initComponent(final Storage storage)
 	{
 		for(final Action action : Action.values())
 		{
@@ -196,7 +195,7 @@ public class Configuration implements Configurable
 			inspectionPanel.getPanel(),
 			this.fileMasksInclusionPanel.getPanel(),
 			this.fileMasksExclusionPanel.getPanel(),
-			this.ideSupport.getPanel(this.storage.getConfigurationPath())
+			this.ideSupport.getPanel(storage.getConfigurationPath())
 		);
 	}
 	
@@ -248,24 +247,24 @@ public class Configuration implements Configurable
 		return panel;
 	}
 	
-	private void updateInclusions()
+	private void updateInclusions(final Storage storage)
 	{
 		this.inclusions.clear();
-		this.inclusions.addAll(this.storage.getInclusions());
+		this.inclusions.addAll(storage.getInclusions());
 		this.fileMasksInclusionPanel.update(this.inclusions);
 	}
 	
-	private void updateExclusions()
+	private void updateExclusions(final Storage storage)
 	{
 		this.exclusions.clear();
-		this.exclusions.addAll(this.storage.getExclusions());
+		this.exclusions.addAll(storage.getExclusions());
 		this.fileMasksExclusionPanel.update(this.exclusions);
 	}
 	
-	private void updateQuickLists()
+	private void updateQuickLists(final Storage storage)
 	{
 		this.quickLists.clear();
-		this.quickLists.addAll(this.storage.getQuickLists());
+		this.quickLists.addAll(storage.getQuickLists());
 		this.buildPanel.update();
 	}
 	

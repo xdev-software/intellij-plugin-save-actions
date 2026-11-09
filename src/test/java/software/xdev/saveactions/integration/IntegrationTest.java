@@ -19,6 +19,7 @@ import software.xdev.saveactions.core.action.ShortcutActionConstants;
 import software.xdev.saveactions.core.component.SaveActionManagerConstants;
 import software.xdev.saveactions.core.service.SaveActionsServiceManager;
 import software.xdev.saveactions.junit.JUnit5ErrorRethrower;
+import software.xdev.saveactions.model.PersistentStorageState;
 import software.xdev.saveactions.model.Storage;
 
 
@@ -26,7 +27,7 @@ public abstract class IntegrationTest
 {
 	private CodeInsightTestFixture fixture;
 	
-	Storage storage;
+	PersistentStorageState persistentStorageState;
 	
 	@BeforeEach
 	public void before(final TestInfo testInfo) throws Exception
@@ -37,14 +38,19 @@ public abstract class IntegrationTest
 		this.fixture = factory.createCodeInsightFixture(testFixture, new LightTempDirTestFixtureImpl(true));
 		this.fixture.setUp();
 		this.fixture.setTestDataPath(this.getTestDataPath());
-		this.storage = testFixture.getProject().getService(Storage.class);
+		this.persistentStorageState = testFixture.getProject().getService(PersistentStorageState.class);
+	}
+	
+	protected Storage getStorage()
+	{
+		return this.persistentStorageState.getState();
 	}
 	
 	@AfterEach
 	public void after() throws Exception
 	{
 		this.fixture.tearDown();
-		this.storage.clear();
+		this.persistentStorageState.clear();
 	}
 	
 	void assertSaveAction(final ActionTestFile before, final ActionTestFile after)

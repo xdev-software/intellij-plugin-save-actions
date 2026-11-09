@@ -1,13 +1,11 @@
 package software.xdev.saveactions.model;
 
-import static java.util.stream.Collectors.toSet;
 import static software.xdev.saveactions.model.ActionType.activation;
 import static software.xdev.saveactions.model.ActionType.build;
 import static software.xdev.saveactions.model.ActionType.global;
 import static software.xdev.saveactions.model.ActionType.java;
 
 import java.util.Arrays;
-import java.util.Set;
 import java.util.stream.Stream;
 
 
@@ -16,110 +14,108 @@ public enum Action
 {
 	// Activation
 	activate("Activate save actions on save (before saving each file, performs the configured actions below)",
-		activation, true),
+		activation),
 	
 	activateOnShortcut("Activate save actions on shortcut (default \"CTRL + SHIFT + S\")",
-		activation, false),
+		activation),
 	
 	activateOnBatch("Activate save actions on batch (\"Code > Save Actions > Execute on multiple files\")",
-		activation, false),
+		activation),
 	
 	noActionIfCompileErrors("No action if compile errors (applied per file)",
-		activation, false),
+		activation),
 	
 	processAsync("Process files asynchronously "
 		+ "(will result in less UI hangs but may break if a processor needs the UI)",
-		activation, false),
+		activation),
 	
 	// Global
 	organizeImports("Optimize imports",
-		global, true),
+		global),
 	
 	reformat("Reformat file",
-		global, true),
+		global),
 	
 	reformatChangedCode("Reformat only changed code (only if VCS configured)",
-		global, false),
+		global),
 	
 	rearrange("Rearrange fields and methods "
 		+ "(configured in \"File > Settings > Editor > Code Style > (...) > Arrangement\")",
-		global, false),
+		global),
 	
 	// Build
 	compile("[experimental] Compile files (using \"Build > Build Project\")",
-		build, false),
+		build),
 	
 	reload("[experimental] Reload files in running debugger (using \"Run > Reload Changed Classes\")",
-		build, false),
+		build),
 	
 	executeAction("[experimental] Execute an action (using quick lists at "
 		+ "\"File > Settings > Appearance & Behavior > Quick Lists\")",
-		build, false),
+		build),
 	
 	// Java fixes
 	fieldCanBeFinal("Add final modifier to field",
-		java, false),
+		java),
 	
 	localCanBeFinal("Add final modifier to local variable or parameter",
-		java, false),
+		java),
 	
 	localCanBeFinalExceptImplicit("Add final modifier to local variable or parameter except if it is implicit",
-		java, false),
+		java),
 	
 	methodMayBeStatic("Add static modifier to methods",
-		java, false),
+		java),
 	
 	unqualifiedFieldAccess("Add this to field access",
-		java, false),
+		java),
 	
 	unqualifiedMethodAccess("Add this to method access",
-		java, false),
+		java),
 	
 	unqualifiedStaticMemberAccess("Add class qualifier to static member access",
-		java, false),
+		java),
 	
 	customUnqualifiedStaticMemberAccess("Add class qualifier to static member access outside declaring class",
-		java, false),
+		java),
 	
 	missingOverrideAnnotation("Add missing @Override annotations",
-		java, false),
+		java),
 	
 	useBlocks("Add blocks to if/while/for statements",
-		java, false),
+		java),
 	
 	generateSerialVersionUID("Add a serialVersionUID field for Serializable classes",
-		java, false),
+		java),
 	
 	unnecessaryThis("Remove unnecessary this to field and method",
-		java, false),
+		java),
 	
 	finalPrivateMethod("Remove final from private method",
-		java, false),
+		java),
 	
 	unnecessaryFinalOnLocalVariableOrParameter("Remove unnecessary final for local variable or parameter",
-		java, false),
+		java),
 	
 	explicitTypeCanBeDiamond("Remove explicit generic type for diamond",
-		java, false),
+		java),
 	
 	unnecessarySemicolon("Remove unnecessary semicolon",
-		java, false),
+		java),
 	
 	singleStatementInBlock("Remove blocks from if/while/for statements",
-		java, false),
+		java),
 	
 	accessCanBeTightened("Change visibility of field or method to lower access",
-		java, false);
+		java);
 	
 	private final String text;
 	private final ActionType type;
-	private final boolean defaultValue;
 	
-	Action(final String text, final ActionType type, final boolean defaultValue)
+	Action(final String text, final ActionType type)
 	{
 		this.text = text;
 		this.type = type;
-		this.defaultValue = defaultValue;
 	}
 	
 	public String getText()
@@ -130,18 +126,6 @@ public enum Action
 	public ActionType getType()
 	{
 		return this.type;
-	}
-	
-	public boolean isDefaultValue()
-	{
-		return this.defaultValue;
-	}
-	
-	public static Set<Action> getDefaults()
-	{
-		return Arrays.stream(Action.values())
-			.filter(Action::isDefaultValue)
-			.collect(toSet());
 	}
 	
 	public static Stream<Action> stream()
