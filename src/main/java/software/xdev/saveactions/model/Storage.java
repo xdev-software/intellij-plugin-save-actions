@@ -3,22 +3,11 @@ package software.xdev.saveactions.model;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
-import org.jetbrains.annotations.NotNull;
 
-import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.Service;
-import com.intellij.openapi.components.State;
-import com.intellij.serviceContainer.NonInjectable;
-import com.intellij.util.xmlb.XmlSerializerUtil;
-
-
-@State(name = "SaveActionSettings", storages = {@com.intellij.openapi.components.Storage("saveactions_settings.xml")})
-@Service(Service.Level.PROJECT)
 @SuppressWarnings("PMD.UseEnumCollections") // Set must be nullable!
-public final class Storage implements PersistentStateComponent<Storage>
+public class Storage
 {
 	// Must use a set that supports nullable values!
 	// For example EnumSet will crash when encountering an unknown/null value
@@ -37,7 +26,6 @@ public final class Storage implements PersistentStateComponent<Storage>
 		this.quickLists = new ArrayList<>();
 	}
 	
-	@NonInjectable
 	public Storage(final Storage storage)
 	{
 		this.actions = new HashSet<>(storage.actions);
@@ -45,24 +33,6 @@ public final class Storage implements PersistentStateComponent<Storage>
 		this.inclusions = new HashSet<>(storage.inclusions);
 		this.configurationPath = storage.configurationPath;
 		this.quickLists = new ArrayList<>(storage.quickLists);
-	}
-	
-	@Override
-	public Storage getState()
-	{
-		return this;
-	}
-	
-	@Override
-	public void loadState(@NotNull final Storage state)
-	{
-		XmlSerializerUtil.copyBean(state, this);
-		
-		// Remove null values that might have been caused by non-parsable values
-		this.actions.removeIf(Objects::isNull);
-		this.exclusions.removeIf(Objects::isNull);
-		this.inclusions.removeIf(Objects::isNull);
-		this.quickLists.removeIf(Objects::isNull);
 	}
 	
 	public Set<Action> getActions()
@@ -130,14 +100,5 @@ public final class Storage implements PersistentStateComponent<Storage>
 	public void setQuickLists(final List<String> quickLists)
 	{
 		this.quickLists = quickLists;
-	}
-	
-	public void clear()
-	{
-		this.actions.clear();
-		this.exclusions.clear();
-		this.inclusions.clear();
-		this.configurationPath = null;
-		this.quickLists.clear();
 	}
 }
