@@ -1,5 +1,6 @@
-# 1.6.5
+# 1.7.0
 * Split internal `Storage` to prevent future problems #427
+* Dropped support for IntelliJ versions < 2026.3
 
 # 1.6.4
 _Emergency fix for IntelliJ 2026.3_
