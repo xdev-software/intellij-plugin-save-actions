@@ -71,7 +71,6 @@ class JavaIntegrationTest extends IntegrationTest
 	}
 	
 	@Test
-	@Disabled("do not work")
 	void should_methodMayBeStatic_add_static_keyword_to_method()
 	{
 		this.getStorage().setEnabled(activate, true);
