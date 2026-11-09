@@ -71,18 +71,8 @@ public class Configuration implements Configurable
 	public JComponent createComponent()
 	{
 		final JPanel panel = this.initComponent();
-		this.initFirstLaunch();
 		this.initActionListeners();
 		return panel;
-	}
-	
-	private void initFirstLaunch()
-	{
-		if(this.storage.isFirstLaunch())
-		{
-			this.updateSelectedStateOfCheckboxes(Action.getDefaults());
-			this.storage.stopFirstLaunch();
-		}
 	}
 	
 	private void initActionListeners()

@@ -20,7 +20,6 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 @SuppressWarnings("PMD.UseEnumCollections") // Set must be nullable!
 public final class Storage implements PersistentStateComponent<Storage>
 {
-	private boolean firstLaunch;
 	// Must use a set that supports nullable values!
 	// For example EnumSet will crash when encountering an unknown/null value
 	private Set<Action> actions;
@@ -31,7 +30,6 @@ public final class Storage implements PersistentStateComponent<Storage>
 	
 	public Storage()
 	{
-		this.firstLaunch = true;
 		this.actions = new HashSet<>();
 		this.exclusions = new HashSet<>();
 		this.inclusions = new HashSet<>();
@@ -42,7 +40,6 @@ public final class Storage implements PersistentStateComponent<Storage>
 	@NonInjectable
 	public Storage(final Storage storage)
 	{
-		this.firstLaunch = storage.firstLaunch;
 		this.actions = new HashSet<>(storage.actions);
 		this.exclusions = new HashSet<>(storage.exclusions);
 		this.inclusions = new HashSet<>(storage.inclusions);
@@ -59,7 +56,6 @@ public final class Storage implements PersistentStateComponent<Storage>
 	@Override
 	public void loadState(@NotNull final Storage state)
 	{
-		this.firstLaunch = false;
 		XmlSerializerUtil.copyBean(state, this);
 		
 		// Remove null values that might have been caused by non-parsable values
@@ -116,16 +112,6 @@ public final class Storage implements PersistentStateComponent<Storage>
 		this.inclusions = inclusions;
 	}
 	
-	public boolean isFirstLaunch()
-	{
-		return this.firstLaunch;
-	}
-	
-	public void stopFirstLaunch()
-	{
-		this.firstLaunch = false;
-	}
-	
 	public String getConfigurationPath()
 	{
 		return this.configurationPath;
@@ -148,7 +134,6 @@ public final class Storage implements PersistentStateComponent<Storage>
 	
 	public void clear()
 	{
-		this.firstLaunch = true;
 		this.actions.clear();
 		this.exclusions.clear();
 		this.inclusions.clear();
