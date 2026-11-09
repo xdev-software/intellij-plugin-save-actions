@@ -69,7 +69,7 @@ public final class SerializableHasSerialVersionUIDFieldInspectionWrapper
 				return targetInspectionClass.cast(targetInspectionClass.getDeclaredConstructor().newInstance());
 			}
 			catch(final ClassNotFoundException | IllegalAccessException | InstantiationException | NoSuchMethodException
-						| InvocationTargetException e)
+						| InvocationTargetException _)
 			{
 				return null;
 			}

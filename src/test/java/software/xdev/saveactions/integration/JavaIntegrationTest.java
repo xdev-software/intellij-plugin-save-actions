@@ -131,7 +131,7 @@ class JavaIntegrationTest extends IntegrationTest
 	}
 	
 	@Test
-	@Disabled("do not work")
+	@Disabled("Fails to lookup java.io.Serializable")
 	void should_generateSerialVersionUID_generates_serial_version_uid_for_serializable_class()
 	{
 		this.getStorage().setEnabled(activate, true);
@@ -166,7 +166,7 @@ class JavaIntegrationTest extends IntegrationTest
 	}
 	
 	@Test
-	@Disabled("do not work")
+	@Disabled("Fails to perform class lookup")
 	void should_explicitTypeCanBeDiamond_removes_explicit_diamond()
 	{
 		this.getStorage().setEnabled(activate, true);
