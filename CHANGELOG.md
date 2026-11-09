@@ -1,3 +1,6 @@
+# 1.6.5
+* Split internal `Storage` to prevent future problems #427
+
 # 1.6.4
 _Emergency fix for IntelliJ 2026.3_
 * Fix plugin storage crash #427
