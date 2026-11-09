@@ -45,14 +45,14 @@ public enum Action
 	
 	// Build
 	compile("[experimental] Compile files (using \"Build > Build Project\")",
-		build, false),
+		build),
 	
 	reload("[experimental] Reload files in running debugger (using \"Run > Reload Changed Classes\")",
-		build, false),
+		build),
 	
 	executeAction("[experimental] Execute an action (using quick lists at "
 		+ "\"File > Settings > Appearance & Behavior > Quick Lists\")",
-		build, false),
+		build),
 	
 	// Java fixes
 	fieldCanBeFinal("Add final modifier to field",
